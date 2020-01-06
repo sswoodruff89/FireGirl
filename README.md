@@ -4,7 +4,7 @@ Platformer
 ------
 
 ## Overview
-${Untitled Platformer} is a 2D action platformer game that harkens back to the days of the NES. You can select from a handful of characters, each with their own abilities (such as throwing fire), to take on enemies (from monsters to mercenaries) as you traverse multiple levels.
+${Untitled Platformer} is a 2D action platformer game that harkens back to the days of the NES. You can select from a handful of characters, each with their own abilities (such as throwing fire), to take on enemies as you traverse multiple levels.
 
 
 ## MVP
