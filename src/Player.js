@@ -15,6 +15,7 @@ class Player {
       name: "Seisa", 
       pos: [20, 460], 
       ctx: this.ctx,
+      canvas: this.canvas,
       width: 40,
       height: 70
     });
@@ -88,31 +89,15 @@ class Player {
       }
     }
 
-    // this.inAir();
+    this.inAir();
 
-    // if (!this.onGround) {
-    //   this.inAir();
-    // } else {
-      //   this.velY = 0;
-      // }
+
     }
   
     inAir() {
       if (!this.onGround) {
         this.y += this.velY;
-        this.velY += CONSTANTS.GRAVITY;
-  
-        let bounds = this.edgeBounds();
-
-        if (bounds.bottomLeft[1] === 580 || bounds.bottomRight[1] === 580) {
-          // if (bounds.bottomLeft[1] === 580 || bounds.bottomRight[1] === 580) {
-          this.y = 580 - this.height;
-          this.velY = 0;
-
-          this.onGround = true;
-          this.jumpCount = 2;
-        }
-  
+        this.velY += CONSTANTS.GRAVITY;  
       } else {
         this.velY = 0;
       }
@@ -122,7 +107,11 @@ class Player {
 
     if (this.jumpCount > 0) {
       (this.jumpCount === 2) ? this.onGround = false : "";
-      this.velY -= 10;
+      if (this.jumpCount === 1) {
+        this.velY = 0 - 15;
+      } else {
+        this.velY -= 15;
+      }
       this.jumpCount -= 1;
     }
   }

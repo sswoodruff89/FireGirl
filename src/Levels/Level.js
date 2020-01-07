@@ -1,3 +1,5 @@
+import Platform from "../Objects/Platforms/Platform";
+
 class Level {
   constructor(options) {
     console.log(options);
@@ -17,6 +19,18 @@ class Level {
       for (let j = 0; j < this.level[i].length; j++) {
         let x = this.gridWidth * j;
         if (this.level[i][j] === 1) {
+
+          let platform = new Platform({
+            name: "grass",
+            pos: [x, y],
+            ctx: this.ctx,
+            canvas: this.canvas,
+            width: this.gridWidth,
+            height: this.gridHeight
+          });
+
+          // platform.drawPlatform();
+
           this.ctx.beginPath();
           this.ctx.rect(x, y, this.gridWidth, this.gridHeight);
           // this.ctx.translate(this.width / 2, this.height / 2);
@@ -26,6 +40,7 @@ class Level {
         }
       }
     }
+
     // this.map.forEach((row, i) => {
     //   let y = this.gridHeight * i;
 

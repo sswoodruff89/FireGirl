@@ -5,8 +5,9 @@ class Object {
     this.name = options.name;
     this.pos = options.pos;
     this.ctx = options.ctx;
+    this.canvas = options.canvas;
     this.width = options.width;
-    // this.height = options.height;
+    this.height = options.height;
   }
 }
 
