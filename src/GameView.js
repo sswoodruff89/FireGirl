@@ -2,36 +2,22 @@ import Controller from "./util/Controller";
 import Level from "./Levels/Level";
 import Player from "./Player";
 
-let map = [
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-];
+
 
 class GameView {
   constructor (canvas, ctx) {
-    // this.stage = new createjs.Stage("gameCanvas");
     this.canvas = canvas;
     this.ctx = ctx;
-    // this.circle = new createjs.Shape();
-    this.player = new Player(ctx);
-    // this.playerModel = this.player.model;
+    this.player = new Player(this.ctx, this.canvas);
     this.controller = new Controller(this.player);
-
+    this.level = new Level({canvas: canvas, ctx: ctx, level: GameView.map1});
     this.runGame = this.runGame.bind(this);
 
   }
 
   runGame() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
+    this.level.drawLevel();
     this.player.drawPlayer();
     this.player.move();
     window.requestAnimationFrame(this.runGame);
@@ -46,19 +32,24 @@ class GameView {
   //   this.player.drawPlayer(this.ctx);
   // }
   
-  // handleTick(event) {
-  //   this.player.move();
 
-  //   if (this.playerModel.x > this.stage.canvas.width) { this.playerModel.x = 0; }
-  //   if (this.playerModel.x < 0) { this.playerModel.x = this.stage.canvas.width; }
-  //   if (this.playerModel.y < 0) { this.playerModel.y = this.stage.canvas.height; }
-  //   if (this.playerModel.y > this.stage.canvas.height) { this.playerModel.y = 0; }
-  //   this.stage.update();
-  // }
 
 
 
 } 
+
+GameView.map1 = [
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+];
 
 export default GameView;
 

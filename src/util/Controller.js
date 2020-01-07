@@ -43,7 +43,9 @@ class Controller {
     console.log(this.player.onGround);
     console.log(this.player.velX);
     console.log(this.player.velY);
-    console.log(this.player.edgeBounds());
+    // console.log(this.player.edgeBounds());
+    console.log(this.player.onGround);
+    // console.log(this.player.edgeBounds());
     // console.log(this.player.model.getBounds());
     // console.log(this.player.model.w);
     // console.log(this.player.model.h);

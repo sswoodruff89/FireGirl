@@ -1,4 +1,5 @@
 import Character from "./Objects/Characters/Character";
+import Collision from "./util/Collision";
 
 const CONSTANTS = {
   GRAVITY: 0.5,
@@ -7,16 +8,17 @@ const CONSTANTS = {
 };
 
 class Player {
-  constructor(ctx) {
+  constructor(ctx, canvas) {
     this.ctx = ctx;
+    this.canvas = canvas;
     this.character = new Character({
       name: "Seisa", 
-      pos: [20, 500], 
+      pos: [20, 460], 
       ctx: this.ctx,
       width: 40,
       height: 70
     });
-
+    this.collider = new Collision();
     this.vel = this.character.vel;
     this.x = this.character.x;
     this.y = this.character.y;
@@ -39,10 +41,14 @@ class Player {
     this.whichDirection = this.whichDirection.bind(this);
     this.edgeBounds = this.edgeBounds.bind(this);
     this.isLanded = this.isLanded.bind(this);
+
+    this.resetJump = this.resetJump.bind(this);
+    this.resetGrounded = this.resetGrounded.bind(this);
   }
 
   
   drawPlayer() {
+    
     this.ctx.beginPath();
     this.ctx.rect(this.x, this.y, this.width, this.height);
     // this.ctx.translate(this.width / 2, this.height / 2);
@@ -57,6 +63,9 @@ class Player {
 
   move() {
     this.whichDirection();
+    
+
+    this.collider.collidePlayer(this, this.canvas);
     
     if (!this.isIdle()) {
       this.x += this.velX;
@@ -73,9 +82,13 @@ class Player {
           // (0 - CONSTANTS.FRICTION < this.velX) ? this.velX = 0 : this.velX /= CONSTANTS.FRICTION;
         }
       }
+
+      if (!this.onGround) {
+        this.velY += CONSTANTS.GRAVITY;
+      }
     }
 
-    this.inAir();
+    // this.inAir();
 
     // if (!this.onGround) {
     //   this.inAir();
@@ -87,7 +100,6 @@ class Player {
     inAir() {
       if (!this.onGround) {
         this.y += this.velY;
-        // this.model.y = this.y;
         this.velY += CONSTANTS.GRAVITY;
   
         let bounds = this.edgeBounds();
@@ -132,6 +144,15 @@ class Player {
 
   isIdle() {
     return this.velX === 0 && this.velY === 0;
+  }
+
+  resetGrounded() {
+    this.player.onGround = true;
+    this.resetJump();
+  }
+
+  resetJump() {
+    this.player.jumpCount = 2;
   }
 
   whichDirection() {
