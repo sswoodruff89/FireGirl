@@ -3,8 +3,13 @@ import GameView from "./GameView";
 
 // const greeting = testObj?.key2?.key3 || testObj.key1;
 window.addEventListener("DOMContentLoaded", () => {
+  let canvas = document.getElementById("gameCanvas");
+  let ctx = canvas.getContext("2d");
+  let gameView = new GameView(canvas, ctx);
 
-  let gameView = new GameView();
+  gameView.runGame();
+
+  
 
   // let stage = new createjs.Stage("gameCanvas");
   // //Create a Shape DisplayObject.
@@ -35,33 +40,5 @@ window.addEventListener("DOMContentLoaded", () => {
   // }
 
 
-  // let keys = {
-  //   37: 'left',
-  //   38: 'up',
-  //   39: 'right',
-  //   40: 'down',
-  //   65: 'jump'
-  // };
-
-  // window.addEventListener("keydown", keydown);
-
-  // function keydown(event) {
-  //   switch (keys[event.keyCode]) {
-  //     case "left":
-  //       circle.x -= 10;
-  //       break;
-  //     case "right":
-  //       circle.x += 10;
-  //       break;
-  //     case "up":
-  //       circle.y -= 10;
-  //       break;
-  //     case "down":
-  //       circle.y += 10;
-  //       break;
-  //     default:
-  //       null;
-  //   }
-  // }
 
 });

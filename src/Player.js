@@ -7,12 +7,21 @@ const CONSTANTS = {
 };
 
 class Player {
-  constructor() {
-    this.character = new Character({name: "Seisa", pos: [20, 545]});
-    this.model = this.character.characterModel;
+  constructor(ctx) {
+    this.ctx = ctx;
+    this.character = new Character({
+      name: "Seisa", 
+      pos: [20, 500], 
+      ctx: this.ctx,
+      width: 40,
+      height: 70
+    });
+
     this.vel = this.character.vel;
-    this.x = this.model.x;
-    this.y = this.model.y;
+    this.x = this.character.x;
+    this.y = this.character.y;
+    this.width = this.character.width;
+    this.height = this.character.height;
     this.velX = this.vel[0];
     this.velY = this.vel[1];
     this.onGround = true;
@@ -21,9 +30,11 @@ class Player {
     this.direction = "right";
     this.jumpCount = 2;
 
+ 
+    this.drawPlayer = this.drawPlayer.bind(this);
     this.jump = this.jump.bind(this);
     this.move = this.move.bind(this);
-    this.isGrounded = this.isGrounded.bind(this);
+    this.inAir = this.inAir.bind(this);
     this.isIdle = this.isIdle.bind(this);
     this.whichDirection = this.whichDirection.bind(this);
     this.edgeBounds = this.edgeBounds.bind(this);
@@ -31,16 +42,25 @@ class Player {
   }
 
   
+  drawPlayer() {
+    this.ctx.beginPath();
+    this.ctx.rect(this.x, this.y, this.width, this.height);
+    // this.ctx.translate(this.width / 2, this.height / 2);
+    this.ctx.fillStyle = "white";
+    this.ctx.fill();
+    this.ctx.closePath();
+    // this.x += this.velX;
+    // this.move();
+    // this.y += this.velY;
+  }
 
 
   move() {
-    // this.isLanded();
-    this.isGrounded();
     this.whichDirection();
-
+    
     if (!this.isIdle()) {
       this.x += this.velX;
-      this.model.x = this.x;
+      this.y += this.velY;
       
       if (this.direction === "right") {
         if (this.onGround && !this.keydown) {
@@ -55,47 +75,59 @@ class Player {
       }
     }
 
-    if (!this.onGround) {
-      this.velY += CONSTANTS.GRAVITY;
-    } else {
-      this.velY = 0;
-    }
-  }
+    this.inAir();
 
+    // if (!this.onGround) {
+    //   this.inAir();
+    // } else {
+      //   this.velY = 0;
+      // }
+    }
+  
+    inAir() {
+      if (!this.onGround) {
+        this.y += this.velY;
+        // this.model.y = this.y;
+        this.velY += CONSTANTS.GRAVITY;
+  
+        let bounds = this.edgeBounds();
+
+        if (bounds.bottomLeft[1] === 580 || bounds.bottomRight[1] === 580) {
+          // if (bounds.bottomLeft[1] === 580 || bounds.bottomRight[1] === 580) {
+          this.y = 580 - this.height;
+          this.velY = 0;
+
+          this.onGround = true;
+          this.jumpCount = 2;
+        }
+  
+      } else {
+        this.velY = 0;
+      }
+    }
+    
   jump() {
 
     if (this.jumpCount > 0) {
       (this.jumpCount === 2) ? this.onGround = false : "";
-      this.velY -= 20;
+      this.velY -= 10;
       this.jumpCount -= 1;
     }
   }
 
   edgeBounds() {
-    let bounds = this.model.getBounds();
-    let x = bounds.width / 2;
-    let y = bounds.height / 2;
 
     return {
-      topLeft: [this.model.x - x, this.model.y - y],
-      topRight: [this.model.x + x, this.model.y - y],
-      bottomRight: [this.model.x + x, this.model.y + y],
-      bottomLeft: [this.model.x - x, this.model.y + y]
+      // topLeft: [this.x - x, this.y - y],
+      // topRight: [this.x + x, this.y - y],
+      // bottomRight: [this.x + x, this.y + y],
+      // bottomLeft: [this.x - x, this.y + y]
+      topLeft: [this.x, this.y],
+      topRight: [this.x + this.width, this.y],
+      bottomRight: [this.x + this.width, this.y + this.height],
+      bottomLeft: [this.x, this.y + this.height]
     };
 
-  }
-
-  isGrounded() {
-    if (!this.onGround) {
-      this.y += this.velY;
-      this.model.y = this.y;
-      this.velY += CONSTANTS.GRAVITY;
-
-      this.isLanded();
-
-    } else {
-      this.velY = 0;
-    }
   }
 
   isIdle() {
@@ -110,7 +142,8 @@ class Player {
     let bounds = this.edgeBounds();
 
     if (bounds.bottomLeft[1] === 580 || bounds.bottomRight[1] === 580) {
-
+    // if (bounds.bottomLeft[1] === 580 || bounds.bottomRight[1] === 580) {
+      this.y = 580 - this.height;
       this.onGround = true;
       this.jumpCount = 2;
     }

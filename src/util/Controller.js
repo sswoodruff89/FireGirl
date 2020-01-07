@@ -17,17 +17,11 @@ class Controller {
       case "left":
         // this.player.direction = "left";
         this.player.velX = -10;
-        // this.player.velX -= 2.8;
-        // this.player.move();
-        // this.player.x -= 10;
-        // this.player.posX -= 10;
+
         break;
       case "right":
         // this.player.direction = "right";
         this.player.velX = 10;
-        // this.player.velX += 2.8;
-        // this.player.move();
-        // this.player.x += 10;
         break;
       case "up":
         this.player.y -= 10;
@@ -39,18 +33,22 @@ class Controller {
         this.player.jump();
         break;
       case "space":
-        this.gameview.Ticker.paused = (this.gameview.Ticker.paused) ? false: true;
+        // this.gameview.Ticker.paused = (this.gameview.Ticker.paused) ? false: true;
         break;
       default:
         return;
     }
-    // console.log(this.player.x);
-    // console.log(this.player.y);
+    console.log(this.player.x);
+    console.log(this.player.y);
+    console.log(this.player.onGround);
+    console.log(this.player.velX);
+    console.log(this.player.velY);
+    console.log(this.player.edgeBounds());
     // console.log(this.player.model.getBounds());
     // console.log(this.player.model.w);
     // console.log(this.player.model.h);
 
-    console.log(this.player.edgeBounds());
+    // console.log(this.player.edgeBounds());
   }
 
   keyup(event) {
