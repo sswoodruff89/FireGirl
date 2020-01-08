@@ -24,7 +24,7 @@ class Controller {
         this.player.velX = 10;
         break;
       case "up":
-        this.player.y -= 10;
+        // this.player.y -= 10;
         break;
       case "down":
         this.player.y += 10;
@@ -45,6 +45,11 @@ class Controller {
     console.log(this.player.velY);
     // console.log(this.player.edgeBounds());
     console.log(this.player.onGround);
+    // console.log(this.game.getBottomLeftPos());
+    // console.log(this.game.getTopLeftPos());
+    // console.log(this.game.getBottomRightPos());
+    // console.log(this.game.getTopRightPos());
+    // console.log()
     // console.log(this.player.edgeBounds());
     // console.log(this.player.model.getBounds());
     // console.log(this.player.model.w);

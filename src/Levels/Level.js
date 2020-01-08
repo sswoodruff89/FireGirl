@@ -1,72 +1,92 @@
-import Platform from "../Objects/Platforms/Platform";
+import Tile from "../Objects/Platforms/Tile";
 
 class Level {
   constructor(options) {
-    console.log(options);
+    // console.log(options);
     this.canvas = options.canvas;
     this.ctx = options.ctx;
-    this.level = options.level;
+    this.renderMap = options.renderMap;
+    this.physicalMap = options.physicalMap;
 
-    this.gridWidth = this.canvas.width / this.level[0].length;
-    this.gridHeight = this.canvas.height / this.level.length;
+    this.cols = this.renderMap[0].length;
+    this.rows = this.renderMap.length;
+    this.tileSize = 60;
+    
 
+
+    this.gridWidth = this.canvas.width / this.renderMap[0].length;
+    this.gridHeight = this.canvas.height / this.renderMap.length;
+
+    this.getTile = this.getTile.bind(this);
+    this.getLeft = this.getLeft.bind(this);
+    this.getRight = this.getRight.bind(this);
+    this.getTop = this.getTop.bind(this);
+    this.getBottom = this.getBottom.bind(this);
     this.drawLevel = this.drawLevel.bind(this);
   }
 
-  drawLevel() {
-    for (let i = 0; i < this.level.length; i++) {
-      let y = this.gridHeight * i;
-      for (let j = 0; j < this.level[i].length; j++) {
-        let x = this.gridWidth * j;
-        if (this.level[i][j] === 1) {
+//15 x 10
 
-          let platform = new Platform({
+  getTile(row, col) {
+    return this.renderMap[row, col];
+  }
+
+  getLeft(row, col) {
+    return Math.floor(row * this.tileSize);
+  }
+  getRight(row, col) {
+    return Math.floor((row * this.tileSize) + this.tileSize);
+  }
+  getTop(row, col) {
+    return Math.floor(col * this.tileSize - this.tileSize);
+  }
+  getBottom(row, col) {
+    return Math.floor(col * this.tileSize);
+  }
+
+  drawLevel() {
+    for (let i = 0; i < this.renderMap.length; i++) {
+      let y = this.gridHeight * i;
+      for (let j = 0; j < this.renderMap[i].length; j++) {
+        let x = this.gridWidth * j;
+        if (this.renderMap[i][j] === 1) {
+
+          let platform = new Tile({
             name: "grass",
             pos: [x, y],
             ctx: this.ctx,
             canvas: this.canvas,
-            width: this.gridWidth,
-            height: this.gridHeight
+            width: this.tileSize,
+            height: this.tileSize
           });
 
-          // platform.drawPlatform();
-
-          this.ctx.beginPath();
-          this.ctx.rect(x, y, this.gridWidth, this.gridHeight);
-          // this.ctx.translate(this.width / 2, this.height / 2);
-          this.ctx.fillStyle = "green";
-          this.ctx.fill();
-          this.ctx.closePath();
+          platform.drawPlatform();
         }
       }
     }
 
-    // this.map.forEach((row, i) => {
-    //   let y = this.gridHeight * i;
-
-    //   row.forEach((grid, j) => {
-    //     let x = this.gridWidth * j;
-    //     if (grid === 1) {
-    //       this.ctx.beginPath();
-    //       this.ctx.rect(x, y, this.gridWidth, this.gridHeight);
-    //       // this.ctx.translate(this.width / 2, this.height / 2);
-    //       this.ctx.fillStyle = "green";
-    //       this.ctx.fill();
-    //       this.ctx.closePath();
-
-    //     }
-    //   });
-    // });
   }
+
+
 }
 
 export default Level;
 
-// Level.gridMap = {
 
-// }
 
 let map = [
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+];
+let physicalMap = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

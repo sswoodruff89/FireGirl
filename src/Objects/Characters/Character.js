@@ -1,9 +1,9 @@
-import Object from "../Object";
+import GameObject from "../GameObject";
 
 const GRAVITY = 0.5;
 const FRICTION = 0.5;
 
-class Character extends Object {
+class Character extends GameObject {
   constructor(options) {
     super({ 
       name: options.name, 
@@ -12,8 +12,6 @@ class Character extends Object {
       width: options.width,
       height: options.height
     });
-    this.x = options.pos[0];
-    this.y = options.pos[1];
     this.vel = [0, 0];
     // this.bounds = {};
 

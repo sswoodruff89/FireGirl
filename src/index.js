@@ -7,7 +7,7 @@ window.addEventListener("DOMContentLoaded", () => {
   let ctx = canvas.getContext("2d");
   let gameView = new GameView(canvas, ctx);
 
-  gameView.runGame();
+  gameView.renderGame();
 
   
 
