@@ -7,13 +7,19 @@ class Tile extends GameObject{
     this.drawTile = this.drawPlatform.bind(this);
   }
 
-  drawPlatform() {
-    this.ctx.beginPath();
-    this.ctx.rect(this.x, this.y, this.width, this.height);
+  drawPlatform(ctx) {
+    ctx.beginPath();
+    ctx.rect(this.x, this.y, this.width, this.height);
     // this.ctx.translate(this.width / 2, this.height / 2);
-    this.ctx.fillStyle = "green";
-    this.ctx.fill();
-    this.ctx.closePath();
+    ctx.fillStyle = "green";
+    ctx.fill();
+    ctx.closePath();
+    // this.ctx.beginPath();
+    // this.ctx.rect(this.x, this.y, this.width, this.height);
+    // // this.ctx.translate(this.width / 2, this.height / 2);
+    // this.ctx.fillStyle = "green";
+    // this.ctx.fill();
+    // this.ctx.closePath();
   }
 
   edgeBounds() {

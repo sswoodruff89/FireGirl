@@ -30,74 +30,152 @@ class Collision {
     }
   }
 
-  collidePlatTop(player, tile, level) {
-    if (player.bottomSide() < level.getTop(...tile)) {
+  collidePlatTop(player, tileTop) {
+    if (player.bottomSide() > tileTop && player.oldY < tileTop) {
       player.velY = 0;
-      player.y = level.getTop(...tile) - player.height - 0.01;
+      player.y = tileTop - player.height - 0.01;
       player.onGround = true;
       player.jumpCount = 2;
       return true;
+    } else {
+      player.onGround = false;
     }
     return false;
   }
 
-  collidePlatBottom(player, tile, level) {
-    if (player.topSide() > level.getBottom(...tile)) {
-      player.y = level.getBottom(...tile);
+  collidePlatBottom(player, tileBottom) {
+    // debugger
+    if (player.topSide() < tileBottom && (player.oldY + player.height) > tileBottom) {
+      player.y = tileBottom + 0.05;
+      player.velY = 0;
       return true;
     }
     return false;
   }
 
-  collidePlatRight(player, tile, level) {
-    if (player.leftSide() < level.getRight(...tile)) {
+  collidePlatRight(player, tileRight) {
+    // debugger
+    if (player.leftSide() < tileRight && (player.oldX + player.width) > tileRight) {
+      player.x = tileRight + 0.05;
       player.velX = 0;
-      player.x = level.getRight(...tile) + 0.01;
 
       return true;
     }
     return false;
   }
 
-  collidePlatLeft(player, tile, level) {
-    if (player.rightSide() > level.getLeft(...tile)) {
+  collidePlatLeft(player, tileLeft) {
+    if (player.rightSide() > tileLeft && player.oldX < tileLeft) {
+      player.x = tileLeft - 0.05;
       player.velX = 0;
-      player.x = level.getLeft(...tile);
       return true;
     }
     return false;
   }
 
-  collidePlatform(player, tile, colVal, level) {
+  collidePlatform(player, x, y, colVal) {
     if (!colVal) return;
 
     switch (colVal) {
       case 1:
-        this.collidePlatTop(player, tile, level);
+        // debugger
+        this.collidePlatTop(player, y);
         break;
       case 2:
-        this.collidePlatTop(player, tile, level);
+        this.collidePlatTop(player, y);
         break;
       case 3:
-        if (this.collidePlatTop(player, tile, level)) {
+        if (this.collidePlatTop(player, y)) {
           return;
-        } else if (this.collidePlatLeft(player, tile, level)) {
+        } else if (this.collidePlatLeft(player, x)) {
           return;
         } else {
-          this.collidePlatRight(player, tile, level);
+          this.collidePlatRight(player, x + 60);
         }
         break;
       case 4:
-        if (this.collidePlatTop(player, tile, level)) {
+        if (this.collidePlatTop(player, y)) {
           return;
         } else {
-          this.collidePlatLeft(player, tile, level);
+          this.collidePlatLeft(player, x);
         }
         break;
-      default:
-        break;
+
     }
   }
+
+  // collidePlatTop(player, tileTop) {
+  //   if (player.bottomSide() > tileTop) {
+  //     // debugger
+  //     player.velY = 0;
+  //     player.y = tileTop - player.height - 0.05;
+  //     player.onGround = true;
+  //     player.jumpCount = 2;
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  // collidePlatBottom(player, tileBottom) {
+  //   // debugger
+  //   if (player.topSide() < tileBottom) {
+  //     player.y = tileBottom + 0.05;
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  // collidePlatRight(player, tileRight) {
+  //   // debugger
+  //   if (player.leftSide() < tileRight) {
+  //     player.x = tileRight + 0.01;
+  //     player.velX = 0;
+
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  // collidePlatLeft(player, tileLeft) {
+  //   if (player.rightSide() > tileLeft - 0.01) {
+  //     player.x = tileLeft - 0.01;
+  //     player.velX = 0;
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  // collidePlatform(player, tile, colVal, level) {
+  //   if (!colVal) return;
+
+  //   switch (colVal) {
+  //     case 1:
+  //       // debugger
+  //       this.collidePlatTop(player, level.getTop(...tile));
+  //       break;
+  //     case 2:
+  //       this.collidePlatTop(player, level.getTop(...tile));
+  //       break;
+  //     case 3:
+  //       if (this.collidePlatTop(player, level.getTop(...tile))) {
+  //         return;
+  //       } else if (this.collidePlatLeft(player, level.getLeft(...tile))) {
+  //         return;
+  //       } else {
+  //         this.collidePlatRight(player, level.getRight(...tile));
+  //       }
+  //       break;
+  //     case 4:
+  //       if (this.collidePlatTop(player, level.getTop(...tile))) {
+  //         return;
+  //       } else {
+  //         this.collidePlatLeft(player, level.getLeft(...tile));
+  //       }
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
 }
 
 export default Collision;

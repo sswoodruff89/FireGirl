@@ -16,12 +16,12 @@ class Controller {
     switch (Controller.KEYS[event.keyCode]) {
       case "left":
         // this.player.direction = "left";
-        this.player.velX = -10;
+        this.player.velX = -8;
 
         break;
       case "right":
         // this.player.direction = "right";
-        this.player.velX = 10;
+        this.player.velX = 8;
         break;
       case "up":
         // this.player.y -= 10;

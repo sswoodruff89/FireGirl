@@ -22,11 +22,11 @@ class GameView {
     // this.game.player.drawPlayer();
     // this.game.player.move();
     // console.log(this.game.getPlayerTilePos());
-    console.log("===================");
-        console.log(this.game.getBottomLeftPos());
-        console.log(this.game.getTopLeftPos());
-        console.log(this.game.getBottomRightPos());
-        console.log(this.game.getTopRightPos());
+    // console.log("===================");
+    //     console.log(this.game.getBottomLeftPos());
+    //     console.log(this.game.getTopLeftPos());
+    //     console.log(this.game.getBottomRightPos());
+    //     console.log(this.game.getTopRightPos());
         // console.log(this.game.level.cols)
     this.game.runGame();
     window.requestAnimationFrame(this.renderGame);

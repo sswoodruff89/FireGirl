@@ -2,7 +2,7 @@ import Character from "./Objects/Characters/Character";
 import Collision from "./util/Collision";
 
 const CONSTANTS = {
-  GRAVITY: 0.5,
+  GRAVITY: 0.8,
   FRICTION: 1.5,
   MAX_VEL: 50,
 };
@@ -24,6 +24,8 @@ class Player {
     this.vel = this.character.vel;
     this.x = this.character.x;
     this.y = this.character.y;
+    this.oldX = this.x;
+    this.oldY = this.y;
     this.width = this.character.width;
     this.height = this.character.height;
     this.velX = this.vel[0];
@@ -43,15 +45,18 @@ class Player {
     this.leftSide = this.leftSide.bind(this);
     this.topSide = this.topSide.bind(this);
     this.bottomSide = this.bottomSide.bind(this);
-
+    this.setOldPos = this.setOldPos.bind(this);
     this.inAir = this.inAir.bind(this);
     this.isIdle = this.isIdle.bind(this);
     this.whichDirection = this.whichDirection.bind(this);
     this.edgeBounds = this.edgeBounds.bind(this);
+
+    this.getDirX = this.getDirX.bind(this);
+    this.getDirY = this.getDirY.bind(this);
     // this.isLanded = this.isLanded.bind(this);
 
-    this.resetJump = this.resetJump.bind(this);
-    this.resetGrounded = this.resetGrounded.bind(this);
+    // this.resetJump = this.resetJump.bind(this);
+    // this.resetGrounded = this.resetGrounded.bind(this);
   }
 
   drawPlayer() {
@@ -78,40 +83,39 @@ class Player {
     return this.y + this.height;
   }
 
-  move() {
-    this.whichDirection();
-
-    // this.collider.collidePlayer(this, this.canvas);
-
-    if (!this.isIdle()) {
-      this.x += this.velX;
-      this.y += this.velY;
-
-      if (this.direction === "right") {
-        if (this.onGround && !this.keydown) {
-          // (0 + CONSTANTS.FRICTION > this.velX) ? this.velX = 0 : this.velX /= CONSTANTS.FRICTION;
-          this.velX < 1 ? (this.velX = 0) : (this.velX /= CONSTANTS.FRICTION);
-        }
-      } else {
-        if (this.onGround && !this.keydown) {
-          this.velX > -1 ? (this.velX = 0) : (this.velX /= CONSTANTS.FRICTION);
-          // (0 - CONSTANTS.FRICTION < this.velX) ? this.velX = 0 : this.velX /= CONSTANTS.FRICTION;
-        }
-      }
-
-      if (!this.onGround) {
-        this.velY += CONSTANTS.GRAVITY;
-      }
-    }
-
-    this.inAir();
+  nextRightSide() {
+    return this.getDirX() + this.width;
   }
 
-  // getPlayerTilePos() {
-  //   let x = Math.floor(this.x / 60);
-  //   let y = Math.floor(this.y / 60);
-  //   return [x, y];
-  // }
+  nextLeftSide() {
+    return this.getDirX();
+  }
+
+  nextTopSide() {
+    return this.getDirY();
+  }
+
+  nextBottomSide() {
+    return this.getDirY() + this.height;
+  }
+
+  setOldPos() {
+    
+    this.oldX = this.x;
+    this.oldY = this.y;
+  }
+
+  getDirX() {
+    return this.x + this.velX;
+  }
+
+  getDirY() {
+    return this.y + this.velY;
+  }
+
+  isIdle() {
+    return this.velX === 0 && this.velY === 0;
+  }
 
   inAir() {
     if (!this.onGround) {
@@ -134,6 +138,36 @@ class Player {
     }
   }
 
+  move() {
+    this.whichDirection();
+
+    // this.collider.collidePlayer(this, this.canvas);
+
+    this.setOldPos();
+    if (!this.isIdle()) {
+      this.x += this.velX;
+      // this.y += this.velY;
+
+      if (this.direction === "right") {
+        if (this.onGround && !this.keydown) {
+          this.velX < 1 ? (this.velX = 0) : (this.velX /= CONSTANTS.FRICTION);
+        }
+      } else {
+        if (this.onGround && !this.keydown) {
+          this.velX > -1 ? (this.velX = 0) : (this.velX /= CONSTANTS.FRICTION);
+        }
+      }
+    }
+
+    this.inAir();
+  }
+
+  // getPlayerTilePos() {
+  //   let x = Math.floor(this.x / 60);
+  //   let y = Math.floor(this.y / 60);
+  //   return [x, y];
+  // }
+
   edgeBounds() {
     return {
       // topLeft: [this.x - x, this.y - y],
@@ -145,10 +179,6 @@ class Player {
       bottomRight: [this.x + this.width, this.y + this.height],
       bottomLeft: [this.x, this.y + this.height]
     };
-  }
-
-  isIdle() {
-    return this.velX === 0 && this.velY === 0;
   }
 
   resetGrounded() {
