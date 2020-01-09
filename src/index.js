@@ -8,6 +8,24 @@ window.addEventListener("DOMContentLoaded", () => {
   let gameView = new GameView(canvas, ctx);
 
   gameView.renderGame();
+  // let img = new Image();
+  // img.src = "./assets/footEn.png";
+  // img.onload = () => {
+  //   // ctx.drawImage(img, 0, 0);
+  //   console.log(img.size);
+  //   ctx.drawImage(
+  //     img,
+  //     420 ,
+  //     330,
+  //     15,
+  //     15,
+  //     15,
+  //     15,
+  //     25,
+  //     25
+  //   );
+  // };
+
 
   
 

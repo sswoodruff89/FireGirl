@@ -13,8 +13,16 @@ class Character extends GameObject {
       height: options.height
     });
     this.vel = [0, 0];
+    this.health = 100;
  
     
+  }
+
+  loadImage() {
+    let spriteMap = new Image();
+    spriteMap.src = "./assets/charSprite.png";
+    return spriteMap;
+    // this.tileMap.onLoad = this.drawLevel(ctx);
   }
 
   // drawModel() {

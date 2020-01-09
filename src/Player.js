@@ -1,8 +1,10 @@
 import Character from "./Objects/Characters/Character";
 import Collision from "./util/Collision";
+import Projectile from "./Objects/Projectiles/Projectile";
+
 
 const CONSTANTS = {
-  GRAVITY: 0.8,
+  GRAVITY: 1,
   FRICTION: 1.5,
   MAX_VEL: 50,
 };
@@ -16,14 +18,17 @@ class Player {
       pos: [20, 400],
       ctx: this.ctx,
       canvas: this.canvas,
-      width: 30,
-      height: 50
+      width: 40,
+      height: 54
     });
-
-    this.collider = new Collision();
+    this.spriteMap = this.character.loadImage();
+    this.fireballs = {};
+    
     this.vel = this.character.vel;
     this.x = this.character.x;
     this.y = this.character.y;
+    this.idleWidth = 35;
+    this.runWidth = 40;
     this.oldX = this.x;
     this.oldY = this.y;
     this.width = this.character.width;
@@ -33,13 +38,17 @@ class Player {
     this.onGround = false;
     this.idle = true;
     this.keydown = false;
+    this.isRunning = false;
     this.direction = "right";
     this.jumpCount = 2;
+    this.frameCount = 0;
+
+
 
     this.drawPlayer = this.drawPlayer.bind(this);
     this.jump = this.jump.bind(this);
-    this.move = this.move.bind(this);
-    // this.getPlayerTilePos = this.getPlayerTilePos.bind(this);
+    // this.move = this.move.bind(this);
+    this.shootFire = this.shootFire.bind(this);
 
     this.rightSide = this.rightSide.bind(this);
     this.leftSide = this.leftSide.bind(this);
@@ -49,23 +58,104 @@ class Player {
     this.inAir = this.inAir.bind(this);
     this.isIdle = this.isIdle.bind(this);
     this.whichDirection = this.whichDirection.bind(this);
-    this.edgeBounds = this.edgeBounds.bind(this);
+    this.setRunning = this.setRunning.bind(this);
 
-    this.getDirX = this.getDirX.bind(this);
-    this.getDirY = this.getDirY.bind(this);
-    // this.isLanded = this.isLanded.bind(this);
+    // this.getDirX = this.getDirX.bind(this);
+    // this.getDirY = this.getDirY.bind(this);
 
-    // this.resetJump = this.resetJump.bind(this);
-    // this.resetGrounded = this.resetGrounded.bind(this);
   }
 
-  drawPlayer() {
-    this.ctx.beginPath();
-    this.ctx.rect(this.x, this.y, this.width, this.height);
-    this.ctx.fillStyle = "white";
-    this.ctx.fill();
-    this.ctx.closePath();
+  drawPlayer(frameCount) {
+// .74
+// .59
+
+    if (this.velX === 0) {
+      if (this.direction === "right") {
+        this.ctx.drawImage(
+          this.spriteMap,
+          (Math.floor(frameCount / 2) % 10) * 147,
+          251,
+          147,
+          251,
+          this.x, this.y,
+          this.width, this.height
+          // this.width - 5, this.height
+        );
+      } else {
+        this.ctx.scale(-1, 1);
+        this.ctx.drawImage(
+          this.spriteMap,
+          (Math.floor(frameCount / 2) % 10) * 147,
+          251,
+          147,
+          251,
+          -this.x - this.width, this.y,
+          // -this.x - this.width - 5, this.y,
+          this.width, this.height
+          // this.width - 5, this.height
+        );
+        this.ctx.scale(-1, 1);
+      }
+    } else if (this.velX > 0) {
+      this.ctx.drawImage(
+        this.spriteMap,
+        (frameCount % 10) * 186,
+        0,
+        186,
+        251,
+        this.x, this.y,
+        this.width, this.height
+      );
+
+    } else if (this.velX < 0) {
+      this.ctx.scale(-1, 1);
+      this.ctx.drawImage(
+        this.spriteMap,
+        (frameCount % 10) * 186,
+        0,
+        186,
+        251,
+        -(this.x) - this.width, this.y,
+        this.width, this.height
+      );
+      this.ctx.scale(-1, 1);
+
+    } 
+    ///change this.width and height based on movement
   }
+
+  shootFire() {
+    if (Object.keys(this.fireballs).length === 3) return;
+    let key;
+    for (let i = 1; i <= 3; i++) {
+      if (!this.fireballs[i]) {
+        key = i;
+        break;
+      }
+    }
+    if (this.direction === "right") {
+
+      this.fireballs[key] = new Projectile(
+        Projectile.fireball(
+          [this.rightSide() - this.width,
+          this.bottomSide() - (this.height / 1.8)],
+          20, 0, "right")
+        );
+    } else {
+      this.fireballs[key] = new Projectile(
+        Projectile.fireball(
+          [this.leftSide(),
+          this.bottomSide() - (this.height / 1.8)],
+          -20, 0, "left")
+        );
+        
+    }
+
+  }
+
+    
+  
+
 
   rightSide() {
     return this.x + this.width;
@@ -83,24 +173,8 @@ class Player {
     return this.y + this.height;
   }
 
-  nextRightSide() {
-    return this.getDirX() + this.width;
-  }
-
-  nextLeftSide() {
-    return this.getDirX();
-  }
-
-  nextTopSide() {
-    return this.getDirY();
-  }
-
-  nextBottomSide() {
-    return this.getDirY() + this.height;
-  }
-
+  
   setOldPos() {
-    
     this.oldX = this.x;
     this.oldY = this.y;
   }
@@ -114,7 +188,11 @@ class Player {
   }
 
   isIdle() {
-    return this.velX === 0 && this.velY === 0;
+    if (this.velX === 0 && this.velY === 0) {
+      this.idle = true;
+    } else {
+      this.idle = false;
+    }
   }
 
   inAir() {
@@ -127,83 +205,34 @@ class Player {
   }
 
   jump() {
-    if (this.jumpCount > 0) {
-      this.jumpCount === 2 ? (this.onGround = false) : "";
-      if (this.jumpCount === 1) {
-        this.velY = 0 - 15;
-      } else {
-        this.velY -= 15;
-      }
-      this.jumpCount -= 1;
+    if (this.jumpCount === 2) {
+      this.onGround = false;
+      this.velY = 0 - 15;
+      this.jumpCount = 1;
+    } else if (this.jumpCount === 1) {
+      this.velY = 0 - 15;
+      this.jumpCount = 0;
     }
   }
 
-  move() {
-    this.whichDirection();
 
-    // this.collider.collidePlayer(this, this.canvas);
 
-    this.setOldPos();
-    if (!this.isIdle()) {
-      this.x += this.velX;
-      // this.y += this.velY;
-
-      if (this.direction === "right") {
-        if (this.onGround && !this.keydown) {
-          this.velX < 1 ? (this.velX = 0) : (this.velX /= CONSTANTS.FRICTION);
-        }
-      } else {
-        if (this.onGround && !this.keydown) {
-          this.velX > -1 ? (this.velX = 0) : (this.velX /= CONSTANTS.FRICTION);
-        }
-      }
+  setRunning() {
+    if (this.velX !== 0) {
+      this.isRunning = true;
+      this.width = this.runWidth;
+    } else {
+      this.isRunning = false;
+      this.width = this.idleWidth;
     }
-
-    this.inAir();
   }
 
-  // getPlayerTilePos() {
-  //   let x = Math.floor(this.x / 60);
-  //   let y = Math.floor(this.y / 60);
-  //   return [x, y];
-  // }
 
-  edgeBounds() {
-    return {
-      // topLeft: [this.x - x, this.y - y],
-      // topRight: [this.x + x, this.y - y],
-      // bottomRight: [this.x + x, this.y + y],
-      // bottomLeft: [this.x - x, this.y + y]
-      topLeft: [this.x, this.y],
-      topRight: [this.x + this.width, this.y],
-      bottomRight: [this.x + this.width, this.y + this.height],
-      bottomLeft: [this.x, this.y + this.height]
-    };
-  }
-
-  resetGrounded() {
-    this.player.onGround = true;
-    this.resetJump();
-  }
-
-  resetJump() {
-    this.player.jumpCount = 2;
-  }
 
   whichDirection() {
-    this.direction = this.velX > 0 ? "right" : "left";
+    this.direction = this.velX >= 0 ? "right" : "left";
   }
 
-  // isLanded() {
-  //   let bounds = this.edgeBounds();
-
-  //   if (bounds.bottomLeft[1] === 580 || bounds.bottomRight[1] === 580) {
-  //     // if (bounds.bottomLeft[1] === 580 || bounds.bottomRight[1] === 580) {
-  //     this.y = 580 - this.height;
-  //     this.onGround = true;
-  //     this.jumpCount = 2;
-  //   }
-  // }
 }
 
 export default Player;

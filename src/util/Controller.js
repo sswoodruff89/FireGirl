@@ -15,22 +15,24 @@ class Controller {
 
     switch (Controller.KEYS[event.keyCode]) {
       case "left":
-        // this.player.direction = "left";
+        this.player.direction = "left";
         this.player.velX = -8;
-
         break;
       case "right":
-        // this.player.direction = "right";
+        this.player.direction = "right";
         this.player.velX = 8;
         break;
       case "up":
         // this.player.y -= 10;
         break;
       case "down":
-        this.player.y += 10;
+        // this.player.y += 10;
         break;
       case "jump":
         this.player.jump();
+        break;
+      case "fire":
+        this.player.shootFire();
         break;
       case "space":
         // this.gameview.Ticker.paused = (this.gameview.Ticker.paused) ? false: true;
@@ -38,29 +40,19 @@ class Controller {
       default:
         return;
     }
-    console.log(this.player.x);
-    console.log(this.player.y);
-    console.log(this.player.onGround);
-    console.log(this.player.velX);
-    console.log(this.player.velY);
-    // console.log(this.player.edgeBounds());
-    console.log(this.player.onGround);
-    // console.log(this.game.getBottomLeftPos());
-    // console.log(this.game.getTopLeftPos());
-    // console.log(this.game.getBottomRightPos());
-    // console.log(this.game.getTopRightPos());
-    // console.log()
-    // console.log(this.player.edgeBounds());
-    // console.log(this.player.model.getBounds());
-    // console.log(this.player.model.w);
-    // console.log(this.player.model.h);
-
-    // console.log(this.player.edgeBounds());
+ 
   }
 
   keyup(event) {
     this.player.idle = true;
-    this.player.keydown = false;
+    // console.log(Controller.KEYS[event.keyCode])
+    // debugger
+    if (Controller.KEYS[event.keyCode] === "left" || 
+      Controller.KEYS[event.keyCode] === "right" ) {
+        this.player.keydown = false;
+
+      }
+      // console.log(this.player.keydown)
   }
 }
 
@@ -71,7 +63,8 @@ Controller.KEYS = {
   38: 'up',
   39: 'right',
   40: 'down',
-  65: 'jump'
+  65: 'jump',
+  68: 'fire'
 };
 
 export default Controller;
