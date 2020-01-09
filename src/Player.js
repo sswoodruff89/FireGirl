@@ -21,6 +21,7 @@ class Player {
       width: 40,
       height: 54
     });
+    this.health = this.character.health;
     this.spriteMap = this.character.loadImage();
     this.fireballs = {};
     
@@ -42,6 +43,9 @@ class Player {
     this.direction = "right";
     this.jumpCount = 2;
     this.frameCount = 0;
+    this.isHit = false;
+    this.dying = false;
+    this.dead = false;
 
 
 
@@ -50,15 +54,14 @@ class Player {
     // this.move = this.move.bind(this);
     this.shootFire = this.shootFire.bind(this);
 
-    this.rightSide = this.rightSide.bind(this);
-    this.leftSide = this.leftSide.bind(this);
-    this.topSide = this.topSide.bind(this);
-    this.bottomSide = this.bottomSide.bind(this);
+
     this.setOldPos = this.setOldPos.bind(this);
     this.inAir = this.inAir.bind(this);
     this.isIdle = this.isIdle.bind(this);
     this.whichDirection = this.whichDirection.bind(this);
     this.setRunning = this.setRunning.bind(this);
+    this.setHit = this.setHit.bind(this);
+    this.setDying = this.setDying.bind(this);
 
     // this.getDirX = this.getDirX.bind(this);
     // this.getDirY = this.getDirY.bind(this);
@@ -68,7 +71,8 @@ class Player {
   drawPlayer(frameCount) {
 // .74
 // .59
-
+    this.setDying();
+    if (this.isHit && frameCount % 3 === 0 ) return;
     if (this.velX === 0) {
       if (this.direction === "right") {
         this.ctx.drawImage(
@@ -154,7 +158,28 @@ class Player {
   }
 
     
-  
+  setHit(damage = 10) {
+    if (!this.isHit) {
+      this.isHit = true;
+      this.hitCooldown = setTimeout(() => {
+        this.isHit = false;
+      }, 2000);
+      this.health -= damage;
+    }
+  }
+
+  setDying() {
+
+    if (this.health <= 0) {
+      this.dying = true;
+      this.damage = 0;
+      this.velX = 0;
+      this.velY = 0;
+      setTimeout(() => {
+        this.dead = true;
+      }, 1000);
+    }
+  }
 
 
   rightSide() {

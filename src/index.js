@@ -8,24 +8,75 @@ window.addEventListener("DOMContentLoaded", () => {
   let gameView = new GameView(canvas, ctx);
 
   gameView.renderGame();
+
+  // ctx.beginPath();
+  // ctx.rect(0, 0, canvas.width, canvas.height);
+  // ctx.fillStyle = "rgba(255, 255, 255, .1)";
+  // ctx.fill();
+  // ctx.closePath();
+
+  // ctx.font = "130px Arial";
+  // ctx.fillStyle = "red";
+  // ctx.textAlign = "center";
+  // ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
   // let img = new Image();
-  // img.src = "./assets/footEn.png";
+  // img.src = "./assets/fireball.png";
   // img.onload = () => {
   //   // ctx.drawImage(img, 0, 0);
   //   console.log(img.size);
   //   ctx.drawImage(
   //     img,
-  //     420 ,
-  //     330,
-  //     15,
-  //     15,
+  //     0 ,
+  //     0,
+  //     250,
+  //     250,
   //     15,
   //     15,
   //     25,
   //     25
   //   );
   // };
+  // 
 
+  // let fromRight = canvas.width - 50;
+  // ctx.beginPath();
+  // ctx.arc(fromRight, canvas.height - 30, 5, 0, 2 * Math.PI, false);
+  // ctx.fillStyle = 'rgba(255, 255, 255, .1)';
+  // ctx.fill();
+  // ctx.lineWidth = 5;
+  // ctx.strokeStyle = 'rgba(255, 255, 255, .1)';
+  // ctx.stroke();
+  // ctx.closePath();
+
+  // ctx.beginPath();
+  // ctx.arc(canvas.width - 80, canvas.height - 30, 5, 0, 2 * Math.PI, false);
+  // ctx.fillStyle = 'rgba(255, 255, 255, .1)';
+  // ctx.fill();
+  // ctx.lineWidth = 5;
+  // ctx.strokeStyle = 'rgba(255, 255, 255, .1)';
+  // ctx.stroke();
+  // ctx.closePath();
+
+  // ctx.beginPath();
+  // ctx.arc(canvas.width - 110, canvas.height - 30, 5, 0, 2 * Math.PI, false);
+  // ctx.fillStyle = 'rgba(255, 255, 255, .1)';
+  // ctx.fill();
+  // ctx.lineWidth = 5;
+  // ctx.strokeStyle = 'rgba(255, 255, 255, .1)';
+  // ctx.stroke();
+  // ctx.closePath();
+  
+  // img.onload = () => {
+  //   ctx.drawImage(
+  //     img,
+  //     22 ,
+  //     400,
+  //     35,
+  //     35,
+  //     0, 0,
+  //     35, 35
+  //   );
+  // };
 
   
 

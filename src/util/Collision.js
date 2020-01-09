@@ -38,72 +38,79 @@ class Collision {
     }
   }
 
-  // collideGameObjects(obj1, obj2) {
-  //   if (obj1 instanceof Player) {
-  //     switch (obj2 instanceof) {
-  //       case Enemy:
-  //         this.
-  //       case Projectile:
-  //       break;
-  //       default:
-  //         return;
-  //     }
+  collideProjectile(obj1, obj2) {
+    // if (!obj1 || !obj2) return false;
+    // if (obj2.dying || obj2.dead) return false;
+
+    if (obj1.x < obj2.x + obj2.width &&
+      obj1.x + obj1.width > obj2.x &&
+      obj1.y < obj2.y + obj2.height &&
+      obj1.y + obj1.height > obj2.y) {
+
+        obj1.velY = -(obj1.velY / 3);
+        obj1.velX = -(obj1.velX / 3);
+          ///hit
+        obj1.setHit(obj2.damage);
+        obj2.setHit();
+
+        return true;
+
+    } else {
+      return false;
+    }
+  }
 
 
-  //   }
-  //   switch (obj1, obj2) {
-  //     case (1, 2):
-  //       return 1;
-  //     case (3, 2): 
-  //       return  3;
-  //     case (4, 2):
-  //       return 4;
-  //     default:
-  //       return 0;
-  //     }
-  //   }
-  // }
-
-  // collideEnemies(obj1, enemyArr) {
-  //   let obj1Pos1;
-  //   let obj1Pos2;
-  //   let enemyPos1;
-  //   let enemyPos2;
-
-  //   enemyArr.forEach((enemy) => {
-  //     obj1Pos1 = obj1.getTopLeftPos();
-  //     obj1Pos2 = obj1.getBottomRightPos();
-  //     enemyPos1 = enemy.getTopLeftPos();
-  //     enemyPos2 = enemy.getBottomRightPos();
-
-  //     if (obj1Pos1[0] === enemyPos1[0] && obj1Pos1[1] === enemyPos1[1]) {
-
-  //     }
-
-  //   });
-
-  // }
 
   collideEnemy(obj1, obj2) {
-      if (
-        (obj1.bottomSide() > obj2.topSide() && (obj1.oldY + obj1.height) < obj2.topSide()) ||
-        (obj1.topSide() < obj2.bottomSide() && (obj1.oldY + obj1.height) > obj2.bottomSide()) ||
-        (obj1.leftSide() < obj2.rightSide() && (obj1.oldX + obj1.width) > obj2.rightSide()) ||
-        (obj1.rightSide() > obj2.leftSide() && obj1.oldX < obj2.leftSide())) {
+    // if (!obj1 || !obj2) return false;
+    if (obj2.dying || obj2.dead) return false;
 
-        if (obj1 instanceof Player) {
-          obj1.velY = -(obj1.velY / 2);
-          obj1.velX = -(obj1.velX / 2);
-          ///hit
-        } else if (obj1 instanceof Projectile) {
+    if (obj1.x < obj2.x + obj2.width &&
+      obj1.x + obj1.width > obj2.x &&
+      obj1.y < obj2.y + obj2.height &&
+      obj1.y + obj1.height > obj2.y) {
+
+      // if (this.hitBox(obj1, obj2)) {
+      if (obj1 instanceof Player && !obj1.isHit) {
+        obj1.velY = -(obj1.velY / 3);
+        obj1.velX = -(obj1.velX / 3);
+        ///hit
+        obj1.setHit(this.damage);
+      } else if (obj1 instanceof Projectile) {
+        obj2.setHit(obj1.damage);
+        setTimeout(() => {
           obj1.setHit();
-          return true;
-        }
-
-      } else {
-        return false;
+        }, 50);
+        
+        return true;
       }
+
+    } else {
+      return false;
+    }
   }
+
+  // collideEnemy(obj1, obj2) {
+  //     if (
+  //       (obj1.bottomSide() > obj2.topSide() && (obj1.oldY + obj1.height) < obj2.topSide()) ||
+  //       (obj1.topSide() < obj2.bottomSide() && (obj1.oldY + obj1.height) > obj2.bottomSide()) ||
+  //       (obj1.leftSide() < obj2.rightSide() && (obj1.oldX + obj1.width) > obj2.rightSide()) ||
+  //       (obj1.rightSide() > obj2.leftSide() && obj1.oldX < obj2.leftSide())) {
+
+  //       if (obj1 instanceof Player) {
+  //         obj1.velY = -(obj1.velY / 2);
+  //         obj1.velX = -(obj1.velX / 2);
+  //         ///hit
+  //       } else if (obj1 instanceof Projectile) {
+  //         obj1.setHit();
+  //         return true;
+  //       }
+
+  //     } else {
+  //       return false;
+  //     }
+  // }
 
   
   ///ENEMY COLLISION

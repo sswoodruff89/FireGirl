@@ -4,6 +4,7 @@ import Tile from "./Objects/Platforms/Tile";
 import Collision from "./util/Collision";
 import Controller from "./util/Controller";
 import Enemy from "./Objects/Enemies/Enemy";
+import GameHUD from "./GameHUD";
 
 const CONSTANTS = {
   GRAVITY: 0.8,
@@ -27,7 +28,9 @@ class Game {
     this.physicalMap = this.level.physicalMap;
     this.tileSize = this.level.tileSize;
     this.collider = new Collision();
+    this.HUD = new GameHUD();
     this.frameCount = 0;
+    this.gameOver = false;
     // this.getPlayerTilePos = this.getPlayerTilePos.bind(this);
     this.getTopLeftPos = this.getTopLeftPos.bind(this);
     this.getTopRightPos = this.getTopRightPos.bind(this);
@@ -41,6 +44,7 @@ class Game {
     this.renderEnemyProjectiles = this.renderEnemyProjectiles.bind(this);
     this.startFrameCount = this.startFrameCount.bind(this);
     this.runGame = this.runGame.bind(this);
+    this.isGameOver = this.isGameOver.bind(this);
 
 
     this.enemies = {
@@ -215,9 +219,15 @@ class Game {
   renderEnemies() {
     if (Object.values(this.enemies).length !== 0) {
       for (let key in this.enemies) {
-        this.enemies[key].move(this.canvas);
-        // this.enemies[key].collideEnemy(this.player);
-        this.enemies[key].drawEnemy(this.ctx, this.frameCount);
+        if (!this.enemies[key].dead) {
+          this.enemies[key].move(this.canvas);
+          this.collider.collideEnemy(this.player, this.enemies[key]);
+          this.enemies[key].drawEnemy(this.ctx, this.frameCount);
+
+        } else {
+          delete this.enemies[key];
+        }
+
         // this.projectilePlatformCheck(this.enemies[key]);
       }
     }
@@ -227,8 +237,16 @@ class Game {
     if (Object.keys(this.player.fireballs).length !== 0) {
       for (let key in this.player.fireballs) {
         let fireball = this.player.fireballs[key];
+        
+        if (Object.values(this.enemies).length !== 0) {
+          for (let key in this.enemies) {
+            this.collider.collideEnemy(fireball, this.enemies[key]);
+          }
+        }
+        
         this.projectilePlatformCheck(fireball);
-        (!fireball.hit) ? 
+
+        (!fireball.isHit) ? 
           fireball.drawProjectile(this.ctx, this.frameCount) :
           delete this.player.fireballs[key];
       }
@@ -240,8 +258,9 @@ class Game {
     Object.values(this.enemies).forEach((enemy) => {
       if (Object.keys(enemy.projectiles).length !== 0) {
         for (let key in enemy.projectiles) {
+          this.collider.collideProjectile(this.player, enemy.projectiles[key]);
           this.projectilePlatformCheck(enemy.projectiles[key]);
-          (!enemy.projectiles[key].hit) ?
+          (!enemy.projectiles[key].isHit) ?
             enemy.projectiles[key].drawProjectile(this.ctx, this.frameCount) :
             delete enemy.projectiles[key];
         }
@@ -249,28 +268,53 @@ class Game {
     });
   }
 
-
+  isGameOver() {
+    this.gameOver = (this.player.dead) ? true : false;
+  }
+  
 
   runGame() {
-    
-    this.level.drawLevel(this.ctx);
-    this.player.drawPlayer(this.frameCount);
-    this.playerUpdate();
+    this.isGameOver();
 
-    // this.enemies[1].drawEnemy(this.ctx, this.frameCount);
-    this.renderEnemies();
-    this.enemies[1].callAttack(this.frameCount);
+    if (!this.gameOver) {
+      console.log(this.gameOver);
+
+      this.level.drawLevel(this.ctx);
+      this.player.drawPlayer(this.frameCount);
+      this.playerUpdate();
+  
+      // this.enemies[1].drawEnemy(this.ctx, this.frameCount);
+      this.renderEnemies();
+      // this.enemies[1].callAttack(this.frameCount);
+      
+      this.renderEnemyProjectiles();
+      this.renderFireballs();
+      
+      this.HUD.drawHUD(this.canvas, this.ctx, this.player, this.frameCount);
+
+    } else {
+      this.ctx.beginPath();
+      this.ctx.rect(0, 0, this.canvas.width, this.canvas.height);
+      this.ctx.fillStyle = "rgba(255, 255, 255, .1)";
+      this.ctx.fill();
+      this.ctx.closePath();
+
+      this.ctx.font = "130px Arial";
+      this.ctx.fillStyle = "red";
+      this.ctx.textAlign = "center";
+      this.ctx.fillText("GAME OVER", this.canvas.width / 2, this.canvas.height / 2);
+
+    } 
     
-    this.renderEnemyProjectiles();
-    this.renderFireballs();
+  }
+
     // this.player.move();
     // this.collider.collidePlayer(this.player, this.canvas);
     // this.playerPlatformCheck();
-  }
-
-
-
 }
+
+
+
 
 
 

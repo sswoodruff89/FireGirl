@@ -12,7 +12,7 @@ class Enemy extends GameObject {
   constructor(options) {
     super(options);
     this.velX = (options.velX) ? options.velX : 0;
-    this.velY = 0;
+    this.velY = (options.velY) ? options.velY : 0;
     this.enemy = this.loadImage(options.image);
     this.frameNum = options.frameNum;
     this.dir = "right";
@@ -21,13 +21,23 @@ class Enemy extends GameObject {
     this.frameWidth = 116;
     this.frameHeight = 80;
     this.projectiles = {};
+    this.dying = false;
     this.dead = false;
+    this.health = options.health;
+    this.damage = options.damage;
+    this.isHit = false;
+
+
+    // this.hitBox = this.hitBox.bind(this);
+    this.setHit = this.setHit.bind(this);
+    this.setDying = this.setDying.bind(this);
 
     this.loadImage = this.loadImage.bind(this);
     this.drawEnemy = this.drawEnemy.bind(this);
     this.shootProj = this.shootProj.bind(this);
     this.callAttack = this.callAttack.bind(this);
-    // this.shootProj();
+
+    this.callAttack();
   }
 
   loadImage(image) {
@@ -37,12 +47,14 @@ class Enemy extends GameObject {
   }
 
   drawEnemy(ctx, frameCount) {
+    this.setDying();
+    if ((this.isHit || this.dying) && frameCount % 3 === 0) return;
+
+
+
     if (this.dir === "left") {
       ctx.drawImage(
         this.enemy,
-        // 0,
-        // 0,
-
         (frameCount % this.frameNum) * this.frameWidth + this.frameStartX,
         this.frameStartY,
         this.frameWidth,
@@ -67,7 +79,8 @@ class Enemy extends GameObject {
   }
 
   shootProj() {
-    if (Object.keys(this.projectiles).length === 1) return;
+
+    if (Object.keys(this.projectiles).length === 3) return;
 
     let key;
     for (let i = 1; i <= 3; i++) {
@@ -96,34 +109,105 @@ class Enemy extends GameObject {
     }
   }
 
-  collideEnemy(obj1) {
-    if (
-      (obj1.bottomSide() > this.topSide() && (obj1.oldY + obj1.height) < this.topSide()) ||
-      (obj1.topSide() < this.bottomSide() && (obj1.oldY + obj1.height) > this.bottomSide()) ||
-      (obj1.leftSide() < this.rightSide() && (obj1.oldX + obj1.width) > this.rightSide()) ||
-      (obj1.rightSide() > this.leftSide() && obj1.oldX < this.leftSide())) {
-
-      if (obj1 instanceof Player) {
-        obj1.velY = -(obj1.velY / 2);
-        obj1.velX = -(obj1.velX / 2);
-        ///hit
-      } else if (obj1 instanceof Projectile) {
-        obj1.setHit();
-        return true;
-      }
-
-    } else {
-      return false;
+  setHit(damage = 10) {
+    if (!this.isHit) {
+      this.isHit = true;
+      this.hitCooldown = setTimeout(() => {
+        this.isHit = false;
+      }, 800);
+      this.health -= damage;
     }
   }
+
+  setDying() {
+
+    if (this.health <= 0) {
+      this.dying = true;
+      this.damage = 0;
+      this.velX = 0;
+      this.velY = 0;
+      setTimeout(() => {
+        this.dead = true;
+      }, 1000);
+    }
+  }
+
+  // collideEnemy(obj1, obj2) {
+  //   if (obj1.x < obj2.x + obj2.width &&
+  //     obj1.x + obj1.width > obj2.x &&
+  //     obj1.y < obj2.y + obj2.height &&
+  //     obj1.y + obj1.height > obj2.y) {
+
+  //   // if (this.hitBox(obj1, obj2)) {
+  //     if (obj1 instanceof Player && !obj1.isHit) {
+  //       obj1.velY = -(obj1.velY / 3);
+  //       obj1.velX = -(obj1.velX / 3);
+  //       ///hit
+  //       obj1.setHit(this.damage);
+  //       console.log(
+  //         obj1.health
+  //       );
+  //       console.log(obj1.isHit);
+  //     } else if (obj1 instanceof Projectile) {
+  //       obj2.setHit(obj1.damage);
+  //       console.log(
+  //         obj2.health
+  //       );
+  //       return true;
+  //     }
+
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   ////////CPU
-  callAttack(frameCount) {
+  callAttack() {
     // let check = frameCount / 400;
-    if (frameCount % 60 === 0) {
+    // this.attackInterval = setInterval(() => {
+    //   if (Object.keys(this.projectiles).length !== 3) {
+    //     this.shootProj();   
+    //   } else {
+    //     clearInterval(this.attackInterval);
+    //     setTimeout(() => {
+    //       this.callAttack();
+    //     }, 1000);
+    //   }
+    // }, 200);
+
+    this.attackInterval = setInterval(() => {
       this.shootProj();
-    }
+
+    }, 200);
   }
+
+
+
+    // if (Object.keys(this.projectiles).length === 0) {
+    //   this.attackInterval = setInterval(() => {
+    //     this.shootProj();
+    //   }, 200);
+      
+    // } else if (Object.keys(this.projectiles).length === 3) {
+    //   clearInterval(this.attackInterval);
+    //   setTimeout(() => {
+    //     this.callAttack();
+    //   }, 1500);
+    // } else {
+    //   return;
+    
+    // if (Object.keys(this.projectiles).length === 0) {
+    //   this.attackInterval = setInterval(() => {
+    //     this.shootProj();
+    //     this.callAttack();
+    //   }, 200);
+      
+    // } else if (Object.keys(this.projectiles).length === 3) {
+    //   clearTimeout(this.attackInterval);
+    // } else {
+    //   return;
+    // }
+
 
   move(canvas) {
     this.oldX = this.x;
@@ -149,8 +233,28 @@ class Enemy extends GameObject {
       width: 200,
       height: 125,
       velX: 3,
-      dir: "right"
+      dir: "right",
+      health: 100,
+      damage: 10
     };
+  }
+
+  hitBox(obj1, obj2) {
+
+    if (obj1.y < obj2.y + obj2.height && obj1.y > obj2.y + (obj2.height / 2)) {
+      if ((obj2.dir === "right" && obj1.x < obj2.x + obj2.width && obj1.x + obj1.width > obj2.x + (obj2.width / 3)) ||
+        (obj2.dir === "left" && obj1.x < obj2.x + (obj2.width * (2 / 3)) && obj1.x + obj1.width > obj2.x)){
+        return true;
+      }
+
+    } else if ((obj1.y < (obj2.height / 2) && obj1.y > obj2.y) || obj1.y + obj1.height > obj2.y) {
+      if (obj1.x < obj2.x + obj2.width && obj1.x + obj1.width > obj2.x) {
+
+        return true;
+      }
+    }
+
+    return false;
   }
 
 }

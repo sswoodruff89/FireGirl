@@ -13,7 +13,7 @@ class Character extends GameObject {
       height: options.height
     });
     this.vel = [0, 0];
-    this.health = 100;
+    this.health = 200;
  
     
   }

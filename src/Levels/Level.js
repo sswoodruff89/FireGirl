@@ -65,7 +65,6 @@ class Level {
         let tile = this.getTile(c, r);
         if (tile > 0) {
 
-// console.log(this.tileMap);
           ctx.drawImage(
             this.tileMap,
             ((tile % 8) - 1) * (this.tileMap.width/ 8),

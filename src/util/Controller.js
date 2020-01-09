@@ -52,7 +52,6 @@ class Controller {
         this.player.keydown = false;
 
       }
-      // console.log(this.player.keydown)
   }
 }
 
@@ -64,7 +63,8 @@ Controller.KEYS = {
   39: 'right',
   40: 'down',
   65: 'jump',
-  68: 'fire'
+  68: 'fire',
+  13: 'enter'
 };
 
 export default Controller;

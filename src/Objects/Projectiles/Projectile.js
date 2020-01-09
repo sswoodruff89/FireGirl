@@ -17,6 +17,7 @@ class Projectile extends GameObject {
     this.oldX = this.x;
     this.oldY = this.y;
     this.dir = options.dir;
+    this.damage = options.damage;
 
     this.frameStartX = options.frameStartX;
     this.frameStartY = options.frameStartY;
@@ -28,7 +29,7 @@ class Projectile extends GameObject {
     this.tileSize = 60;
     
     this.collider = new Collision();
-    this.hit = false;
+    this.isHit = false;
 
 
 
@@ -74,7 +75,7 @@ class Projectile extends GameObject {
   }
 
   setHit() {
-    this.hit = !this.hit;
+    this.isHit = !this.isHit;
   }
 
   timeOutHit() {
@@ -190,7 +191,8 @@ class Projectile extends GameObject {
       frameWidth: 65,
       frameHeight: 16,
       frameNum: 8,
-      image: "./assets/fireball.png"
+      image: "./assets/fireball.png",
+      damage: 15
     };
   }
 
@@ -207,7 +209,8 @@ class Projectile extends GameObject {
       frameWidth: 15,
       frameHeight: 15,
       frameNum: 1,
-      image: "./assets/footEn.png"
+      image: "./assets/footEn.png",
+      damage: 10
     };
   }
 }
