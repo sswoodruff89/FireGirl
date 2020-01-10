@@ -4,6 +4,8 @@ import Tile from "./Objects/Platforms/Tile";
 import Collision from "./util/Collision";
 import Controller from "./util/Controller";
 import Enemy from "./Objects/Enemies/Enemy";
+import Helicopter from "./Objects/Enemies/Helicopter";
+import Flower from "./Objects/Enemies/Flower";
 import GameHUD from "./GameHUD";
 
 const CONSTANTS = {
@@ -20,18 +22,18 @@ class Game {
     this.player = new Player(this.ctx, this.canvas);
     this.controller = new Controller(this.player);
     this.level = new Level({ 
-      // canvas: canvas, 
-      ctx: ctx, 
-      renderMap: Game.map1,
-      physicalMap: Game.physicalMap1 
+      ctx: ctx,
+      mapKeys: Level.level1()
     });
     this.physicalMap = this.level.physicalMap;
     this.tileSize = this.level.tileSize;
     this.collider = new Collision();
     this.HUD = new GameHUD();
     this.frameCount = 0;
+    this.enemies = this.level.enemies;
     this.gameOver = false;
     // this.getPlayerTilePos = this.getPlayerTilePos.bind(this);
+
     this.getTopLeftPos = this.getTopLeftPos.bind(this);
     this.getTopRightPos = this.getTopRightPos.bind(this);
     this.getBottomLeftPos = this.getBottomLeftPos.bind(this);
@@ -45,12 +47,11 @@ class Game {
     this.startFrameCount = this.startFrameCount.bind(this);
     this.runGame = this.runGame.bind(this);
     this.isGameOver = this.isGameOver.bind(this);
+    this.enemiesCleared = this.enemiesCleared.bind(this);
+    this.loadLevel = this.loadLevel.bind(this);
 
-
-    this.enemies = {
-      1: new Enemy(Enemy.helicopter([100, 150]))
-    };
-
+    this.enemyCount = Object.keys(this.enemies).length;
+    this.cleared = false;
 
     this.startFrameCount();
   }
@@ -82,6 +83,16 @@ class Game {
     return [x, y];
   }
 
+
+  enemiesCleared() {
+    console.log(this.enemyCount);
+    if (this.enemyCount === 0) {
+      this.cleared = true;
+      return true;
+    }else {
+      return false;
+    }
+  }
 
   playerPlatformCheck() {
     let colVal;
@@ -212,13 +223,18 @@ class Game {
 
     this.player.inAir();
 
-    this.collider.collidePlayer(this.player, this.canvas);
+    this.collider.collidePlayer(this.player, this.canvas, this.cleared);
     this.playerPlatformCheck();
+    this.loadLevel(Level.level2());
   }
 
   renderEnemies() {
-    if (Object.values(this.enemies).length !== 0) {
+    
+    if (!this.cleared) {
       for (let key in this.enemies) {
+        if (this.enemies[key].dying && !this.enemies[key].dead) continue;
+        this.projectilePlatformCheck(this.enemies[key]);
+
         if (!this.enemies[key].dead) {
           this.enemies[key].move(this.canvas);
           this.collider.collideEnemy(this.player, this.enemies[key]);
@@ -226,10 +242,10 @@ class Game {
 
         } else {
           delete this.enemies[key];
+          this.enemyCount -= 1;
         }
-
-        // this.projectilePlatformCheck(this.enemies[key]);
       }
+      this.enemiesCleared();
     }
   }
 
@@ -259,13 +275,22 @@ class Game {
       if (Object.keys(enemy.projectiles).length !== 0) {
         for (let key in enemy.projectiles) {
           this.collider.collideProjectile(this.player, enemy.projectiles[key]);
+
           this.projectilePlatformCheck(enemy.projectiles[key]);
+
           (!enemy.projectiles[key].isHit) ?
             enemy.projectiles[key].drawProjectile(this.ctx, this.frameCount) :
             delete enemy.projectiles[key];
         }
       }
     });
+  }
+
+  loadLevel(nextLevel) {
+    if (this.player.x + (this.player.width / 2) === this.canvas.width) {
+      this.level = new Level({ctx: this.ctx, mapKeys: nextLevel()});
+      this.player.x = 0;
+    }
   }
 
   isGameOver() {
@@ -277,12 +302,12 @@ class Game {
     this.isGameOver();
 
     if (!this.gameOver) {
-      console.log(this.gameOver);
 
       this.level.drawLevel(this.ctx);
       this.player.drawPlayer(this.frameCount);
       this.playerUpdate();
-  
+
+
       // this.enemies[1].drawEnemy(this.ctx, this.frameCount);
       this.renderEnemies();
       // this.enemies[1].callAttack(this.frameCount);
@@ -308,77 +333,8 @@ class Game {
     
   }
 
-    // this.player.move();
-    // this.collider.collidePlayer(this.player, this.canvas);
-    // this.playerPlatformCheck();
 }
 
 
 
-
-
-
-Game.map1 = [
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 38, 39, 0, 0, 0, 0, 0,
-  0, 42, 41, 39, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 22, 23, 23, 63, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29, 29, 29, 29,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 6, 6, 6, 6
-];
-Game.physicalMap1 = [
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-];
-
-// Game.map1 = [
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0],
-//   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-// ];
-
-
-// Game.physicalMap1 = [
-//   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, 1
-// ];
-// Game.physicalMap1 = [
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 3, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, 4, 0, 0],
-//   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-// ];
 export default Game;

@@ -10,37 +10,47 @@ const CONSTANTS = {
   MAX_VEL: 50
 };
 
-class Helicopter extends Enemy {
+class Flower extends Enemy {
   constructor(options) {
     super(options);
-    this.velX = options.velX || 3;
+    this.velX = options.velX || 0;
     this.velY = 0;
     this.image = options.image || "./assets/footEn.png";
     this.enemy = this.loadImage(this.image);
-    this.frameNum = options.frameNum || 3;
-    this.frameStartX = options.frameStartX || 68;
-    this.frameStartY = options.frameStartY || 290;
-    this.frameWidth = options.frameWidth || 116;
-    this.frameHeight = options.frameHeight || 80;
+    this.frameNum = options.frameNum || 4;
+    this.frameStartX = 10;
+    this.frameStartY = 265;
+    this.frameWidth = options.frameWidth || 117;
+    this.frameHeight = options.frameHeight || 107;
+    this.active = true;
+    this.opening = false;
+    
     this.projectiles = {};
 
-    this.loadImage = this.loadImage.bind(this);
     this.drawEnemy = this.drawEnemy.bind(this);
     this.shootProj = this.shootProj.bind(this);
     this.callAttack = this.callAttack.bind(this);
-    this.callAttack();
+
   }
 
+  isActive() {
 
+  }
 
   drawEnemy(ctx, frameCount) {
     this.setDying();
     if ((this.isHit || this.dying) && frameCount % 3 === 0) return;
 
-    if (this.dir === "left") {
+    if (this.active) {
+      let count = Math.floor(frameCount / 2.5) % this.frameNum;
+      let x = (count > 0) ? 20 : this.frameStartX;
+
+
       ctx.drawImage(
         this.enemy,
-        (frameCount % this.frameNum) * this.frameWidth + this.frameStartX,
+        // (Math.floor(frameCount / 2) % this.frameNum) * this.frameWidth + this.frameStartX,
+        (count % this.frameNum) * this.frameWidth + x,
+        // (0) * this.frameWidth + this.frameStartX,
         this.frameStartY,
         this.frameWidth,
         this.frameHeight,
@@ -108,13 +118,13 @@ class Helicopter extends Enemy {
   }
 
   ////////CPU
-  callAttack() {
-    this.attackInterval = setInterval(() => {
+  // callAttack() {
+  //   this.attackInterval = setInterval(() => {
 
-      this.shootProj();
+  //     this.shootProj();
 
-    }, 500);
-  }
+  //   }, 500);
+  // }
 
   move(canvas) {
     this.oldX = this.x;
@@ -131,20 +141,33 @@ class Helicopter extends Enemy {
 
 
 
-  static hel1(pos, dir = "right") {
+  static flow1(pos, dir = "right") {
     return {
       name: "helicopter",
-      image: "./assets/footEn.png",
+      image: "./assets/plant.png",
       frameNum: 3,
       pos: pos,
-      width: 200,
-      height: 125,
+      width: 54,
+      height: 54,
+      health: 50,
+      velX: 0,
+      dir: dir
+    };
+  }
+  static flow2(pos, dir = "right") {
+    return {
+      name: "helicopter",
+      image: "./assets/plant.png",
+      frameNum: 3,
+      pos: pos,
+      width: 84,
+      height: 84,
       health: 100,
-      velX: (dir === "left") ? -3 : 3,
+      velX: 0,
       dir: dir
     };
   }
 
 }
 
-export default Helicopter;
+export default Flower;

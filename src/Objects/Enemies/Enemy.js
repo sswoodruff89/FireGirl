@@ -15,7 +15,7 @@ class Enemy extends GameObject {
     this.velY = (options.velY) ? options.velY : 0;
     this.enemy = this.loadImage(options.image);
     this.frameNum = options.frameNum;
-    this.dir = "right";
+    this.dir = options.dir || "right";
     this.frameStartX = 68;
     this.frameStartY = 290;
     this.frameWidth = 116;
@@ -28,7 +28,6 @@ class Enemy extends GameObject {
     this.isHit = false;
 
 
-    // this.hitBox = this.hitBox.bind(this);
     this.setHit = this.setHit.bind(this);
     this.setDying = this.setDying.bind(this);
 
@@ -37,7 +36,7 @@ class Enemy extends GameObject {
     this.shootProj = this.shootProj.bind(this);
     this.callAttack = this.callAttack.bind(this);
 
-    this.callAttack();
+    // this.callAttack();
   }
 
   loadImage(image) {
@@ -46,11 +45,33 @@ class Enemy extends GameObject {
     return enemy;
   }
 
+  setHit(damage = 10) {
+    if (!this.isHit) {
+      this.isHit = true;
+      this.hitCooldown = setTimeout(() => {
+        this.isHit = false;
+      }, 800);
+      this.health -= damage;
+    }
+  }
+
+  setDying() {
+
+    if (this.health <= 0) {
+      this.dying = true;
+      this.damage = 0;
+      this.velX = 0;
+      this.velY = 0;
+      setTimeout(() => {
+        this.dead = true;
+      }, 1000);
+    }
+  }
+
+
   drawEnemy(ctx, frameCount) {
     this.setDying();
     if ((this.isHit || this.dying) && frameCount % 3 === 0) return;
-
-
 
     if (this.dir === "left") {
       ctx.drawImage(
@@ -109,72 +130,11 @@ class Enemy extends GameObject {
     }
   }
 
-  setHit(damage = 10) {
-    if (!this.isHit) {
-      this.isHit = true;
-      this.hitCooldown = setTimeout(() => {
-        this.isHit = false;
-      }, 800);
-      this.health -= damage;
-    }
-  }
 
-  setDying() {
 
-    if (this.health <= 0) {
-      this.dying = true;
-      this.damage = 0;
-      this.velX = 0;
-      this.velY = 0;
-      setTimeout(() => {
-        this.dead = true;
-      }, 1000);
-    }
-  }
-
-  // collideEnemy(obj1, obj2) {
-  //   if (obj1.x < obj2.x + obj2.width &&
-  //     obj1.x + obj1.width > obj2.x &&
-  //     obj1.y < obj2.y + obj2.height &&
-  //     obj1.y + obj1.height > obj2.y) {
-
-  //   // if (this.hitBox(obj1, obj2)) {
-  //     if (obj1 instanceof Player && !obj1.isHit) {
-  //       obj1.velY = -(obj1.velY / 3);
-  //       obj1.velX = -(obj1.velX / 3);
-  //       ///hit
-  //       obj1.setHit(this.damage);
-  //       console.log(
-  //         obj1.health
-  //       );
-  //       console.log(obj1.isHit);
-  //     } else if (obj1 instanceof Projectile) {
-  //       obj2.setHit(obj1.damage);
-  //       console.log(
-  //         obj2.health
-  //       );
-  //       return true;
-  //     }
-
-  //   } else {
-  //     return false;
-  //   }
-  // }
 
   ////////CPU
   callAttack() {
-    // let check = frameCount / 400;
-    // this.attackInterval = setInterval(() => {
-    //   if (Object.keys(this.projectiles).length !== 3) {
-    //     this.shootProj();   
-    //   } else {
-    //     clearInterval(this.attackInterval);
-    //     setTimeout(() => {
-    //       this.callAttack();
-    //     }, 1000);
-    //   }
-    // }, 200);
-
     this.attackInterval = setInterval(() => {
       this.shootProj();
 
@@ -183,30 +143,7 @@ class Enemy extends GameObject {
 
 
 
-    // if (Object.keys(this.projectiles).length === 0) {
-    //   this.attackInterval = setInterval(() => {
-    //     this.shootProj();
-    //   }, 200);
-      
-    // } else if (Object.keys(this.projectiles).length === 3) {
-    //   clearInterval(this.attackInterval);
-    //   setTimeout(() => {
-    //     this.callAttack();
-    //   }, 1500);
-    // } else {
-    //   return;
-    
-    // if (Object.keys(this.projectiles).length === 0) {
-    //   this.attackInterval = setInterval(() => {
-    //     this.shootProj();
-    //     this.callAttack();
-    //   }, 200);
-      
-    // } else if (Object.keys(this.projectiles).length === 3) {
-    //   clearTimeout(this.attackInterval);
-    // } else {
-    //   return;
-    // }
+
 
 
   move(canvas) {

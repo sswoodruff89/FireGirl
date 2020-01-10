@@ -15,7 +15,7 @@ class Player {
     this.canvas = canvas;
     this.character = new Character({
       name: "Seisa",
-      pos: [20, 400],
+      pos: [20, 440],
       ctx: this.ctx,
       canvas: this.canvas,
       width: 40,
@@ -145,7 +145,7 @@ class Player {
           this.bottomSide() - (this.height / 1.8)],
           20, 0, "right")
         );
-    } else {
+    } else if (this.direction === "left"){
       this.fireballs[key] = new Projectile(
         Projectile.fireball(
           [this.leftSide(),

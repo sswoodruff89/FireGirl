@@ -20,20 +20,20 @@ window.addEventListener("DOMContentLoaded", () => {
   // ctx.textAlign = "center";
   // ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
   // let img = new Image();
-  // img.src = "./assets/fireball.png";
+  // img.src = "./assets/plant.png";
   // img.onload = () => {
   //   // ctx.drawImage(img, 0, 0);
   //   console.log(img.size);
   //   ctx.drawImage(
   //     img,
-  //     0 ,
+  //     255 ,
   //     0,
-  //     250,
-  //     250,
-  //     15,
-  //     15,
-  //     25,
-  //     25
+  //     110,
+  //     110,
+  //     65,
+  //     65,
+  //     65,
+  //     65
   //   );
   // };
   // 

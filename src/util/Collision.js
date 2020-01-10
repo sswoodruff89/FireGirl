@@ -17,12 +17,12 @@ class Collision {
     // this.collideEnemyRight = this.collideEnemyRight.bind(this);
   }
 
-  collidePlayer(player, canvas) {
+  collidePlayer(player, canvas, cleared) {
     // debugger
     if (player.x < 0) {
       player.x = 0.01;
       player.velX = 0;
-    } else if (player.x + player.width > canvas.width) {
+    } else if (player.x + player.width > canvas.width && !cleared) {
       player.x = canvas.width - player.width;
       player.velX = 0;
     }
@@ -91,26 +91,7 @@ class Collision {
     }
   }
 
-  // collideEnemy(obj1, obj2) {
-  //     if (
-  //       (obj1.bottomSide() > obj2.topSide() && (obj1.oldY + obj1.height) < obj2.topSide()) ||
-  //       (obj1.topSide() < obj2.bottomSide() && (obj1.oldY + obj1.height) > obj2.bottomSide()) ||
-  //       (obj1.leftSide() < obj2.rightSide() && (obj1.oldX + obj1.width) > obj2.rightSide()) ||
-  //       (obj1.rightSide() > obj2.leftSide() && obj1.oldX < obj2.leftSide())) {
 
-  //       if (obj1 instanceof Player) {
-  //         obj1.velY = -(obj1.velY / 2);
-  //         obj1.velX = -(obj1.velX / 2);
-  //         ///hit
-  //       } else if (obj1 instanceof Projectile) {
-  //         obj1.setHit();
-  //         return true;
-  //       }
-
-  //     } else {
-  //       return false;
-  //     }
-  // }
 
   
   ///ENEMY COLLISION
@@ -274,6 +255,22 @@ collidePlatTop(gameObj, tileTop) {
           return;
         } else {
           this.collidePlatLeft(gameObject, x);
+        }
+        break;
+      case 5:
+        if (this.collidePlatTop(gameObject, y)) {
+          return;
+        } else if (this.collidePlatBottom(gameObject, y + 60)) {
+          return;
+        }else {
+          this.collidePlatRight(gameObject, x + 60);
+        }
+        break;
+      case 6: 
+        if (this.collidePlatTop(gameObject, y)) {
+          return;
+        } else {
+          this.collidePlatBottom(gameObject, y + 60);
         }
         break;
 

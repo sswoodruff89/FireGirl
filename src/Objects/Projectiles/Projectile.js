@@ -16,7 +16,7 @@ class Projectile extends GameObject {
     this.velY = options.velY;
     this.oldX = this.x;
     this.oldY = this.y;
-    this.dir = options.dir;
+    this.dir = options.dir || "right";
     this.damage = options.damage;
 
     this.frameStartX = options.frameStartX;
