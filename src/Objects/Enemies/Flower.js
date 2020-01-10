@@ -162,6 +162,19 @@ class Flower extends Enemy {
       pos: pos,
       width: 84,
       height: 84,
+      health: 50,
+      velX: 0,
+      dir: dir
+    };
+  }
+  static flow3(pos, dir = "right") {
+    return {
+      name: "helicopter",
+      image: "./assets/plant.png",
+      frameNum: 3,
+      pos: pos,
+      width: 110,
+      height: 110,
       health: 100,
       velX: 0,
       dir: dir

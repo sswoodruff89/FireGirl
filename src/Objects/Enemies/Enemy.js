@@ -46,17 +46,17 @@ class Enemy extends GameObject {
   }
 
   setHit(damage = 10) {
+    console.log(this.health);
     if (!this.isHit) {
       this.isHit = true;
       this.hitCooldown = setTimeout(() => {
         this.isHit = false;
-      }, 800);
+      }, 500);
       this.health -= damage;
     }
   }
 
   setDying() {
-
     if (this.health <= 0) {
       this.dying = true;
       this.damage = 0;

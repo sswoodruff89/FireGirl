@@ -23,15 +23,18 @@ class Game {
     this.controller = new Controller(this.player);
     this.level = new Level({ 
       ctx: ctx,
-      mapKeys: Level.level1()
+      mapKeys: Level.level1(),
+      player: this.player
     });
-    this.physicalMap = this.level.physicalMap;
+    // this.physicalMap = this.level.physicalMap;
     this.tileSize = this.level.tileSize;
     this.collider = new Collision();
     this.HUD = new GameHUD();
     this.frameCount = 0;
     this.enemies = this.level.enemies;
     this.gameOver = false;
+    this.embers = new Image();
+    this.embers.src = "./assets/embers.jpg";
     // this.getPlayerTilePos = this.getPlayerTilePos.bind(this);
 
     this.getTopLeftPos = this.getTopLeftPos.bind(this);
@@ -47,6 +50,7 @@ class Game {
     this.startFrameCount = this.startFrameCount.bind(this);
     this.runGame = this.runGame.bind(this);
     this.isGameOver = this.isGameOver.bind(this);
+    this.win = this.win.bind(this);
     this.enemiesCleared = this.enemiesCleared.bind(this);
     this.loadLevel = this.loadLevel.bind(this);
 
@@ -85,8 +89,7 @@ class Game {
 
 
   enemiesCleared() {
-    console.log(this.enemyCount);
-    if (this.enemyCount === 0) {
+    if (Object.keys(this.enemies).length === 0) {
       this.cleared = true;
       return true;
     }else {
@@ -103,9 +106,10 @@ class Game {
     let cols = 15;
     let rows = 10;
     let floorCount = 0;
+    let physMap = this.level.physicalMap;
 
     [left, top] = this.getTopLeftPos();
-    colVal = this.physicalMap[top * cols + left];
+    colVal = physMap[top * cols + left];
     this.collider.collidePlatform(
       this.player,
       left * this.tileSize,
@@ -114,7 +118,7 @@ class Game {
     );
 
     [right, top] = this.getTopRightPos();
-    colVal = this.physicalMap[top * cols + right];
+    colVal = physMap[top * cols + right];
     this.collider.collidePlatform(
       this.player,
       right * this.tileSize,
@@ -123,7 +127,7 @@ class Game {
     );
 
     [left, bottom] = this.getBottomLeftPos();
-    colVal = this.physicalMap[bottom * cols + left];
+    colVal = physMap[bottom * cols + left];
     (colVal === 0) ? floorCount++ : "";
     this.collider.collidePlatform(
       this.player,
@@ -134,7 +138,7 @@ class Game {
 
 
     [right, bottom] = this.getBottomRightPos();
-    colVal = this.physicalMap[bottom * cols + right];
+    colVal = physMap[bottom * cols + right];
     (colVal === 0) ? floorCount++ : "";
     if (floorCount === 2) {
       this.player.onGround = false;
@@ -156,10 +160,11 @@ class Game {
     let right;
     let left;
     let cols = 15;
+    let physMap = this.level.physicalMap;
 
     if (projectile.dir === "left") {
       [left, top] = projectile.getTopLeftPos();
-      colVal = this.physicalMap[top * cols + left];
+      colVal = physMap[top * cols + left];
       this.collider.collidePlatform(
         projectile,
         left * this.tileSize,
@@ -168,7 +173,7 @@ class Game {
       );
 
       [left, bottom] = projectile.getBottomLeftPos();
-      colVal = this.physicalMap[bottom * cols + left];
+      colVal = physMap[bottom * cols + left];
       this.collider.collidePlatform(
         projectile,
         left * this.tileSize,
@@ -179,7 +184,7 @@ class Game {
 
     if (projectile.dir === "right") {
       [right, top] = projectile.getTopRightPos();
-      colVal = this.physicalMap[top * cols + right];
+      colVal = physMap[top * cols + right];
       this.collider.collidePlatform(
         projectile,
         right * this.tileSize,
@@ -188,7 +193,7 @@ class Game {
       );
 
       [right, bottom] = projectile.getBottomRightPos();
-      colVal = this.physicalMap[bottom * cols + right];
+      colVal = physMap[bottom * cols + right];
 
       this.collider.collidePlatform(
         projectile,
@@ -225,10 +230,12 @@ class Game {
 
     this.collider.collidePlayer(this.player, this.canvas, this.cleared);
     this.playerPlatformCheck();
-    this.loadLevel(Level.level2());
   }
 
   renderEnemies() {
+    if (this.level.screen === 5) {
+      this.enemyCount = Object.keys(this.level.enemies).length;
+    }
     
     if (!this.cleared) {
       for (let key in this.enemies) {
@@ -236,7 +243,7 @@ class Game {
         this.projectilePlatformCheck(this.enemies[key]);
 
         if (!this.enemies[key].dead) {
-          this.enemies[key].move(this.canvas);
+          this.enemies[key].move(this.canvas, this.player.x, this.player.y);
           this.collider.collideEnemy(this.player, this.enemies[key]);
           this.enemies[key].drawEnemy(this.ctx, this.frameCount);
 
@@ -286,15 +293,28 @@ class Game {
     });
   }
 
-  loadLevel(nextLevel) {
-    if (this.player.x + (this.player.width / 2) === this.canvas.width) {
-      this.level = new Level({ctx: this.ctx, mapKeys: nextLevel()});
+  loadLevel() {
+    // debugger
+    if (((this.player.x + (this.player.width / 2)) >= this.canvas.width)) {
+      this.level.loadLevel(1);
+      this.cleared = false;
+      this.enemies = this.level.enemies;
+      this.enemyCount = Object.keys(this.enemies);
       this.player.x = 0;
+    } else if ((this.player.x + (this.player.width / 2)) <= 0) {
+      this.level.loadLevel(-1);
+      this.player.x = this.canvas.width - this.player.width;
     }
   }
 
   isGameOver() {
-    this.gameOver = (this.player.dead) ? true : false;
+    this.win();
+    this.gameOver = (this.player.dead || this.won) ? true : false;
+  }
+
+  //refactor
+  win() {
+    this.won = (this.level.screen === 5 && Object.keys(this.enemies).length === 0) ? true : false;
   }
   
 
@@ -302,7 +322,7 @@ class Game {
     this.isGameOver();
 
     if (!this.gameOver) {
-
+      this.loadLevel();
       this.level.drawLevel(this.ctx);
       this.player.drawPlayer(this.frameCount);
       this.playerUpdate();
@@ -318,16 +338,66 @@ class Game {
       this.HUD.drawHUD(this.canvas, this.ctx, this.player, this.frameCount);
 
     } else {
-      this.ctx.beginPath();
-      this.ctx.rect(0, 0, this.canvas.width, this.canvas.height);
-      this.ctx.fillStyle = "rgba(255, 255, 255, .1)";
-      this.ctx.fill();
-      this.ctx.closePath();
+      if (!this.won) {
+        // this.ctx.beginPath();
+        // this.ctx.rect(0, 0, this.canvas.width, this.canvas.height);
+        // this.ctx.fillStyle = "rgba(255, 255, 255, .1)";
+        // this.ctx.fill();
+        // this.ctx.closePath();
 
-      this.ctx.font = "130px Arial";
-      this.ctx.fillStyle = "red";
-      this.ctx.textAlign = "center";
-      this.ctx.fillText("GAME OVER", this.canvas.width / 2, this.canvas.height / 2);
+        // // let img = new Image();
+        // // img.src = "./assets/embers.jpg";
+        // // img.onload = () => {
+        //   // ctx.drawImage(img, 0, 0);
+            this.ctx.drawImage(
+                this.embers,
+                0,
+                0,
+                852,
+                400,
+                0, 0,
+                900, 600
+          );
+        // };
+  
+        this.ctx.font = "130px Arial";
+        this.ctx.fillStyle = "rgb(46, 2, 2)";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText("GAME OVER", this.canvas.width / 2, this.canvas.height / 2);
+
+
+        this.ctx.font = "50px Arial";
+        this.ctx.fillStyle = "pink";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText("Press Enter to Play Again", this.canvas.width / 2, 400);
+
+      } else {
+        this.ctx.drawImage(
+          this.embers,
+          0,
+          0,
+          852,
+          400,
+          0, 0,
+          900, 600
+        );
+        this.ctx.font = "80px Arial";
+        this.ctx.fillStyle = "pink";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText("CONGRATS!", this.canvas.width / 2, 160);
+
+
+        this.ctx.font = "80px Arial";
+        this.ctx.fillStyle = "pink";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText("YOU BEAT LEVEL 1", this.canvas.width / 2, this.canvas.height / 2);
+
+
+        this.ctx.font = "50px Arial";
+        this.ctx.fillStyle = "pink";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText("Press Enter to Play Again", this.canvas.width / 2, 400);
+      }
 
     } 
     

@@ -79,15 +79,15 @@ class Helicopter extends Enemy {
 
       this.projectiles[key] = new Projectile(
         Projectile.helibullet(
-          [this.leftSide() + 30,
-          this.bottomSide() - 23],
+          [this.leftSide() + (this.width * 0.15),
+            this.bottomSide() - (this.height * 0.184)],
           -9, 7, "left")
       );
     } else {
       this.projectiles[key] = new Projectile(
         Projectile.helibullet(
-          [this.rightSide() - 40,
-          this.bottomSide() - 23],
+          [this.rightSide() - (this.width * 0.2),
+            this.bottomSide() - (this.height * 0.184)],
           9, 7, "right")
       );
 
@@ -131,7 +131,7 @@ class Helicopter extends Enemy {
 
 
 
-  static hel1(pos, dir = "right") {
+  static hel1(pos, dir = "right", velY) {
     return {
       name: "helicopter",
       image: "./assets/footEn.png",
@@ -139,6 +139,21 @@ class Helicopter extends Enemy {
       pos: pos,
       width: 200,
       height: 125,
+      health: 100,
+      velX: (dir === "left") ? -3 : 3,
+      velY: velY || 0,
+      dir: dir
+    };
+  }
+  
+  static hel2(pos, dir = "right") {
+    return {
+      name: "helicopter",
+      image: "./assets/footEn.png",
+      frameNum: 3,
+      pos: pos,
+      width: 150,
+      height: 85,
       health: 100,
       velX: (dir === "left") ? -3 : 3,
       dir: dir

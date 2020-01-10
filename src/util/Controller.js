@@ -3,6 +3,8 @@ class Controller {
     // this.gameview = gameview;
     this.player = player;
 
+    this.keysPressed = {};
+
     this.keydown = this.keydown.bind(this);
     this.keyup = this.keyup.bind(this);
     window.addEventListener("keydown", this.keydown);
@@ -15,24 +17,37 @@ class Controller {
 
     switch (Controller.KEYS[event.keyCode]) {
       case "left":
+        this.keysPressed.left = true;
         this.player.direction = "left";
-        this.player.velX = -8;
+        this.player.velX = -7;
+
         break;
       case "right":
+        this.keysPressed.right = true;
         this.player.direction = "right";
-        this.player.velX = 8;
+        this.player.velX = 7;
         break;
       case "up":
-        // this.player.y -= 10;
+        this.keysPressed.up = true;
         break;
       case "down":
-        // this.player.y += 10;
+        this.keysPressed.down = true;
         break;
       case "jump":
+        this.keysPressed.jump = true;
         this.player.jump();
         break;
       case "fire":
-        this.player.shootFire();
+
+        this.keysPressed.fire = true;
+        if (this.keysPressed.up) {
+          this.player.shootFire("up");
+        } else if (this.keysPressed.down && !this.player.onGround) {
+          this.player.shootFire("down");
+        } else {
+          this.player.shootFire();
+
+        }
         break;
       case "space":
         // this.gameview.Ticker.paused = (this.gameview.Ticker.paused) ? false: true;
@@ -44,14 +59,44 @@ class Controller {
   }
 
   keyup(event) {
+    if (Controller.KEYS[event.keyCode] === "left" ||
+      Controller.KEYS[event.keyCode] === "right") {
+      this.player.keydown = false;
+      this.player.idle = true;
+      return;
+    }
+    switch (Controller.KEYS[event.keyCode]) {
+      case "left":
+        this.keysPressed.left = false;
+        break;
+      case "right":
+        this.keysPressed.right = false;
+        break;
+      case "up":
+        this.keysPressed.up = false;
+        break;
+      case "down":
+        this.keysPressed.down = false;
+        break;
+      case "jump":
+        this.keysPressed.jump = false;
+        break;
+      case "fire":
+        this.keysPressed.fire = false;
+        break;
+      case "space":
+        // this.gameview.Ticker.paused = (this.gameview.Ticker.paused) ? false: true;
+        break;
+      default:
+        return;
+    }
+
+
     this.player.idle = true;
+    // this.keysPressed = {};
     // console.log(Controller.KEYS[event.keyCode])
     // debugger
-    if (Controller.KEYS[event.keyCode] === "left" || 
-      Controller.KEYS[event.keyCode] === "right" ) {
-        this.player.keydown = false;
 
-      }
   }
 }
 
@@ -66,5 +111,7 @@ Controller.KEYS = {
   68: 'fire',
   13: 'enter'
 };
+
+
 
 export default Controller;

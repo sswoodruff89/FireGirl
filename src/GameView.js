@@ -10,17 +10,26 @@ class GameView {
   constructor (canvas, ctx) {
     this.canvas = canvas;
     this.ctx = ctx;
-    this.game = new Game(this.canvas, this.ctx);
+    // this.game = new Game(this.canvas, this.ctx);
+    this.game = null;
+    this.splash = new Image();
+    this.splash.src = "./assets/firegirl.jpg";
     // this.HUD = new GameHUD();
     // this.tileMap = this.loadImage();
 
 
     this.renderGame = this.renderGame.bind(this);
     this.loadImage = this.loadImage.bind(this);
+    this.newGame = this.newGame.bind(this);
 
-    window.addEventListener("keydown", this.keydown);
-    window.addEventListener("keyup", this.keyup);
+    window.addEventListener("keydown", (event) => {
+      if (!this.game || this.game.gameOver && event.keyCode === 13) {
+        this.newGame();
+
+      }
+    });
   }
+
   loadImage() {
     let tileMap = new Image();
     tileMap.src = "./assets/tileGen.png";
@@ -30,13 +39,33 @@ class GameView {
 
   newGame() {
     if (!this.game || this.game.gameOver) {
-
+      this.game = new Game(this.canvas, this.ctx);
     }
   }
 
   renderGame() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    if (!this.game) {
+        this.ctx.drawImage(
+            this.splash,
+            0,
+            0,
+            920,
+            644,
+            0, 0,
+            900, 600
+        );
 
+      this.ctx.font = "150px Arial";
+      this.ctx.fillStyle = "rgb(46, 2, 2)";
+      this.ctx.textAlign = "center";
+      this.ctx.fillText("FIRE GIRL", this.canvas.width / 2, 230);
+
+      this.ctx.font = "60px Arial";
+      this.ctx.fillStyle = "pink";
+      this.ctx.textAlign = "center";
+      this.ctx.fillText("Press Enter to Play", this.canvas.width / 2, 350);
+    }
     // if (this.game.isGameOver()) {
     //   this.ctx.beginPath();
     //   this.ctx.rect(0, 0, this.canvas.width, this.canvas.height);
@@ -59,21 +88,12 @@ class GameView {
     //     console.log(this.game.getBottomRightPos());
     //     console.log(this.game.getTopRightPos());
         // console.log(this.game.level.cols)
-    
-    this.game.runGame();
-    // this.HUD.drawHUD(this.canvas, this.ctx, this.game.player);
-    // this.ctx.drawImage(
-    //   this.tileMap.src,
-    //   0 * this.game.level.tileSize,
-    //   this.game.level.srcY,
-    //   this.game.level.tileSize,
-    //   this.game.level.tileSize,
-    //   this.game.level.tileSize,
-    //   this.game.level.tileSize,
-    //   this.game.level.tileSize,
-    //   this.game.level.tileSize
-    // );
-    // this.game.level
+    if (this.game) {
+
+      this.game.runGame();
+      
+    }
+
     window.requestAnimationFrame(this.renderGame);
   }
 

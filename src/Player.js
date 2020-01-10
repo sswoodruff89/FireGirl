@@ -15,7 +15,7 @@ class Player {
     this.canvas = canvas;
     this.character = new Character({
       name: "Seisa",
-      pos: [20, 440],
+      pos: [20, 100],
       ctx: this.ctx,
       canvas: this.canvas,
       width: 40,
@@ -65,7 +65,6 @@ class Player {
 
     // this.getDirX = this.getDirX.bind(this);
     // this.getDirY = this.getDirY.bind(this);
-
   }
 
   drawPlayer(frameCount) {
@@ -110,7 +109,6 @@ class Player {
         this.x, this.y,
         this.width, this.height
       );
-
     } else if (this.velX < 0) {
       this.ctx.scale(-1, 1);
       this.ctx.drawImage(
@@ -128,7 +126,7 @@ class Player {
     ///change this.width and height based on movement
   }
 
-  shootFire() {
+  shootFire(vert = null) {
     if (Object.keys(this.fireballs).length === 3) return;
     let key;
     for (let i = 1; i <= 3; i++) {
@@ -137,8 +135,23 @@ class Player {
         break;
       }
     }
-    if (this.direction === "right") {
-
+    if (vert === "up") {
+      this.fireballs[key] = new Projectile(
+        Projectile.fireballVert(
+          [this.rightSide() - (this.width / 2),
+          this.bottomSide() + this.height],
+          0, -20, vert)
+      );
+    } else if (vert === "down") {
+      this.fireballs[key] = new Projectile(
+        Projectile.fireballVert(
+          [this.rightSide() - (this.width / 2),
+          this.bottomSide() - this.height],
+          0, 20, vert)
+      );
+      this.velY -= 10;
+      this.jumpCount -= 1;
+    } else if (this.direction === "right") {
       this.fireballs[key] = new Projectile(
         Projectile.fireball(
           [this.rightSide() - this.width,
@@ -156,7 +169,6 @@ class Player {
     }
 
   }
-
     
   setHit(damage = 10) {
     if (!this.isHit) {

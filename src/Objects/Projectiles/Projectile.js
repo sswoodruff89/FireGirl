@@ -149,7 +149,35 @@ class Projectile extends GameObject {
     if (this.hit) return;
 
     this.updateProjectile();
-    if (this.dir === "right") {
+    if (this.dir === "up") {
+      ctx.scale(1, -1);
+
+      ctx.drawImage(
+        this.proj,
+        (frameCount % this.frameNum) * 43 + (((frameCount % this.frameNum) + 1) * 21),
+        this.frameStartY,
+        this.frameWidth,
+        this.frameHeight,
+        this.x, -this.y + this.height,
+        this.width, this.height
+      );
+      ctx.scale(1, -1);
+
+
+    } else if (this.dir === "down") {
+
+      ctx.drawImage(
+        this.proj,
+        (frameCount % this.frameNum) * 43 + (((frameCount % this.frameNum) + 1) * 21),
+        this.frameStartY,
+        this.frameWidth,
+        this.frameHeight,
+        this.x, this.y,
+        this.width, this.height
+      );
+
+
+    } else if (this.dir === "right") {
       ctx.drawImage(
         this.proj,
         (frameCount % this.frameNum) * this.frameWidth + this.frameStartX,
@@ -184,12 +212,30 @@ class Projectile extends GameObject {
       velX: velX,
       velY: velY,
       dir: dir,
-      // frameStartX: (dir === "right") ? 10 : 0,
-      // frameStartY: (dir === "right") ? 277 : 23,
+
       frameStartX: 10,
       frameStartY: 277,
       frameWidth: 65,
       frameHeight: 16,
+      frameNum: 8,
+      image: "./assets/fireball.png",
+      damage: 15
+    };
+  }
+
+  static fireballVert(pos, velX, velY, dir) {
+    return {
+      pos: pos,
+      width: 16,
+      height: 55,
+      velX: velX,
+      velY: velY,
+      dir: dir,
+
+      frameStartX: 10,
+      frameStartY: 400,
+      frameWidth: 22,
+      frameHeight: 35,
       frameNum: 8,
       image: "./assets/fireball.png",
       damage: 15

@@ -20,23 +20,20 @@ window.addEventListener("DOMContentLoaded", () => {
   // ctx.textAlign = "center";
   // ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
   // let img = new Image();
-  // img.src = "./assets/plant.png";
+  // img.src = "./assets/firegirl.jpg";
   // img.onload = () => {
   //   // ctx.drawImage(img, 0, 0);
-  //   console.log(img.size);
-  //   ctx.drawImage(
-  //     img,
-  //     255 ,
-  //     0,
-  //     110,
-  //     110,
-  //     65,
-  //     65,
-  //     65,
-  //     65
+  //         ctx.drawImage(
+  //         img,
+  //         0,
+  //         0,
+  //         920,
+  //         644,
+  //         0, 0,
+  //         900, 600
   //   );
   // };
-  // 
+  
 
   // let fromRight = canvas.width - 50;
   // ctx.beginPath();
@@ -77,36 +74,6 @@ window.addEventListener("DOMContentLoaded", () => {
   //     35, 35
   //   );
   // };
-
-  
-
-  // let stage = new createjs.Stage("gameCanvas");
-  // //Create a Shape DisplayObject.
-
-  // let circle = new createjs.Shape();
-  // circle.graphics.beginFill("red").drawCircle(0, 0, 40);
-  // //Set position of Shape instance.
-  // circle.x = circle.y = 50;
-  // //Add Shape instance to stage display list.
-  // stage.addChild(circle);
-  // //Update stage will render next frame
-  // stage.update();
-
-
-  // createjs.Ticker.framerate = 40;
-  // createjs.Ticker.on("tick", handleTick);
-
-  // function handleTick(event) {
-  //   //Circle will move 10 units to the right.
-  //   // circle.x += event.delta/1000*100;
-
-  //   //Will cause the circle to wrap back
-  //   if (circle.x > stage.canvas.width) { circle.x = 0; }
-  //   if (circle.x < 0 ) { circle.x = stage.canvas.width; }
-  //   if (circle.y < 0 ) { circle.y = stage.canvas.height; }
-  //   if (circle.y > stage.canvas.height ) { circle.y = 0; }
-  //   stage.update();
-  // }
 
 
 
