@@ -254,7 +254,7 @@ class Game {
       for (let key in this.player.fireballs) {
         let fireball = this.player.fireballs[key];
         
-        if (Object.values(this.enemies).length !== 0) {
+        if (this.enemyCount !== 0) {
           for (let key in this.enemies) {
             this.collider.collideEnemy(fireball, this.enemies[key]);
           }
