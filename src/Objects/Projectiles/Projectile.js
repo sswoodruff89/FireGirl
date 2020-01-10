@@ -219,7 +219,7 @@ class Projectile extends GameObject {
       frameHeight: 16,
       frameNum: 8,
       image: "./assets/fireball.png",
-      damage: 15
+      damage: 25
     };
   }
 
@@ -238,7 +238,7 @@ class Projectile extends GameObject {
       frameHeight: 35,
       frameNum: 8,
       image: "./assets/fireball.png",
-      damage: 15
+      damage: 25
     };
   }
 
