@@ -34,7 +34,6 @@ class GameView {
     let tileMap = new Image();
     tileMap.src = "./assets/tileGen.png";
     return tileMap;
-    // this.tileMap.onLoad = this.drawLevel(ctx);
   }
 
   newGame() {
