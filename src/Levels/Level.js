@@ -10,7 +10,7 @@ class Level {
     this.ctx = options.ctx;
     this.player = options.player;
     this.mapKeys = options.mapKeys;
-    this.screen = 5;
+    this.screen = 1;
     this.renderMap = options.renderMap || this.mapKeys[this.screen].renderMap;
     this.physicalMap = options.physicalMap || this.mapKeys[this.screen].physicalMap;
     this.cols = 15;
