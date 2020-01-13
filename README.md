@@ -1,10 +1,27 @@
-# Untitled Platformer
+# Fire Girl
 Platformer
 
 ------
 
 ## Overview
-${Untitled Platformer} is a 2D action platformer game that harkens back to the days of the NES. You can select from a handful of characters, each with their own abilities (such as throwing fire), to take on enemies as you traverse multiple levels.
+Fire Girl is a 2D action platformer game that harkens back to the days of the NES.
+
+
+## Built With
+* HTML5 Canvas
+
+## Features
+
+<h1 align="center">
+  <img src="https://github.com/sswoodruff89/JSProject/blob/master/assets/splash.png" width="600" height="auto" align="center"/>
+</h1>
+
+### Collision Detection
+<h1 align="center">
+  <img src="https://github.com/sswoodruff89/JSProject/blob/master/assets/enemies.png" width="600" height="auto" align="center"/>
+</h1>
+* Gave Player, Enemies, and Projectiles accurate collision detection to platforms and each other without lagging when a dozen or so objects are on screen
+* Platform collision is based on a tile map map where each element has a value that corresponds to a key in a object of collision check functions
 
 
 ## MVP
