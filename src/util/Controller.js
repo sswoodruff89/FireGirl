@@ -10,7 +10,7 @@ class Controller {
     window.addEventListener("keydown", this.keydown);
     window.addEventListener("keyup", this.keyup);
   }
-  
+
   keydown(event) {
     this.player.idle = false;
     this.player.keydown = true;
@@ -19,7 +19,7 @@ class Controller {
       case "left":
         this.keysPressed.left = true;
         this.player.direction = "left";
-        this.player.velX = -7;
+        this.player.velX = -6;
 
         break;
       case "right":
@@ -55,22 +55,29 @@ class Controller {
       default:
         return;
     }
- 
+
   }
 
   keyup(event) {
-    if (Controller.KEYS[event.keyCode] === "left" ||
-      Controller.KEYS[event.keyCode] === "right") {
-      this.player.keydown = false;
-      this.player.idle = true;
-      return;
-    }
+    // if (Controller.KEYS[event.keyCode] === "left" ||
+    //   Controller.KEYS[event.keyCode] === "right") {
+    //   this.player.keydown = false;
+    //   // this.player.velX = 0;
+    //   // this.player.idle =ß true;
+    //   return;
+    // }
     switch (Controller.KEYS[event.keyCode]) {
       case "left":
         this.keysPressed.left = false;
+        // this.player.velX = 0;
+
+        if (!this.keysPressed.left && !this.keysPressed.right) this.player.velX = 0;
+
         break;
       case "right":
         this.keysPressed.right = false;
+        // this.player.velX *= -1;
+        if (!this.keysPressed.left && !this.keysPressed.right) this.player.velX = 0;
         break;
       case "up":
         this.keysPressed.up = false;

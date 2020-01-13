@@ -46,7 +46,7 @@ class Vinehead extends Enemy {
     }
 
     if ((y > this.y && y < this.y + this.height) && (x > this.x || x < this.x) ) {
-      this.velX = (this.dir === "left") ? -4 : 4;
+      this.velX = (this.dir === "left") ? -5 : 5;
     } else {
       this.velX = (this.dir === "left") ? -1 : 1;
     }

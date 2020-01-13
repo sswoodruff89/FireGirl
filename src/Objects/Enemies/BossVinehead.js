@@ -64,12 +64,12 @@ class BossVinehead extends Enemy {
     this.attacking = true;
     this.chargeTimeout = setTimeout(() => {
       this.charge();
-    }, 4000);
+    }, 2500);
   }
 
   charge() {
     this.charging = true;
-    this.velX = -5;
+    this.velX = -10;
   }
   checkPlayerPos(x, y, homing) {
 
@@ -166,7 +166,7 @@ class BossVinehead extends Enemy {
   
   backUp() {
     this.charging = false;
-    this.velX = 1;
+    this.velX = 2;
   }
 
   move(canvas, x, y) {

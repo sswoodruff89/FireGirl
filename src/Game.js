@@ -323,9 +323,14 @@ class Game {
 
     if (!this.gameOver) {
       this.loadLevel();
-      this.level.drawLevel(this.ctx);
+      this.level.renderBackground(this.ctx, this.canvas);
+      if (this.level.screen > 1) this.level.drawLevel(this.ctx);
       this.player.drawPlayer(this.frameCount);
       this.playerUpdate();
+      if (this.level.screen === 1) {
+        this.level.renderMid(this.ctx, this.canvas);
+        this.level.renderFront(this.ctx, this.canvas);
+      }
 
 
       // this.enemies[1].drawEnemy(this.ctx, this.frameCount);
@@ -339,6 +344,7 @@ class Game {
 
     } else {
       if (!this.won) {
+        this.level.theme.pause();
         // this.ctx.beginPath();
         // this.ctx.rect(0, 0, this.canvas.width, this.canvas.height);
         // this.ctx.fillStyle = "rgba(255, 255, 255, .1)";
@@ -372,6 +378,8 @@ class Game {
         this.ctx.fillText("Press Enter to Play Again", this.canvas.width / 2, 400);
 
       } else {
+        this.level.theme.pause();
+
         this.ctx.drawImage(
           this.embers,
           0,

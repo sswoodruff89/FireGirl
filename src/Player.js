@@ -15,7 +15,7 @@ class Player {
     this.canvas = canvas;
     this.character = new Character({
       name: "Seisa",
-      pos: [20, 100],
+      pos: [20, 350],
       ctx: this.ctx,
       canvas: this.canvas,
       width: 40,
@@ -71,6 +71,7 @@ class Player {
 // .74
 // .59
     this.setDying();
+    // this.isIdle();
     if (this.isHit && frameCount % 3 === 0 ) return;
     if (this.velX === 0) {
       if (this.direction === "right") {
@@ -233,9 +234,9 @@ class Player {
   }
 
   inAir() {
-    if (!this.onGround) {
+    if (!this.onGround ) {
       this.y += this.velY;
-      this.velY += CONSTANTS.GRAVITY;
+      (this.velY + CONSTANTS.GRAVITY > 25) ? this.velY = 25 : this.velY += CONSTANTS.GRAVITY;
     } else {
       this.velY = 0;
     }
