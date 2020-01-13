@@ -5,7 +5,6 @@ import Game from "./Game";
 import GameHUD from "./GameHUD";
 
 
-
 class GameView {
   constructor (canvas, ctx) {
     this.canvas = canvas;
@@ -21,7 +20,6 @@ class GameView {
     this.renderGame = this.renderGame.bind(this);
     this.loadImage = this.loadImage.bind(this);
     this.newGame = this.newGame.bind(this);
-    this.mute = this.mute.bind(this);
 
     window.addEventListener("keydown", (event) => {
       if ((!this.game || this.game.gameOver) && event.keyCode === 13) {
@@ -48,10 +46,6 @@ class GameView {
     }
   }
 
-  mute() {
-    this.game.level.theme.mute;
-
-  }
 
   renderGame() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -85,16 +79,6 @@ class GameView {
 
     window.requestAnimationFrame(this.renderGame);
   }
-
-  // drawBackground() {
-  //   this.ctx.fillStyle = "Green";
-  //   this.ctx.rect(0, 0, this.ctx.width, this.ctx.height);
-  // }
-  // draw() {
-  //   this.ctx.clearRect(0, 0, this.ctx.width, this.ctx.height);
-  //   this.player.drawPlayer(this.ctx);
-  // }
-  
 
 
 
