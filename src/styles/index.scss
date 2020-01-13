@@ -45,12 +45,20 @@ h1.title {
   height: 600px;
   margin-right: 60px;
   font-size: 20px;
+  padding: 10px;
+  box-sizing: border-box;
 
 }
 
 .instructions li {
   padding: 10px 0;
 }
+
+.directive {
+  padding: 0 5px;
+}
+
+
 canvas {
   background-color: black;
   align-self: center;
