@@ -54,10 +54,6 @@ Fire Girl is a 2D action platformer game that harkens back to the days of the NE
 * Have collectables that upgrade powers
 
 
-## Wireframe
-
-<img src="https://github.com/sswoodruff89/JSProject/blob/master/wireframe.png" width="600" height="auto" align="center"/>
-
 ## File Structure
 * /dist
 * /src
