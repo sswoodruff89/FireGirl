@@ -30,6 +30,8 @@ class Enemy extends GameObject {
 
     this.setHit = this.setHit.bind(this);
     this.setDying = this.setDying.bind(this);
+    this.getMidX = this.getMidX.bind(this);
+    this.getMidY = this.getMidY.bind(this);
 
     this.loadImage = this.loadImage.bind(this);
     this.drawEnemy = this.drawEnemy.bind(this);
@@ -38,6 +40,16 @@ class Enemy extends GameObject {
 
     // this.callAttack();
   }
+
+  getMidX(x = this.x) {
+    return x + (this.width/2);
+  }
+  
+  getMidY(y = this.y) {
+    return y + (this.height/2);
+  }
+
+
 
   loadImage(image) {
     let enemy = new Image();

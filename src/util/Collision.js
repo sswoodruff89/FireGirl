@@ -309,7 +309,7 @@ class Collision {
         obj1.velY = -(obj1.velY / 3);
         obj1.velX = -(obj1.velX / 3);
         ///hit
-        obj1.setHit(this.damage);
+        obj1.setHit(obj2.damage);
         return true;
       }
       if (obj1 instanceof Projectile) {

@@ -3,6 +3,7 @@ import Music from "../util/Music";
 import Enemy from "../Objects/Enemies/Enemy";
 import Helicopter from "../Objects/Enemies/Helicopter";
 import Flower from "../Objects/Enemies/Flower";
+import Spider from "../Objects/Enemies/Spider";
 import Vinehead from "../Objects/Enemies/Vinehead";
 import BossVinehead from "../Objects/Enemies/BossVinehead";
 
@@ -239,7 +240,7 @@ class Level {
         //   1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1
         // ],
         enemies: {
-          // 1: new Helicopter(Helicopter.hel1([100, 100])),
+          // 1: new Spider(Spider.spider2([470, 0], [0, 350])),
           // 2: new Helicopter(Helicopter.hel1([570, 50], "left")),
           // 3: new Flower(Flower.flow1([600, 500])),
           // 4: new Flower(Flower.flow1([400, 320])),
@@ -297,8 +298,12 @@ class Level {
         // ],
         enemies: {
           1: new Helicopter(Helicopter.hel2([10, 10], [0, 700])),
-          2: new Helicopter(Helicopter.hel2([570, 0], [0, 700], "left")),
-          3: new Helicopter(Helicopter.hel2([10, 140], [0, 320], "left")),
+          // 2: new Helicopter(Helicopter.hel2([570, 0], [0, 700], "left")),
+          3: new Helicopter(Helicopter.hel2([10, 140], [0, 335], "left")),
+          4: new Spider(Spider.spider1([700, 0], [0, 440])),
+          5: new Spider(Spider.spider2([660, 0], [20, 440])),
+          6: new Spider(Spider.spider3([200, 0], [20, 300]))
+
           // 3: new Flower(Flower.flow2([120, 200])),
           // 4: new Flower(Flower.flow1([400, 320])),
           // 5: new Flower(Flower.flow1([240, 500])),
