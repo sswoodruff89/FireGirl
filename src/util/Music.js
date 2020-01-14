@@ -15,7 +15,6 @@ class Music {
     };
 
     play() {
-        debugger
         this.music.play();
     }
     pause() {

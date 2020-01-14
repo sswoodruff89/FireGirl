@@ -29,9 +29,22 @@ class Controller {
         break;
       case "up":
         this.keysPressed.up = true;
+        if (this.player.canClimb) {
+          console.log("sdlfska;sdlf");
+          console.log(this.player.canClimb);
+          console.log(this.player.idle);
+
+          this.player.climbing = true;
+          this.player.velY = -7;
+        }
         break;
       case "down":
         this.keysPressed.down = true;
+        if (this.player.canClimb) {
+          console.log(this.player.canClimb);
+          this.player.climbing = true;
+          this.player.velY = 7;
+        }
         break;
       case "jump":
         this.keysPressed.jump = true;
@@ -61,7 +74,7 @@ class Controller {
   keyup(event) {
     // if (Controller.KEYS[event.keyCode] === "left" ||
     //   Controller.KEYS[event.keyCode] === "right") {
-    //   this.player.keydown = false;
+      // this.player.keydown = false;
     //   // this.player.velX = 0;
     //   // this.player.idle =ß true;
     //   return;
@@ -81,6 +94,7 @@ class Controller {
         break;
       case "up":
         this.keysPressed.up = false;
+        if (this.player.climbing) this.player.climbing = false;
         break;
       case "down":
         this.keysPressed.down = false;

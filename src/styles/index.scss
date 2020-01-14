@@ -3,13 +3,12 @@
 
 body {
   background-color: black;
+  margin: 0;
 
 }
 
 .main {
-
   width: 90%;
-
 }
 
 h1.title {
@@ -25,29 +24,47 @@ h1.title {
   background-size: 100% 80vh;
   background-position-y: center;
   width: 100%;
-  
+  height: 60vw;
   display: flex;
   flex-direction: column;
   align-content: center;
+  justify-content: space-around;
 }
 
 .game-instructions {
   width: 100%;
   display: flex;
+  max-height: 500px;
   justify-content: flex-start;
-  padding-left: 100px;
+  padding-left: 5vw;
+  position: relative;
+  top: 10vh;
 }
+
 .instructions {
   background-color: rgba(255, 255, 255, 0.5);
   color: rgb(104, 0, 0);
-
-  width: 250px;
-  height: 600px;
+  max-width: 250px;
+  width: 20%;
+  height: 500px;
   margin-right: 60px;
-  font-size: 20px;
+  font-size: 1.2vw;
   padding: 10px;
   box-sizing: border-box;
 
+}
+
+.controls {
+  width: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-top: 1vh;
+}
+
+.controls h2 {
+  width: 100%;
+  margin: 0;
 }
 
 .instructions li {
@@ -55,12 +72,31 @@ h1.title {
 }
 
 .directive {
-  padding: 0 5px;
+  padding: 0;
 }
 
+
+.links {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  color: white;
+  list-style: none;
+}
+
+.links a{
+  color: pink;
+  text-decoration: none;
+}
 
 canvas {
   background-color: black;
   align-self: center;
+  width: 90vw;
+  height: 60vw;
+  max-width: 750px;
+  max-height: 500px;
+  min-width: 300px;
+  min-height: 200px;
 }
 

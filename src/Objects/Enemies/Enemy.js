@@ -44,7 +44,7 @@ class Enemy extends GameObject {
   getMidX(x = this.x) {
     return x + (this.width/2);
   }
-  
+
   getMidY(y = this.y) {
     return y + (this.height/2);
   }
@@ -58,7 +58,6 @@ class Enemy extends GameObject {
   }
 
   setHit(damage = 10) {
-    console.log(this.health);
     if (!this.isHit) {
       this.isHit = true;
       this.hitCooldown = setTimeout(() => {

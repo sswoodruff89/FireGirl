@@ -31,6 +31,12 @@ class GameView {
         // (music.muted === false) ? music.muted = true : false;
       }
     });
+
+    window.addEventListener("resize", () => {
+      if (this.game) {
+        this.game.resizeGame(this.canvas);
+      }
+    });
   }
 
   loadImage() {
@@ -57,18 +63,18 @@ class GameView {
             920,
             644,
             0, 0,
-            900, 600
+            this.canvas.width, this.canvas.height
         );
 
-      this.ctx.font = "150px Arial";
+      this.ctx.font = "50px Arial";
       this.ctx.fillStyle = "rgb(46, 2, 2)";
       this.ctx.textAlign = "center";
-      this.ctx.fillText("FIRE GIRL", this.canvas.width / 2, 230);
+      this.ctx.fillText("FIRE GIRL", this.canvas.width / 2, this.canvas.height / 3);
 
-      this.ctx.font = "60px Arial";
+      this.ctx.font = "1.1em Arial";
       this.ctx.fillStyle = "pink";
       this.ctx.textAlign = "center";
-      this.ctx.fillText("Press Enter to Play", this.canvas.width / 2, 350);
+      this.ctx.fillText("Press Enter to Play", this.canvas.width / 2, this.canvas.height * (2/3));
     }
 
     if (this.game) {

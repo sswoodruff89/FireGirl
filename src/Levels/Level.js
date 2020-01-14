@@ -17,7 +17,7 @@ class Level {
     this.physicalMap = options.physicalMap || this.mapKeys[this.screen].physicalMap;
     this.cols = 15;
     this.rows = 10;
-    this.tileSize = 60;
+    this.tileSize = options.tileSize;
     this.tileMap = this.loadImage();
     this.mapTileSize = this.tileMap.width / this.rows;
     this.enemies = this.mapKeys[this.screen].enemies;
@@ -60,17 +60,17 @@ class Level {
     let background = new Image();
     background.src = images.background;
 
-    let mid = new Image();
-    mid.src = images.mid;
+    let mid = (images.mid) ? new Image() : null;
+    (mid) ? mid.src = images.mid : "";
 
-    let front = new Image();
-    front.src = images.front;
+    let front = (images.front) ? new Image() : null;
+    (front) ? front.src = images.front : "";
 
     return {
       background,
       mid,
       front
-    }
+    };
   }
 
   renderBackground(ctx, canvas) {
@@ -166,9 +166,11 @@ class Level {
       this.levelLayers = this.loadImages(this.mapKeys[this.screen].levelLayers);
     }
     if (this.mapKeys[this.screen].theme) {
+      let muted = this.theme.music.muted;
       this.theme.pause();
       this.theme = new Music({ src: this.mapKeys[this.screen].theme });
       this.theme.play();
+      this.theme.music.muted = muted;
     }
     this.enemiesInterval();
 
@@ -270,10 +272,10 @@ class Level {
         physicalMap: [
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 26,  0,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 26,  0,
-          0,  0,  0,  0,  0,  0,  0,  4, 28,  0,  0,  0,  0, 26,  0,
+          0,  0,  0,  0,  0,  0,  0,  4, 28, 20,  0,  0,  0, 26,  0,
           0,  0,  0,  0,  0,  0,  0,  9, 25,  0,  0,  0,  0, 26,  0,
-          0,  0,  0,  0,  0,  0,  0,  9, 27, 28,  0,  0,  0, 26,  0,
-          0,  0,  3,  8,  0,  0, 20,  9, 10,  0,  0,  0,  0, 26, 16,
+          0,  0, 24, 21,  0,  0,  0,  9, 27, 28,  0,  0,  0, 26,  0,
+          0,  0,  9, 10,  0,  0, 20,  9, 10,  0,  0,  0,  0, 26, 16,
           0,  0,  9, 14,  0,  0,  9, 10, 10,  0,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  9, 10,  0,  0,  0, 30, 29, 29, 29,
           0,  0,  0,  0,  0, 18,  0, 10,  0,  0,  0,  0,  9,  0,  0,
@@ -300,9 +302,9 @@ class Level {
           1: new Helicopter(Helicopter.hel2([10, 10], [0, 700])),
           // 2: new Helicopter(Helicopter.hel2([570, 0], [0, 700], "left")),
           3: new Helicopter(Helicopter.hel2([10, 140], [0, 335], "left")),
-          4: new Spider(Spider.spider1([700, 0], [0, 440])),
-          5: new Spider(Spider.spider2([660, 0], [20, 440])),
-          6: new Spider(Spider.spider3([200, 0], [20, 300]))
+          4: new Spider(Spider.spider1([600, 0], [0, 380])),
+          5: new Spider(Spider.spider2([520, 0], [20, 440])),
+          6: new Spider(Spider.spider3([150, 0], [20, 250]))
 
           // 3: new Flower(Flower.flow2([120, 200])),
           // 4: new Flower(Flower.flow1([400, 320])),
@@ -349,12 +351,15 @@ class Level {
         ],
         enemies: {
           1: new Helicopter(Helicopter.hel1([100, 25])),
-          3: new Flower(Flower.flow2([290, 190])),
+          3: new Flower(Flower.flow2([250, 140])),
           5: new Vinehead(Vinehead.vine1([500, 100], this.player)),
           6: new Vinehead(Vinehead.vine3([800, 20], this.player)),
 
-          4: new Flower(Flower.flow2([530, 190])),
+          4: new Flower(Flower.flow2([450, 140])),
 
+        },
+        levelLayers: {
+          background: "./assets/lv1_back.png"
         }
       },
       4: {
@@ -455,7 +460,7 @@ class Level {
           1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1
         ],
         enemies: {
-          1: new BossVinehead(BossVinehead.boss1([650, 120], this.player))
+          1: new BossVinehead(BossVinehead.boss1([500, 100], this.player))
         },
         theme: "./assets/Sound/dk3_boss_boogie.mp3"
       }

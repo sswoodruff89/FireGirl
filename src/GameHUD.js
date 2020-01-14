@@ -19,7 +19,7 @@ class GameHUD {
 
   drawHUD(canvas, ctx, player, frameCount) {
     ctx.beginPath();
-    ctx.rect(0, (canvas.height - 55), canvas.width, 55);
+    ctx.rect(0, (canvas.height - 40), canvas.width, 40);
     ctx.fillStyle = "black";
     ctx.fill();
     ctx.closePath();
@@ -31,16 +31,16 @@ class GameHUD {
 
   drawHealth(canvas, ctx, player) {
 
-    let healthMeter = ((canvas.width / 2) * (player.health / 200));
+    let healthMeter = ((canvas.width / 3) * (player.health / 200));
 
     ctx.beginPath();
-    ctx.rect(20, (canvas.height - 40), (canvas.width / 2), 25);
+    ctx.rect(20, (canvas.height - 30), (canvas.width / 3), 18);
     ctx.fillStyle = "rgba(255, 255, 255, .1)";
     ctx.fill();
     ctx.closePath();
 
     ctx.beginPath();
-    ctx.rect(20, (canvas.height - 40), (healthMeter), 25);
+    ctx.rect(20, (canvas.height - 30), (healthMeter), 18);
     ctx.fillStyle = "red";
     ctx.fill();
     ctx.closePath();
@@ -85,8 +85,8 @@ class GameHUD {
           400,
           22,
           35,
-          canvas.width - 170, canvas.height - 50,
-          40, 40
+          canvas.width - 165, canvas.height - 40,
+          30, 30
         );
       case 1:
         ctx.drawImage(
@@ -95,18 +95,18 @@ class GameHUD {
           400,
           22,
           35,
-          canvas.width - 120, canvas.height - 50,
-          40, 40
+          canvas.width - 114, canvas.height - 40,
+          30, 30
         );
       case 2:
         ctx.drawImage(
           this.fire,
           (frameCount % 8) * 43 + (((frameCount % 8) + 1) * 21),
           400,
-          22,
+          25,
           35,
-          canvas.width - 70, canvas.height - 50,
-          40, 40
+          canvas.width - 64, canvas.height - 40,
+          30, 30
         );
       default:
         break;

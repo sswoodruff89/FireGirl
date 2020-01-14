@@ -21,14 +21,15 @@ class Game {
     this.ctx = ctx;
     this.player = new Player(this.ctx, this.canvas);
     this.controller = new Controller(this.player);
+    this.tileSize = this.canvas.width / 15;
     this.level = new Level({ 
       ctx: ctx,
       mapKeys: Level.level1(),
-      player: this.player
+      player: this.player,
+      tileSize: this.tileSize
     });
     // this.physicalMap = this.level.physicalMap;
-    this.tileSize = this.level.tileSize;
-    this.collider = new Collision();
+    this.collider = new Collision(this.tileSize);
     this.HUD = new GameHUD();
     this.frameCount = 0;
     this.enemies = this.level.enemies;
@@ -53,6 +54,7 @@ class Game {
     this.win = this.win.bind(this);
     this.enemiesCleared = this.enemiesCleared.bind(this);
     this.loadLevel = this.loadLevel.bind(this);
+    this.resizeGame = this.resizeGame.bind(this);
 
     this.enemyCount = Object.keys(this.enemies).length;
     this.cleared = false;
@@ -64,6 +66,11 @@ class Game {
     this.frameInterval = setInterval(() => {
       this.frameCount++;
     }, (1000 / 30));
+  }
+
+  resizeGame(canvas) {
+    this.tileSize = canvas.width / 15;
+    this.level.tileSize = this.tileSize;
   }
 
   getTopLeftPos() {
@@ -106,40 +113,51 @@ class Game {
     let cols = 15;
     let rows = 10;
     let floorCount = 0;
+    let climbCount = 0;
+
     let physMap = this.level.physicalMap;
 
     [left, top] = this.getTopLeftPos();
     colVal = physMap[top * cols + left];
+    colVal === 33 ? floorCount++ : "";
     this.collider.collidePlatform(
       this.player,
       left * this.tileSize,
       top * this.tileSize,
-      colVal    
+      colVal, 
+      this.tileSize    
     );
 
     [right, top] = this.getTopRightPos();
     colVal = physMap[top * cols + right];
+    colVal === 33 ? floorCount++ : "";
+
     this.collider.collidePlatform(
       this.player,
       right * this.tileSize,
       top * this.tileSize,
-      colVal    
+      colVal,
+      this.tileSize
     );
 
     [left, bottom] = this.getBottomLeftPos();
     colVal = physMap[bottom * cols + left];
     (colVal === 0) ? floorCount++ : "";
+    colVal === 33 ? floorCount++ : "";
     this.collider.collidePlatform(
       this.player,
       left * this.tileSize,
       bottom * this.tileSize,
-      colVal    
+      colVal,
+      this.tileSize
     );
 
 
     [right, bottom] = this.getBottomRightPos();
     colVal = physMap[bottom * cols + right];
     (colVal === 0) ? floorCount++ : "";
+    colVal === 33 ? floorCount++ : "";
+    if (this.player.canClimb && climbCount === 0) this.player.canClimb = false;
     if (floorCount === 2) {
       this.player.onGround = false;
       // if (this.player.jumpCount === 2) this.player.jumpCount -=;
@@ -148,7 +166,8 @@ class Game {
       this.player,
       right * this.tileSize,
       bottom * this.tileSize,
-      colVal
+      colVal,
+      this.tileSize
     );
   }
 
@@ -169,7 +188,8 @@ class Game {
         projectile,
         left * this.tileSize,
         top * this.tileSize,
-        colVal
+        colVal,
+        this.tileSize
       );
 
       [left, bottom] = projectile.getBottomLeftPos();
@@ -178,7 +198,8 @@ class Game {
         projectile,
         left * this.tileSize,
         bottom * this.tileSize,
-        colVal
+        colVal,
+        this.tileSize
       );
     }
 
@@ -189,7 +210,8 @@ class Game {
         projectile,
         right * this.tileSize,
         top * this.tileSize,
-        colVal
+        colVal,
+        this.tileSize
       );
 
       [right, bottom] = projectile.getBottomRightPos();
@@ -199,7 +221,8 @@ class Game {
         projectile,
         right * this.tileSize,
         bottom * this.tileSize,
-        colVal
+        colVal,
+        this.tileSize
       );
 
     }
@@ -214,19 +237,24 @@ class Game {
 
     if (!this.player.idle) {
       
-      if (this.player.direction === "right") {
-        if (this.player.onGround && !this.player.keydown) {
-          this.player.velX < 1 ? (this.player.velX = 0) : (this.player.velX /= CONSTANTS.FRICTION);
-        }
-      } else if (this.player.direction === "left") {
-        if (this.player.onGround && !this.player.keydown) {
-          this.player.velX > -1 ? (this.player.velX = 0) : (this.player.velX /= CONSTANTS.FRICTION);
-        }
-      }
+      // if (this.player.direction === "right") {
+      //   if (this.player.onGround && !this.player.keydown) {
+      //     this.player.velX < 1 ? (this.player.velX = 0) : (this.player.velX /= CONSTANTS.FRICTION);
+      //   }
+      // } else if (this.player.direction === "left") {
+      //   if (this.player.onGround && !this.player.keydown) {
+      //     this.player.velX > -1 ? (this.player.velX = 0) : (this.player.velX /= CONSTANTS.FRICTION);
+      //   }
+      // }
       this.player.x += this.player.velX;
     }
 
-    this.player.inAir();
+    if (this.player.climbing) {
+        this.player.isClimbing();
+    } else {
+        this.player.inAir();
+
+    }
 
     this.collider.collidePlayer(this.player, this.canvas, this.cleared);
     this.playerPlatformCheck();

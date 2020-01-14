@@ -15,11 +15,13 @@ class Player {
     this.canvas = canvas;
     this.character = new Character({
       name: "Seisa",
-      pos: [20, 350],
+      pos: [20, 210],
       ctx: this.ctx,
       canvas: this.canvas,
-      width: 40,
-      height: 54
+      width: 30,
+      // width: 40,
+      height: 45
+      // height: 54
     });
     this.health = this.character.health;
     this.spriteMap = this.character.loadImage();
@@ -28,8 +30,8 @@ class Player {
     this.vel = this.character.vel;
     this.x = this.character.x;
     this.y = this.character.y;
-    this.idleWidth = 35;
-    this.runWidth = 40;
+    this.idleWidth = 30;
+    this.runWidth = 31.5;
     this.oldX = this.x;
     this.oldY = this.y;
     this.width = this.character.width;
@@ -42,6 +44,8 @@ class Player {
     this.isRunning = false;
     this.direction = "right";
     this.jumpCount = 2;
+    this.canClimb = false;
+    this.climbing = false;
     this.frameCount = 0;
     this.isHit = false;
     this.dying = false;
@@ -62,7 +66,7 @@ class Player {
     this.setRunning = this.setRunning.bind(this);
     this.setHit = this.setHit.bind(this);
     this.setDying = this.setDying.bind(this);
-
+    this.isClimbing = this.isClimbing.bind(this);
     this.getDirX = this.getDirX.bind(this);
     this.getDirY = this.getDirY.bind(this);
   }
@@ -155,17 +159,22 @@ class Player {
     } else if (this.direction === "right") {
       this.fireballs[key] = new Projectile(
         Projectile.fireball(
-          [this.rightSide() - this.width,
+          [this.rightSide() - (this.width / 1.5),
           this.bottomSide() - (this.height / 1.8)],
           20, 0, "right")
         );
     } else if (this.direction === "left"){
       this.fireballs[key] = new Projectile(
         Projectile.fireball(
-          [this.leftSide(),
-          this.bottomSide() - (this.height / 1.8)],
-          -20, 0, "left")
-        );
+          [
+            this.leftSide() + this.width / 1.5,
+            this.bottomSide() - this.height / 1.8
+          ],
+          -20,
+          0,
+          "left"
+        )
+      );
         
     }
 
@@ -242,6 +251,14 @@ class Player {
     }
   }
 
+  isClimbing() {
+    if (this.climbing && this.canClimb && this.keydown) {
+      this.y += this.velY;
+    } else {
+      this.velY = 0;
+    }
+  }
+
   jump() {
     if (this.jumpCount === 2) {
       this.onGround = false;
@@ -251,6 +268,10 @@ class Player {
       this.velY = 0 - 15;
       this.jumpCount = 0;
     }
+  }
+
+  climb() {
+    this.climb = (this.climb) ? false : true;
   }
 
 

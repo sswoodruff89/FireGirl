@@ -20,7 +20,7 @@ class Spider extends Enemy {
     this.frameNum = options.frameNum || 4;
     this.frameStartX = 0;
     this.frameStartY = 0;
-    this.frameWidth = options.frameWidth || 93;
+    this.frameWidth = options.frameWidth || 92.5;
     this.frameHeight = options.frameHeight || 102;
     this.frameCount = 0;
     this.bounds = options.bounds;
@@ -169,7 +169,7 @@ class Spider extends Enemy {
     return {
       name: "spider",
       image: "./assets/spider.png",
-      frameNum: 3,
+      frameNum: 15,
       pos: pos,
       width: 93,
       height: 102,
@@ -185,7 +185,7 @@ class Spider extends Enemy {
     return {
       name: "spider",
       image: "./assets/spider.png",
-      frameNum: 3,
+      frameNum: 15,
       pos: pos,
       width: 60.5,
       height: 76,
@@ -201,7 +201,7 @@ class Spider extends Enemy {
     return {
       name: "spider",
       image: "./assets/spider.png",
-      frameNum: 3,
+      frameNum: 15,
       pos: pos,
       width: 46.5,
       height: 56,
