@@ -63,8 +63,8 @@ class Player {
     this.setHit = this.setHit.bind(this);
     this.setDying = this.setDying.bind(this);
 
-    // this.getDirX = this.getDirX.bind(this);
-    // this.getDirY = this.getDirY.bind(this);
+    this.getDirX = this.getDirX.bind(this);
+    this.getDirY = this.getDirY.bind(this);
   }
 
   drawPlayer(frameCount) {

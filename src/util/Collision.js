@@ -10,9 +10,14 @@ class Collision {
     this.collidePlatBottom = this.collidePlatBottom.bind(this);
     this.collidePlatLeft = this.collidePlatLeft.bind(this);
     this.collidePlatRight = this.collidePlatRight.bind(this);
-    this.collidePlatformSlopeRight = this.collidePlatformSlopeRight.bind(this);
+    // this.collidePlatformSlopeRight = this.collidePlatformSlopeRight.bind(this);
+    this.collideSlopeFortyFiveRight = this.collideSlopeFortyFiveRight.bind(
+      this
+    );
+    this.collideSlopeFortyFiveLeft = this.collideSlopeFortyFiveLeft.bind(this);
+    this.collideSlopeTwentyLeft = this.collideSlopeTwentyLeft.bind(this);
+    this.collideSlopeTwentyRight = this.collideSlopeTwentyRight.bind(this);
     this.collideEnemy = this.collideEnemy.bind(this);
-
 
     this.collisionPlatformKeys = {
       1: (obj, x, y, colVal) => {
@@ -25,13 +30,13 @@ class Collision {
         }
       },
       3: (obj, x, y, colVal) => {
-        ///top / left 
+        ///top / left
         if (this.collidePlatTop(obj, y)) {
           return;
         } else {
           // this.collidePlatTop(obj, y)
-          this.collidePlatLeft(obj, x)
-        };
+          this.collidePlatLeft(obj, x);
+        }
       },
       4: (obj, x, y, colVal) => {
         ///top / left / right
@@ -41,7 +46,7 @@ class Collision {
           return;
         } else {
           this.collidePlatLeft(obj, x);
-        };
+        }
       },
       5: (obj, x, y, colVal) => {
         ///top / bottom / right
@@ -51,7 +56,7 @@ class Collision {
           return;
         } else {
           this.collidePlatRight(obj, x + 60);
-        };
+        }
       },
       6: (obj, x, y, colVal) => {
         ///top / bottom
@@ -107,9 +112,9 @@ class Collision {
         //top / left half in
         if (this.collidePlatLeft(obj, x + 30)) {
           return;
-        } else if (obj.x + obj.width > x + 30){
+        } else if (obj.x + obj.width > x + 30) {
           this.collidePlatTop(obj, y);
-        };
+        }
       },
       13: (obj, x, y, colVal) => {
         //top / right half in
@@ -117,48 +122,58 @@ class Collision {
           return;
         } else if (obj.x < x + 30) {
           this.collidePlatTop(obj, y);
-        };
-      },
-      13: (obj, x, y, colVal) => {
-        //top / right half in
-        if (this.collidePlatRight(obj, x + 30)) {
-          return;
-        } else if (obj.x < x + 30) {
-          this.collidePlatTop(obj, y);
-        };
+        }
       },
       14: (obj, x, y, colVal) => {
-        /// bottom / left 
+        /// bottom / left
         if (this.collidePlatBottom(obj, y + 60)) {
           return;
         } else {
           this.collidePlatLeft(obj, x);
-        };
+        }
       },
       15: (obj, x, y, colVal) => {
-        /// bottom / right 
+        /// bottom / right
         if (this.collidePlatBottom(obj, y + 60)) {
           return;
         } else {
           this.collidePlatRight(obj, x);
-        };
+        }
       },
       16: (obj, x, y, colVal) => {
-        /// bottom 
+        /// bottom
         this.collidePlatBottom(obj, y + 60);
       },
       17: (obj, x, y, colVal) => {
-        ///left 
-          this.collidePlatLeft(obj, x);
-      }
+        ///left
+        this.collidePlatLeft(obj, x);
+      },
 
-      // 12: (obj, 
-      // x, y, colVal) => {
-      //   ///right / left / bottom thorn
-      //   // if (y + obj.height >)
-      //   this.collidePlatformSlopeRight(obj, x, y + 60);
-      // }
-    }
+      18: (obj, x, y, colVal) => {
+        //45 deg right
+        this.collideSlopeFortyFiveRight(obj, x, y + 60);
+      },
+      19: (obj, x, y, colVal) => {
+        //45 deg left
+        this.collideSlopeFortyFiveLeft(obj, x + 60, y + 60);
+      },
+      20: (obj, x, y, colVal) => {
+        //22 deg right bottom half
+        this.collideSlopeTwentyRight(obj, x, y + 60);
+      },
+      21: (obj, x, y, colVal) => {
+        //22 deg left top half
+        this.collideSlopeTwentyLeft(obj, x + 60, y + 60);
+      },
+      22: (obj, x, y, colVal) => {
+        //22 deg right top half
+        this.collideSlopeTwentyRight(obj, x, y + 60, 30);
+      },
+      23: (obj, x, y, colVal) => {
+        //22 deg right top half
+        this.collideSlopeTwentyLeft(obj, x, y + 60, 30);
+      }
+    };
   }
 
   collidePlayer(player, canvas, cleared) {
@@ -166,8 +181,7 @@ class Collision {
     if (player.x < 0) {
       player.x = 0.01;
       player.velX = 0;
-    }
-     else if (player.x + player.width > canvas.width && !cleared) {
+    } else if (player.x + player.width > canvas.width && !cleared) {
       player.x = canvas.width - player.width;
       player.velX = 0;
     }
@@ -175,7 +189,7 @@ class Collision {
     // if (player.y < 0) {
     //   player.velY = 0;
     //   player.y = 0.01;
-    // } else 
+    // } else
     if (player.y > canvas.height) {
       // player.velY = 0;
       // player.y = canvas.height - player.height - 0.1;
@@ -191,11 +205,12 @@ class Collision {
     // if (!obj1 || !obj2) return false;
     // if (obj2.dying || obj2.dead) return false;
 
-    if (obj1.x < obj2.x + obj2.width &&
+    if (
+      obj1.x < obj2.x + obj2.width &&
       obj1.x + obj1.width > obj2.x &&
       obj1.y < obj2.y + obj2.height &&
-      obj1.y + obj1.height > obj2.y) {
-
+      obj1.y + obj1.height > obj2.y
+    ) {
       obj1.velY = -(obj1.velY / 3);
       obj1.velX = -(obj1.velX / 3);
       ///hit
@@ -203,23 +218,21 @@ class Collision {
       obj2.setHit();
       ///change Hit
       return true;
-
     } else {
       return false;
     }
   }
 
-
-
   collideEnemy(obj1, obj2) {
     // if (!obj1 || !obj2) return false;
     if (obj2.dying || obj2.dead) return false;
 
-    if (obj1.x < obj2.x + obj2.width &&
+    if (
+      obj1.x < obj2.x + obj2.width &&
       obj1.x + obj1.width > obj2.x &&
       obj1.y < obj2.y + obj2.height &&
-      obj1.y + obj1.height > obj2.y) {
-
+      obj1.y + obj1.height > obj2.y
+    ) {
       // if (this.hitBox(obj1, obj2)) {
       if (obj1 instanceof Player && !obj1.isHit) {
         obj1.velY = -(obj1.velY / 3);
@@ -236,58 +249,170 @@ class Collision {
 
         return true;
       }
-
     } else {
       return false;
     }
   }
 
-
-
-
-
-
-
-
   ////////PLATFORM COLLISION
 
-  collidePlatformSlopeRight(gameObj, tileLeft, tileBottom) {
+  collideSlopeFortyFiveRight(gameObj, tileLeft, tileBottom) {
     ///60 x60 120 y 60 120 (60, 120] [ 60, 120])
     // debugger
-    console.log(gameObj.bottomSide());
-    console.log(gameObj.rightSide());
-    let midX = gameObj.leftSide() + (gameObj.width / 2);
-    let slopeY = ((Math.tan(45 * Math.PI / 180) / gameObj.rightSide()));
-    let oldSlopeY = ((Math.tan(45 * Math.PI / 180) / gameObj.oldX + gameObj.width))
-    console.log(slopeY);
-    if (gameObj.oldY >= tileBottom - oldSlopeY &&
-      gameObj.getDirY() + gameObj.height >= tileBottom - slopeY
-      // gameObj.oldY + gameObj.height < tileBottom - slopeY
-    ) {
-      // debugger
-      gameObj.onGround = true;
-      gameObj.y = tileBottom - gameObj.height -
-        ((Math.tan(45 * Math.PI / 180) / gameObj.rightSide())) - 0.01;
-      // gameObj.y--;
-      console.log(gameObj.y);
+    let tileY = tileBottom - (gameObj.rightSide() - tileLeft);
+    if (gameObj instanceof Player) {
+      if (gameObj.onGround) {
+        if (
+          gameObj.bottomSide() > tileBottom &&
+          gameObj.oldY + gameObj.height < tileBottom
+        ) {
+          gameObj.y = tileBottom - gameObj.height - 0.05;
+          gameObj.onGround = true;
+          gameObj.jumpCount = 2;
+          return;
+        }
+        gameObj.y = tileY - gameObj.height - 0.05;
+      } else if (!gameObj.onGround) {
+        if (
+          gameObj.rightSide() > tileLeft &&
+          gameObj.bottomSide() > tileY &&
+          gameObj.oldY + gameObj.height < tileY
+        ) {
+          gameObj.onGround = true;
+          gameObj.jumpCount = 2;
+          // gameObj.getDirY() + 60 > tileY) {
+          gameObj.y = tileY - gameObj.height - 0.05;
+        }
+      }
+    }
+
+    // if (gameObj.x + gameObj.width > tileLeft && (gameObj.getDirY() + 60) > tileY) {
+    //   gameObj.y = (tileY - 60) - 0.05;
+    //   gameObj.onGround = true;
+    // }
+    // console.log(gameObj.bottomSide());
+    // console.log(gameObj.rightSide());
+    // let midX = gameObj.leftSide() + (gameObj.width / 2);
+    // let slopeY = ((Math.tan(45 * Math.PI / 180) / gameObj.rightSide()));
+    // let oldSlopeY = ((Math.tan(45 * Math.PI / 180) / gameObj.oldX + gameObj.width))
+    // console.log(slopeY);
+    // if (gameObj.oldY >= tileBottom - oldSlopeY &&
+    //   gameObj.getDirY() + gameObj.height >= tileBottom - slopeY
+    //   // gameObj.oldY + gameObj.height < tileBottom - slopeY
+    // ) {
+    //   // debugger
+    //   gameObj.onGround = true;
+    //   gameObj.y = tileBottom - gameObj.height -
+    //     ((Math.tan(45 * Math.PI / 180) / gameObj.rightSide())) - 0.01;
+    //   // gameObj.y--;
+    //   console.log(gameObj.y);
+    // }
+  }
+
+  collideSlopeFortyFiveLeft(gameObj, tileRight, tileBottom) {
+    let tileY = tileBottom - (tileRight - gameObj.leftSide());
+    if (gameObj instanceof Player) {
+      if (gameObj.onGround) {
+        if (
+          gameObj.bottomSide() > tileBottom &&
+          gameObj.oldY + gameObj.height < tileBottom
+        ) {
+          gameObj.y = tileBottom - gameObj.height - 0.05;
+          gameObj.onGround = true;
+          gameObj.jumpCount = 2;
+          return;
+        }
+        gameObj.y = tileY - gameObj.height - 0.05;
+      } else if (!gameObj.onGround) {
+        if (
+          gameObj.leftSide() < tileRight &&
+          gameObj.bottomSide() > tileY &&
+          gameObj.oldY + gameObj.height < tileY
+        ) {
+          gameObj.onGround = true;
+          gameObj.jumpCount = 2;
+          gameObj.y = tileY - gameObj.height - 0.05;
+        }
+      }
+    }
+  }
+
+  collideSlopeTwentyRight(gameObj, tileLeft, tileBottom, half = 0) {
+    ///60 x60 120 y 60 120 (60, 120] [ 60, 120])
+    // debugger
+    let tileY = tileBottom - (half + (gameObj.rightSide() - tileLeft) / 2);
+    if (gameObj instanceof Player) {
+      if (gameObj.onGround) {
+        if (
+          gameObj.bottomSide() > tileBottom &&
+          gameObj.oldY + gameObj.height < tileBottom
+        ) {
+          gameObj.y = tileBottom - gameObj.height - 0.05;
+          gameObj.onGround = true;
+          gameObj.jumpCount = 2;
+          return;
+        }
+        gameObj.y = tileY - gameObj.height - 0.05;
+      } else if (!gameObj.onGround) {
+        if (
+          gameObj.rightSide() > tileLeft &&
+          gameObj.bottomSide() > tileY &&
+          gameObj.oldY + gameObj.height < tileY
+        ) {
+          gameObj.onGround = true;
+          gameObj.jumpCount = 2;
+          // gameObj.getDirY() + 60 > tileY) {
+          gameObj.y = tileY - gameObj.height - 0.05;
+        }
+      }
+    }
+  }
+
+  collideSlopeTwentyLeft(gameObj, tileRight, tileBottom, half = 30) {
+    let tileY = tileBottom - (half + tileRight - gameObj.leftSide()) / 2;
+    if (gameObj instanceof Player) {
+      if (gameObj.onGround) {
+        if (
+          gameObj.bottomSide() > tileBottom &&
+          gameObj.oldY + gameObj.height < tileBottom
+        ) {
+          gameObj.y = tileBottom - gameObj.height - 0.05;
+          gameObj.onGround = true;
+          gameObj.jumpCount = 2;
+          return;
+        }
+        gameObj.y = tileY - gameObj.height - 0.05;
+      } else if (!gameObj.onGround) {
+        if (
+          gameObj.leftSide() < tileRight &&
+          gameObj.bottomSide() > tileY &&
+          gameObj.oldY + gameObj.height < tileY
+        ) {
+          gameObj.onGround = true;
+          gameObj.jumpCount = 2;
+          gameObj.y = tileY - gameObj.height - 0.05;
+        }
+      }
     }
   }
 
   collidePlatTop(gameObj, tileTop) {
-    if (gameObj.bottomSide() > tileTop && (gameObj.oldY + gameObj.height) < tileTop) {
+    if (
+      gameObj.bottomSide() > tileTop &&
+      gameObj.oldY + gameObj.height < tileTop
+    ) {
       if (gameObj instanceof Projectile) {
         gameObj.setHit();
         //set null
         return true;
       }
       gameObj.velY = 0;
-      gameObj.y = tileTop - gameObj.height - 0.01;
+      gameObj.y = tileTop - gameObj.height - 0.1;
       if (gameObj instanceof Player) {
         gameObj.onGround = true;
         gameObj.jumpCount = 2;
       }
       return true;
-
     } else {
       if (gameObj instanceof Player) {
         gameObj.onGround = false;
@@ -297,11 +422,14 @@ class Collision {
   }
 
   collidePlatBottom(gameObj, tileBottom) {
-    if (gameObj.topSide() < tileBottom && (gameObj.oldY + gameObj.height) > tileBottom) {
+    if (
+      gameObj.topSide() < tileBottom &&
+      gameObj.oldY + gameObj.height > tileBottom
+    ) {
       if (gameObj instanceof Projectile) {
         gameObj.setHit();
       }
-      gameObj.y = tileBottom + 0.05;
+      gameObj.y = tileBottom + 0.1;
       gameObj.velY = 0;
       return true;
     }
@@ -309,13 +437,15 @@ class Collision {
   }
 
   collidePlatRight(gameObj, tileRight) {
-    if (gameObj.leftSide() < tileRight && (gameObj.oldX + gameObj.width) > tileRight) {
+    if (
+      gameObj.leftSide() < tileRight &&
+      gameObj.oldX + gameObj.width > tileRight
+    ) {
       if (gameObj instanceof Projectile) {
         gameObj.setHit();
       }
-      gameObj.x = tileRight + 0.05;
+      gameObj.x = tileRight + 0.1;
       // gameObj.velX = 0;
-
 
       return true;
     }
@@ -327,7 +457,7 @@ class Collision {
       if (gameObj instanceof Projectile) {
         gameObj.setHit();
       }
-      gameObj.x = tileLeft - gameObj.width - 0.05;
+      gameObj.x = tileLeft - gameObj.width - 0.1;
       // gameObj.velX = 0;
       return true;
     }
@@ -373,14 +503,14 @@ class Collision {
     //       this.collidePlatRight(gameObject, x + 60);
     //     }
     //     break;
-    //   case 6: 
+    //   case 6:
     //     if (this.collidePlatTop(gameObject, y)) {
     //       return;
     //     } else {
     //       this.collidePlatBottom(gameObject, y + 60);
     //     }
     //     break;
-    //   case 7: 
+    //   case 7:
     //     //thorn
     //     this.collidePlatBottom(gameObject, y + 10);
     //     if (gameObject instanceof Player) {
@@ -388,14 +518,14 @@ class Collision {
     //     }
 
     //     break;
-    //   case 8: 
+    //   case 8:
     //     if (this.collidePlatTop(gameObject, y)) {
     //       return;
     //     } else {
     //       this.collidePlatRight(gameObject, x + 60);
     //     }
     //     break;
-    //   case 9: 
+    //   case 9:
     //     this.collidePlatLeft(gameObject, x);
     //     break;
     //   case 10:
@@ -422,8 +552,6 @@ class Collision {
     //     break;
     // }
   }
-
-
 }
 
 

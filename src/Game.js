@@ -233,7 +233,7 @@ class Game {
   }
 
   renderEnemies() {
-    if (this.level.screen === 5) {
+    if (this.level.screen === 6) {
       this.enemyCount = Object.keys(this.level.enemies).length;
     }
     
@@ -314,7 +314,7 @@ class Game {
 
   //refactor
   win() {
-    this.won = (this.level.screen === 5 && Object.keys(this.enemies).length === 0) ? true : false;
+    this.won = (this.level.screen === 6 && Object.keys(this.enemies).length === 0) ? true : false;
   }
   
 
