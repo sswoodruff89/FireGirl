@@ -23,6 +23,7 @@ class Helicopter extends Enemy {
     this.frameWidth = options.frameWidth || 116;
     this.frameHeight = options.frameHeight || 80;
     this.projectiles = {};
+    this.bounds = options.bounds;
 
     this.loadImage = this.loadImage.bind(this);
     this.drawEnemy = this.drawEnemy.bind(this);
@@ -120,18 +121,26 @@ class Helicopter extends Enemy {
     this.oldX = this.x;
     this.x += this.velX;
 
+    if (this.bounds) {
+      if ((this.x + (this.width / 2)) < this.bounds[0] || this.x + (this.width / 2) > this.bounds[1]) {
+        this.velX *= -1;
+        this.dir = (this.dir === "right") ? "left" : "right";
+      }
+    } else {
+      if ((this.x + (this.width / 2)) < 0 || this.x + (this.width / 2) > canvas.width) {
+        this.velX *= -1;
+        this.dir = (this.dir === "right") ? "left" : "right";
+      }
 
-    if ((this.x + (this.width / 2)) < 0 || this.x + (this.width / 2) > canvas.width) {
-      this.velX *= -1;
-      this.dir = (this.dir === "right") ? "left" : "right";
     }
+
   }
 
   //////
 
 
 
-  static hel1(pos, dir = "right", velY) {
+  static hel1(pos, bounds, dir = "right", velY) {
     return {
       name: "helicopter",
       image: "./assets/footEn.png",
@@ -142,11 +151,12 @@ class Helicopter extends Enemy {
       health: 100,
       velX: (dir === "left") ? -3 : 3,
       velY: velY || 0,
-      dir: dir
+      dir: dir,
+      bounds: bounds
     };
   }
   
-  static hel2(pos, dir = "right") {
+  static hel2(pos, bounds, dir = "right") {
     return {
       name: "helicopter",
       image: "./assets/footEn.png",
@@ -156,7 +166,8 @@ class Helicopter extends Enemy {
       height: 85,
       health: 100,
       velX: (dir === "left") ? -3 : 3,
-      dir: dir
+      dir: dir,
+      bounds: bounds
     };
   }
 

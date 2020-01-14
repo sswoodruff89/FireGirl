@@ -23,7 +23,7 @@ class Level {
     this.enemyCount = 1;
     this.theme = new Music({src: this.mapKeys[this.screen].theme});
     
-    this.levelLayers = this.loadImages();
+    this.levelLayers = this.loadImages(this.mapKeys[this.screen].levelLayers);
     
 
     this.getTile = this.getTile.bind(this);
@@ -55,15 +55,15 @@ class Level {
     return tileMap;
   }
 
-  loadImages() {
+  loadImages(images) {
     let background = new Image();
-    background.src = "./assets/lv1_back.png";
+    background.src = images.background;
 
     let mid = new Image();
-    mid.src = "./assets/lv1_mid.png";
+    mid.src = images.mid;
 
     let front = new Image();
-    front.src = "./assets/lv1_front.png";
+    front.src = images.front;
 
     return {
       background,
@@ -160,6 +160,10 @@ class Level {
     this.renderMap = this.mapKeys[this.screen].renderMap;
     this.physicalMap = this.mapKeys[this.screen].physicalMap;
     this.enemies = this.mapKeys[this.screen].enemies;
+    if (this.mapKeys[this.screen].levelLayers) {
+
+      this.levelLayers = this.loadImages(this.mapKeys[this.screen].levelLayers);
+    }
     if (this.mapKeys[this.screen].theme) {
       this.theme.pause();
       this.theme = new Music({ src: this.mapKeys[this.screen].theme });
@@ -242,7 +246,12 @@ class Level {
           // 5: new Flower(Flower.flow1([240, 500])),
  
         },
-        theme: "./assets/Sound/ff9_stirring_forest.mp3"
+        theme: "./assets/Sound/ff9_stirring_forest.mp3",
+        levelLayers: {
+          background: "./assets/lv1_back.png",
+          mid: "./assets/lv1_mid.png",
+          front:  "./assets/lv1_front.png"
+        }
       },
       2: {
         renderMap: [
@@ -258,17 +267,22 @@ class Level {
           1,  5,  5,  5, 11,  0,  0,  0,  0,  0,  0,  5,  5,  5,  5
         ],
         physicalMap: [
-          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0,  0,  0,  0, 20, 22,  1,  1,  4,  0,  0,  0,  0,  0,  0,
-          0,  0,  0, 18,  0,  0, 16, 16, 16,  0,  0,  0,  0,  0,  0,
-          0, 20, 22,  0,  0,  0,  0,  0,  0,  0,  0,  3,  1,  1,  1,
-          1,  1,  1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 26,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 26,  0,
+          0,  0,  0,  0,  0,  0,  0,  4, 28,  0,  0,  0,  0, 26,  0,
+          0,  0,  0,  0,  0,  0,  0,  9, 25,  0,  0,  0,  0, 26,  0,
+          0,  0,  0,  0,  0,  0,  0,  9, 27, 28,  0,  0,  0, 26,  0,
+          0,  0,  3,  8,  0,  0, 20,  9, 10,  0,  0,  0,  0, 26, 16,
+          0,  0,  9, 14,  0,  0,  9, 10, 10,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  9, 10,  0,  0,  0, 30, 29, 29, 29,
+          0,  0,  0,  0,  0, 18,  0, 10,  0,  0,  0,  0,  9,  0,  0,
+          1,  1,  1,  1,  1,  0,  0, 10,  0,  0,  0,  0,  9,  0,  0
         ],
+        levelLayers: {
+          background: "./assets/lvl2_back.png",
+          mid: "./assets/lvl2_mid.png",
+          front: "./assets/lvl2_front.png"
+        },
         // physicalMap: [
         //   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
         //   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -282,9 +296,10 @@ class Level {
         //   1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1
         // ],
         enemies: {
-          1: new Helicopter(Helicopter.hel1([100, 100])),
-          2: new Helicopter(Helicopter.hel1([570, 50], "left")),
-          // 3: new Flower(Flower.flow1([600, 500])),
+          1: new Helicopter(Helicopter.hel2([10, 10], [0, 700])),
+          2: new Helicopter(Helicopter.hel2([570, 0], [0, 700], "left")),
+          3: new Helicopter(Helicopter.hel2([10, 140], [0, 320], "left")),
+          // 3: new Flower(Flower.flow2([120, 200])),
           // 4: new Flower(Flower.flow1([400, 320])),
           // 5: new Flower(Flower.flow1([240, 500])),
  
@@ -300,8 +315,8 @@ class Level {
           0,  0,  0, 17,  0, 16,  0, 17,  0, 16,  0,  3,  1,  1,  1,
           0,  0,  0, 16,  0,  0,  0, 16,  0,  0,  0,  4, 50,  5,  5,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  5,  5,  5,
-          1,  1,  2,  0,  0,  0,  0,  0,  0,  0,  0, 55,  5, 40,  5,
-          5,  5,  5,  0,  0,  0,  0,  0,  0,  0,  0,  0,  5,  5,  5
+          1,  1,  1,  1,  1,  0,  0,  0,  0,  0,  0, 55,  5, 40,  5,
+          5,  5,  5,  5,  5,  0,  0,  0,  0,  0,  0,  0,  5,  5,  5
         ],
         // renderMap: [
         //   0,  0,  0,  0, 38, 39,  0,  0,  0,  0,  0,  0,  0,  0,  0,
