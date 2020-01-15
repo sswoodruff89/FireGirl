@@ -352,10 +352,10 @@ class Game {
     if (!this.gameOver) {
       this.loadLevel();
       this.level.renderBackground(this.ctx, this.canvas);
-      if (this.level.screen > 2) this.level.drawLevel(this.ctx);
+      if (this.level.screen > 3) this.level.drawLevel(this.ctx);
       this.player.drawPlayer(this.frameCount);
       this.playerUpdate();
-      if (this.level.screen < 3) {
+      if (this.level.screen < 4) {
         this.level.renderMid(this.ctx, this.canvas);
         this.level.renderFront(this.ctx, this.canvas);
       }
