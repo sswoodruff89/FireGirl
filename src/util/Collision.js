@@ -431,7 +431,7 @@ class Collision {
 
       58: (obj, x, y, colVal, tileSize) => {
         // climb
-        if (obj.x > x + (tileSize / 4) && obj.x < x + (tileSize * (3/4))) {
+        if (obj.x + obj.width > x + (tileSize / 4) && obj.x < x + (tileSize * (3/4))) {
 
           this.climbable(obj, x, y, tileSize);
         }
