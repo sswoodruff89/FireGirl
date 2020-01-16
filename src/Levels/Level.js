@@ -289,12 +289,12 @@ class Level {
         },
 
         enemies: {
-          // 1: new Helicopter(Helicopter.hel2([10, 10], [0, 700])),
-          // // 2: new Helicopter(Helicopter.hel2([570, 0], [0, 700], "left")),
-          // 3: new Helicopter(Helicopter.hel2([10, 140], [0, 335], "left")),
-          // 4: new Spider(Spider.spider1([600, 0], [0, 380])),
-          // 5: new Spider(Spider.spider2([520, 0], [20, 440])),
-          // 6: new Spider(Spider.spider3([150, 0], [20, 250]))
+          1: new Helicopter(Helicopter.hel2([10, 10], [0, 700])),
+          // 2: new Helicopter(Helicopter.hel2([570, 0], [0, 700], "left")),
+          3: new Helicopter(Helicopter.hel2([10, 140], [0, 335], "left")),
+          4: new Spider(Spider.spider1([600, 0], [0, 380])),
+          5: new Spider(Spider.spider2([520, 0], [20, 440])),
+          6: new Spider(Spider.spider3([150, 0], [20, 250]))
 
           // 3: new Flower(Flower.flow2([120, 200])),
           // 4: new Flower(Flower.flow1([400, 320])),
