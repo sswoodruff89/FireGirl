@@ -28,7 +28,7 @@ h1.title {
   display: flex;
   flex-direction: column;
   align-content: center;
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 
 .game-instructions {
@@ -38,7 +38,7 @@ h1.title {
   justify-content: flex-start;
   padding-left: 5vw;
   position: relative;
-  top: 10vh;
+  top: 5vh;
 }
 
 .instructions {
@@ -48,6 +48,7 @@ h1.title {
   width: 20%;
   height: 500px;
   margin-right: 60px;
+  margin-left: 6vw;
   font-size: 1.2vw;
   padding: 10px;
   box-sizing: border-box;
@@ -79,9 +80,16 @@ h1.title {
 .links {
   display: flex;
   width: 100%;
-  justify-content: space-around;
+  position: absolute;
+  bottom: -7vh;
+  justify-content: flex-start;
   color: white;
   list-style: none;
+  margin: 0;
+}
+
+.links li {
+  margin: 0 10vw;
 }
 
 .links a{

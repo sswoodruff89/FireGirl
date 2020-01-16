@@ -12,6 +12,7 @@ class Controller {
   }
 
   keydown(event) {
+    event.preventDefault();
     this.player.idle = false;
     this.player.keydown = true;
 
@@ -79,7 +80,10 @@ class Controller {
     //   // this.player.idle =ß true;
     //   return;
     // }
+    event.preventDefault();
+
     switch (Controller.KEYS[event.keyCode]) {
+
       case "left":
         this.keysPressed.left = false;
         // this.player.velX = 0;

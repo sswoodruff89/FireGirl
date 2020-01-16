@@ -167,7 +167,7 @@ class Player {
       this.fireballs[key] = new Projectile(
         Projectile.fireball(
           [
-            this.leftSide() + this.width / 1.5,
+            this.leftSide() - this.width / 2,
             this.bottomSide() - this.height / 1.8
           ],
           -20,
