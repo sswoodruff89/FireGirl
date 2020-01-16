@@ -289,12 +289,12 @@ class Level {
         },
 
         enemies: {
-          1: new Helicopter(Helicopter.hel2([10, 10], [0, 700])),
-          // 2: new Helicopter(Helicopter.hel2([570, 0], [0, 700], "left")),
-          3: new Helicopter(Helicopter.hel2([10, 140], [0, 335], "left")),
-          4: new Spider(Spider.spider1([600, 0], [0, 380])),
-          5: new Spider(Spider.spider2([520, 0], [20, 440])),
-          6: new Spider(Spider.spider3([150, 0], [20, 250]))
+          // 1: new Helicopter(Helicopter.hel2([10, 10], [0, 700])),
+          // // 2: new Helicopter(Helicopter.hel2([570, 0], [0, 700], "left")),
+          // 3: new Helicopter(Helicopter.hel2([10, 140], [0, 335], "left")),
+          // 4: new Spider(Spider.spider1([600, 0], [0, 380])),
+          // 5: new Spider(Spider.spider2([520, 0], [20, 440])),
+          // 6: new Spider(Spider.spider3([150, 0], [20, 250]))
 
           // 3: new Flower(Flower.flow2([120, 200])),
           // 4: new Flower(Flower.flow1([400, 320])),
@@ -323,12 +323,12 @@ class Level {
           0, 18, 58,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0, 18, 58,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0, 18, 58,  0,  0,  0, 33,  0,  0,  0,  0,  0,  0, 37, 39,
-          0, 18,  0,  0,  0,  0, 41, 35,  0,  0,  0, 37, 39,  0,  0,
+          0, 18,  0,  0,  0,  0, 41, 34,  0,  0,  0, 37, 39,  0,  0,
          16,  8,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  1,  1,  1,
           0,  0,  0,  0,  0,  0, 33, 33, 33,  0,  0, 44, 16, 42,  3,
          15, 15, 15, 30,  0,  0, 16, 16, 45,  0,  0,  0,  0,  0,  0,
           5,  0, 40,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          5,  5,  0,  0, 15, 36, 33, 35, 35, 30,  0, 33, 33, 33, 33
+          5,  5,  0,  0, 15, 15, 15, 15, 15, 20,  0, 33, 33, 33, 33
         ],
         enemies: {
           // 1: new Helicopter(Helicopter.hel1([100, 25])),

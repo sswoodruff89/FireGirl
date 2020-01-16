@@ -312,7 +312,13 @@ class Collision {
       34: (obj, x, y, colVal, tileSize) => {
         //////////SLOPES/////////////
         //45 deg left
-        this.collideSlopeFortyFiveLeft(obj, x + tileSize, y + tileSize);
+
+        if (this.collidePlatBottom(obj, y + tileSize)) {
+          return;
+        } else {
+
+          this.collideSlopeFortyFiveLeft(obj, x + tileSize, y + tileSize);
+        }
       },
       35: (obj, x, y, colVal, tileSize) => {
         //45 deg right
@@ -339,12 +345,12 @@ class Collision {
       40: (obj, x, y, colVal, tileSize) => {
         //////////////COLLIDE WITH BOTTOM OF SLOPE//////////
         //45 deg right bottom
-        ///  /__
+        ///  /
         this.collideSlopeFortyFiveRightBottom(obj, x, y + tileSize);
       },
       41: (obj, x, y, colVal, tileSize) => {
         //45 deg left bottom
-          ///  __\
+          ///  \
         this.collideSlopeFortyFiveLeftBottom(obj, x + tileSize, y + tileSize);
       },
       42: (obj, x, y, colVal, tileSize) => {
@@ -874,18 +880,18 @@ class Collision {
 
     let tileY = tileBottom - (half + (gameObj.rightSide() - tileLeft) / 2);
     if (gameObj instanceof Player) {
-      if (gameObj.onGround) {
-        if (
-          gameObj.bottomSide() > tileBottom &&
-          gameObj.oldY + gameObj.height < tileBottom
-        ) {
-          gameObj.y = tileBottom - gameObj.height - 0.05;
-          gameObj.onGround = true;
-          gameObj.jumpCount = 2;
-          return;
-        }
-        gameObj.y = tileY - gameObj.height - 0.05;
-      } else if (!gameObj.onGround) {
+      // if (gameObj.onGround) {
+      //   if (
+      //     gameObj.bottomSide() > tileBottom &&
+      //     gameObj.oldY + gameObj.height < tileBottom
+      //   ) {
+      //     gameObj.y = tileBottom - gameObj.height - 0.05;
+      //     gameObj.onGround = true;
+      //     gameObj.jumpCount = 2;
+      //     return;
+      //   }
+      //   gameObj.y = tileY - gameObj.height - 0.05;
+      // } else if (!gameObj.onGround) {
         if (
           gameObj.rightSide() > tileLeft &&
           gameObj.bottomSide() > tileY &&
@@ -896,7 +902,7 @@ class Collision {
 
           gameObj.y = tileY - gameObj.height - 0.05;
         }
-      }
+      // }
     }
   }
 
