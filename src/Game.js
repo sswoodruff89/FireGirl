@@ -368,7 +368,7 @@ class Game {
       this.renderEnemyProjectiles();
       this.renderFireballs();
       
-      // this.HUD.drawHUD(this.canvas, this.ctx, this.player, this.frameCount);
+      this.HUD.drawHUD(this.canvas, this.ctx, this.player, this.frameCount);
 
     } else {
       if (!this.won) {
