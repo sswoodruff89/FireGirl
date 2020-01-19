@@ -163,12 +163,12 @@ class Vinehead extends Enemy {
   //   }, 500);
   // }
 
-  move(canvas, x, y) {
+  move(canvas, player) {
     this.oldY = this.y;
     this.oldX = this.x;
     this.x += this.velX;
     this.y += this.velY;
-    this.checkPlayerPos(x, y);
+    this.checkPlayerPos(player.x, player.y);
 
     // if ((this.x + (this.width / 2)) < 0 || this.x + (this.width / 2) > canvas.width) {
     //   this.velX *= -1;

@@ -18,20 +18,24 @@ class Player {
       pos: [20, 210],
       ctx: this.ctx,
       canvas: this.canvas,
-      width: 30,
+      // width: 30,
       // width: 40,
-      height: 45
+      width: 42.5,
+      height: 82
+      // height: 45
       // height: 54
     });
     this.health = this.character.health;
     this.spriteMap = this.character.loadImage();
+    this.newSprite = this.character.loadImage2();
     this.fireballs = {};
     
     this.vel = this.character.vel;
     this.x = this.character.x;
     this.y = this.character.y;
-    this.idleWidth = 30;
-    this.runWidth = 31.5;
+    this.idleWidth = 42.5;
+    this.runWidth = 57;
+    this.attackWidth =
     this.oldX = this.x;
     this.oldY = this.y;
     this.width = this.character.width;
@@ -47,6 +51,9 @@ class Player {
     this.canClimb = false;
     this.climbing = false;
     this.frameCount = 0;
+    this.attacking = false;
+    this.upPressed = false;
+    this.attackAnimTimeout = "";
     this.isHit = false;
     this.dying = false;
     this.dead = false;
@@ -57,7 +64,10 @@ class Player {
     this.jump = this.jump.bind(this);
     // this.move = this.move.bind(this);
     this.shootFire = this.shootFire.bind(this);
-
+    this.drawAttack = this.drawAttack.bind(this);
+    this.drawRunning = this.drawRunning.bind(this);
+    this.drawIdle = this.drawIdle.bind(this);
+    this.drawSprite = this.drawSprite.bind(this);
 
     this.setOldPos = this.setOldPos.bind(this);
     this.inAir = this.inAir.bind(this);
@@ -80,11 +90,13 @@ class Player {
     if (this.velX === 0) {
       if (this.direction === "right") {
         this.ctx.drawImage(
-          this.spriteMap,
-          (Math.floor(frameCount / 2) % 10) * 147,
-          251,
-          147,
-          251,
+          this.newSprite,
+          // this.spriteMap,
+          0,
+          // this.spriteMap,
+          529,
+          89,
+          175,
           this.x, this.y,
           this.width, this.height
           // this.width - 5, this.height
@@ -92,11 +104,16 @@ class Player {
       } else {
         this.ctx.scale(-1, 1);
         this.ctx.drawImage(
-          this.spriteMap,
-          (Math.floor(frameCount / 2) % 10) * 147,
-          251,
-          147,
-          251,
+          // this.spriteMap,
+          // (Math.floor(frameCount / 2) % 10) * 147,
+          // 251,
+          // 147,
+          // 251,
+          this.newSprite,
+          0,
+          529,
+          89,
+          175,
           -this.x - this.width, this.y,
           // -this.x - this.width - 5, this.y,
           this.width, this.height
@@ -106,24 +123,28 @@ class Player {
       }
     } else if (this.velX > 0) {
       this.ctx.drawImage(
-        this.spriteMap,
-        (frameCount % 10) * 186,
+        this.newSprite,
+        // this.spriteMap,
+        (Math.floor(frameCount / 2) % 12) * 126.25 + 1,
+        // this.spriteMap,
         0,
-        186,
-        251,
+        126.25,
+        175,
         this.x, this.y,
-        this.width, this.height
+        this.width + 5, this.height
       );
     } else if (this.velX < 0) {
       this.ctx.scale(-1, 1);
       this.ctx.drawImage(
-        this.spriteMap,
-        (frameCount % 10) * 186,
+        this.newSprite,
+        // this.spriteMap,
+        (Math.floor(frameCount / 2) % 12) * 126.25 + 1,
+        // this.spriteMap,
         0,
-        186,
-        251,
+        126.25,
+        175,
         -(this.x) - this.width, this.y,
-        this.width, this.height
+        this.width + 5, this.height
       );
       this.ctx.scale(-1, 1);
 
@@ -131,56 +152,247 @@ class Player {
     ///change this.width and height based on movement
   }
 
+  drawRunning(frameCount) {
+    if (this.direction === "right") {
+      this.ctx.drawImage(
+        this.newSprite,
+        // this.spriteMap,
+        (Math.floor(frameCount / 2) % 12) * 126.4 + 1,
+        // this.spriteMap,
+        0,
+        126.4,
+        175,
+        this.x, this.y,
+        this.width + 5, this.height
+      );
+    } else {
+      this.ctx.scale(-1, 1);
+      this.ctx.drawImage(
+        this.newSprite,
+        // this.spriteMap,
+        (Math.floor(frameCount / 2) % 12) * 126.4 + 1,
+        // this.spriteMap,
+        0,
+        126.4,
+        175,
+        -(this.x) - this.width, this.y,
+        this.width + 5, this.height
+      );
+      this.ctx.scale(-1, 1);
+
+    } 
+  }
+
+
+  drawAttack(frameCount, isRunning) {
+    if (isRunning) {
+      if (this.direction === "right") {
+        this.ctx.drawImage(
+          this.newSprite,
+          (Math.floor(frameCount / 2) % 4) * 160,
+          176,
+          160,
+          175,
+          this.x, this.y,
+          this.width + (this.width / 3), this.height
+        );
+      } else if (this.direction === "left") {
+        this.ctx.scale(-1, 1);
+        this.ctx.drawImage(
+          this.newSprite,
+          (Math.floor(frameCount / 2) % 4) * 160,
+          176,
+          160,
+          175,
+          -this.x - this.width, this.y,
+          this.width + (this.width / 3), this.height
+        );
+        this.ctx.scale(-1, 1);
+      }
+    } else {
+
+      if (this.direction === "right") {
+        if (this.upPressed) {
+          this.ctx.drawImage(
+            this.newSprite,
+            (Math.floor(frameCount / 2) % 4) * 89,
+            730,
+            89,
+            195,
+            this.x, this.y - (this.height / 10),
+            this.width, this.height * 1.1
+          );
+        } else {
+          this.ctx.drawImage(
+            this.newSprite,
+            (Math.floor(frameCount / 2) % 4) * 125.1,
+            353,
+            123.25,
+            175,
+            this.x, this.y,
+            this.width + (this.width / 2.5), this.height
+          );
+        }
+      } else if (this.direction === "left") {
+        this.ctx.scale(-1, 1);
+        if (this.upPressed) {
+          this.ctx.drawImage(
+            this.newSprite,
+            (Math.floor(frameCount / 2) % 4) * 89,
+            730,
+            89,
+            195,
+            -this.x - this.width, this.y - (this.height / 10),
+            this.width, this.height * 1.1
+          );
+        } else {
+          this.ctx.drawImage(
+            this.newSprite,
+            (Math.floor(frameCount / 2) % 4) * 125.1,
+            353,
+            123.25,
+            175,
+            -this.x - this.width, this.y,
+            this.width + (this.width / 2.5), this.height
+          );
+        }
+        this.ctx.scale(-1, 1);
+    }
+  }
+}
+
+  drawIdle(frameCount) {
+    if (this.direction === "right") {
+      this.ctx.drawImage(
+        this.newSprite,
+        0,
+        529,
+        89,
+        175,
+        this.x, this.y,
+        this.width, this.height
+        // this.width - 5, this.height
+      );
+    } else {
+      this.ctx.scale(-1, 1);
+      this.ctx.drawImage(
+        this.newSprite,
+        0,
+        529,
+        89,
+        175,
+        -this.x - this.width, this.y,
+        // -this.x - this.width - 5, this.y,
+        this.width, this.height
+        // this.width - 5, this.height
+      );
+      this.ctx.scale(-1, 1);
+    }
+  }
+
+  drawSprite(frameCount) {
+    this.setDying();
+    // this.isIdle();
+    if (this.isHit && frameCount % 3 === 0) return;
+    
+    if (this.isRunning) {
+      (!this.attacking) ? this.drawRunning(frameCount) : this.drawAttack(frameCount, this.isRunning);
+    } else {
+      (!this.attacking) ? this.drawIdle(frameCount) : this.drawAttack(frameCount, this.isRunning);
+    }
+  }
+
+
+
   shootFire(vert = null) {
-    if (Object.keys(this.fireballs).length === 3) return;
+    if (Object.keys(this.fireballs).length === 3) {
+      this.attacking = false;
+      return;
+    }
+
+    console.log("------");
+    console.log(this.upPressed);
+    console.log(this.attacking);
     let key;
     for (let i = 1; i <= 3; i++) {
       if (!this.fireballs[i]) {
         key = i;
+        clearTimeout(this.attackAnimTimeout);
+        this.attacking = true;
+        this.attackAnimTimeout = setTimeout(() => {
+          this.attacking = false
+        }, 200)
+        ///////
         break;
       }
     }
-    if (vert === "up") {
-      this.fireballs[key] = new Projectile(
-        Projectile.fireballVert(
-          [this.rightSide() - (this.width / 2),
-          this.bottomSide() + this.height],
-          0, -20, vert)
-      );
-    } else if (vert === "down") {
-      this.fireballs[key] = new Projectile(
-        Projectile.fireballVert(
-          [this.rightSide() - (this.width / 2),
-          this.bottomSide() - this.height],
-          0, 20, vert)
-      );
-      this.velY -= 10;
-      this.jumpCount -= 1;
-    } else if (this.direction === "right") {
-      this.fireballs[key] = new Projectile(
-        Projectile.fireball(
-          [this.rightSide() - (this.width / 1.5),
-          this.bottomSide() - (this.height / 1.8)],
-          20, 0, "right")
+
+    if (this.direction === "right") {
+      if (vert === "up") {
+        this.fireballs[key] = new Projectile(
+          Projectile.fireballVert(
+            [this.rightSide() - (this.width / 2),
+            this.y + (this.height)],
+            // [this.rightSide() - (this.width / 2),
+            // this.bottomSide() + this.height],
+            0, -20, vert)
         );
-    } else if (this.direction === "left"){
-      this.fireballs[key] = new Projectile(
-        Projectile.fireball(
-          [
-            this.leftSide() - this.width / 2,
-            this.bottomSide() - this.height / 1.8
-          ],
-          -20,
-          0,
-          "left"
-        )
-      );
+      } else if (vert === "down") {
+        this.fireballs[key] = new Projectile(
+          Projectile.fireballVert(
+            [this.rightSide() - (this.width / 2),
+            this.bottomSide() - this.height],
+            0, 20, vert)
+        );
+      } else {
+        this.fireballs[key] = new Projectile(
+          Projectile.fireball(
+            [this.rightSide() - (this.width / 10),
+            this.topSide() + (this.height / 5)],
+            20, 0, "right")
+        );
+      }
+
+    } else if (this.direction === "left") {
+
+      if (vert === "up") {
+        this.fireballs[key] = new Projectile(
+          Projectile.fireballVert(
+            [this.rightSide() - (this.width * .75),
+              this.y + (this.height)],
+            // [this.rightSide() - (this.width / 2),
+            // this.bottomSide() + this.height],
+            0, -20, vert)
+        );
+      } else if (vert === "down") {
+        this.fireballs[key] = new Projectile(
+          Projectile.fireballVert(
+            [this.rightSide() - (this.width / 2),
+            this.bottomSide() - this.height],
+            0, 20, vert)
+        );
+        this.velY -= 10;
+        this.jumpCount -= 1;
+      } else {
+        this.fireballs[key] = new Projectile(
+          Projectile.fireball(
+            [
+              this.leftSide() - (this.width + (this.width / 2)),
+              this.topSide() + (this.height / 5)
+            ],
+            -20,
+            0,
+            "left"
+          )
+        );
         
+      }
     }
 
   }
     
   setHit(damage = 10) {
+    debugger
     if (!this.isHit) {
       this.isHit = true;
       this.hitCooldown = setTimeout(() => {
@@ -193,6 +405,7 @@ class Player {
   setDying() {
 
     if (this.health <= 0) {
+      this.health = 0;
       this.dying = true;
       this.damage = 0;
       this.velX = 0;

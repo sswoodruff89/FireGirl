@@ -119,7 +119,7 @@ class Game {
 
     [left, top] = this.getTopLeftPos();
     colVal = physMap[top * cols + left];
-    colVal === 33 ? floorCount++ : "";
+    colVal === 58 ? climbCount++ : "";
     this.collider.collidePlatform(
       this.player,
       left * this.tileSize,
@@ -130,7 +130,7 @@ class Game {
 
     [right, top] = this.getTopRightPos();
     colVal = physMap[top * cols + right];
-    colVal === 33 ? floorCount++ : "";
+    colVal === 58 ? climbCount++ : "";
 
     this.collider.collidePlatform(
       this.player,
@@ -143,7 +143,7 @@ class Game {
     [left, bottom] = this.getBottomLeftPos();
     colVal = physMap[bottom * cols + left];
     (colVal === 0) ? floorCount++ : "";
-    colVal === 33 ? floorCount++ : "";
+    colVal === 58 ? climbCount++ : "";
     this.collider.collidePlatform(
       this.player,
       left * this.tileSize,
@@ -156,7 +156,7 @@ class Game {
     [right, bottom] = this.getBottomRightPos();
     colVal = physMap[bottom * cols + right];
     (colVal === 0) ? floorCount++ : "";
-    colVal === 33 ? floorCount++ : "";
+    colVal === 58 ? climbCount++ : "";
     if (this.player.canClimb && climbCount === 0) this.player.canClimb = false;
     if (floorCount === 2) {
       this.player.onGround = false;
@@ -267,13 +267,13 @@ class Game {
     
     if (!this.cleared) {
       for (let key in this.enemies) {
-        if (this.enemies[key].dying && !this.enemies[key].dead) continue;
+        // if (this.enemies[key].dying && !this.enemies[key].dead) continue;
         this.projectilePlatformCheck(this.enemies[key]);
 
         if (!this.enemies[key].dead) {
-          this.enemies[key].move(this.canvas, this.player.x, this.player.y);
-          this.collider.collideEnemy(this.player, this.enemies[key]);
           this.enemies[key].drawEnemy(this.ctx, this.frameCount);
+          this.collider.collideEnemy(this.player, this.enemies[key]);
+          this.enemies[key].move(this.canvas, this.player, this.ctx);
 
         } else {
           delete this.enemies[key];
@@ -353,7 +353,8 @@ class Game {
       this.loadLevel();
       this.level.renderBackground(this.ctx, this.canvas);
       if (this.level.screen > 3) this.level.drawLevel(this.ctx);
-      this.player.drawPlayer(this.frameCount);
+      this.player.drawSprite(this.frameCount);
+      // this.player.drawPlayer(this.frameCount);
       this.playerUpdate();
       if (this.level.screen < 4) {
         this.level.renderMid(this.ctx, this.canvas);
@@ -440,6 +441,8 @@ class Game {
   }
 
 }
+
+
 
 
 

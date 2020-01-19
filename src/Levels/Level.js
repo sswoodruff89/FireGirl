@@ -12,7 +12,7 @@ class Level {
     this.ctx = options.ctx;
     this.player = options.player;
     this.mapKeys = options.mapKeys;
-    this.screen = 1;
+    this.screen = 6;
     this.renderMap = options.renderMap || this.mapKeys[this.screen].renderMap;
     this.physicalMap = options.physicalMap || this.mapKeys[this.screen].physicalMap;
     this.cols = 15;
@@ -274,8 +274,8 @@ class Level {
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 17,  0,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 17,  0,
           0,  0,  0,  0,  0,  0,  0, 12, 39,  0,  0,  0,  0, 17,  0,
-          0,  0,  0,  0,  0,  0,  0,  4, 17,  0,  0,  0,  0, 17,  0,
-          0,  0, 19, 20,  0,  0,  0,  4, 30, 30,  0,  0,  0, 17,  0,
+          0,  0,  0,  0,  0,  0,  0,  4, 18,  0,  0,  0,  0, 17,  0,
+          0,  0, 19, 20,  0,  0,  0,  4, 18, 30,  0,  0,  0, 17,  0,
           0,  0,  4,  5,  0,  0, 37,  4, 40,  0,  0,  0,  0, 31, 16,
           0,  0,  9,  8,  0,  0,  4,  5,  0,  0,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  4,  5,  0,  0,  0, 31, 15, 15, 15,
@@ -289,12 +289,12 @@ class Level {
         },
 
         enemies: {
-          1: new Helicopter(Helicopter.hel2([10, 10], [0, 700])),
-          // 2: new Helicopter(Helicopter.hel2([570, 0], [0, 700], "left")),
-          3: new Helicopter(Helicopter.hel2([10, 140], [0, 335], "left")),
-          4: new Spider(Spider.spider1([600, 0], [0, 380])),
-          5: new Spider(Spider.spider2([520, 0], [20, 440])),
-          6: new Spider(Spider.spider3([150, 0], [20, 250]))
+          // 1: new Helicopter(Helicopter.hel2([10, 10], [0, 700])),
+          // // 2: new Helicopter(Helicopter.hel2([570, 0], [0, 700], "left")),
+          // 3: new Helicopter(Helicopter.hel2([10, 140], [0, 335], "left")),
+          // 4: new Spider(Spider.spider1([600, 0], [0, 380])),
+          // 5: new Spider(Spider.spider2([520, 0], [20, 440])),
+          // 6: new Spider(Spider.spider3([150, 0], [20, 250]))
 
           // 3: new Flower(Flower.flow2([120, 200])),
           // 4: new Flower(Flower.flow1([400, 320])),
@@ -310,7 +310,7 @@ class Level {
           0, 18,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0, 18,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0, 18,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-         16,  8,  0,  0,  0, 16,  0,  0,  0, 16,  0,  3,  1,  1,  1,
+         16, 32,  0,  0,  0, 16,  0,  0,  0, 16,  0,  3,  1,  1,  1,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4, 50,  5,  5,
          29, 29, 29, 30,  0,  0,  0,  0,  0,  0,  0,  4,  5,  5,  5,
           0,  0, 40,  0,  0,  0,  0,  0,  0,  0,  0, 55,  5, 40,  5,
@@ -322,12 +322,12 @@ class Level {
           0, 18, 58,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0, 18, 58,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0, 18, 58,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0, 18, 58,  0,  0,  0, 33,  0,  0,  0,  0,  0,  0, 37, 39,
-          0, 18,  0,  0,  0,  0, 41, 34,  0,  0,  0, 37, 39,  0,  0,
+          0, 18, 58,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 37, 39,
+          0, 18,  0,  0,  0,  0, 47, 34,  0,  0,  0, 37, 39,  0,  0,
          16,  8,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  1,  1,  1,
           0,  0,  0,  0,  0,  0, 33, 33, 33,  0,  0, 44, 16, 42,  3,
-         15, 15, 15, 30,  0,  0, 16, 16, 45,  0,  0,  0,  0,  0,  0,
-          5,  0, 40,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         15, 36,  0,  0,  0,  0, 16, 16, 45,  0,  0,  0,  0,  0,  0,
+          5,  0, 2, 24,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           5,  5,  0,  0, 15, 15, 15, 15, 15, 20,  0, 33, 33, 33, 33
         ],
         enemies: {
@@ -443,9 +443,14 @@ class Level {
           1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1
         ],
         enemies: {
-          1: new BossVinehead(BossVinehead.boss1([500, 100], this.player))
+          1: new BossVinehead(BossVinehead.boss1([650, 100], this.player))
         },
-        theme: "./assets/Sound/dk3_boss_boogie.mp3"
+        theme: "./assets/Sound/dk3_boss_boogie.mp3",
+        levelLayers: {
+          background: "./assets/Level1/lv1_back.png",
+          // mid: "./assets/Level1/lv1_mid.png",
+          // front: "./assets/Level1/lv1_front.png"
+        }
       }
     };
   }

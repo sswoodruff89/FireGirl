@@ -30,8 +30,9 @@ class Controller {
         break;
       case "up":
         this.keysPressed.up = true;
+        this.player.upPressed = this.keysPressed.up;
+
         if (this.player.canClimb) {
-          console.log("sdlfska;sdlf");
           console.log(this.player.canClimb);
           console.log(this.player.idle);
 
@@ -93,11 +94,14 @@ class Controller {
         break;
       case "right":
         this.keysPressed.right = false;
+        
         // this.player.velX *= -1;
         if (!this.keysPressed.left && !this.keysPressed.right) this.player.velX = 0;
         break;
       case "up":
         this.keysPressed.up = false;
+        this.player.upPressed = this.keysPressed.up;
+
         if (this.player.climbing) this.player.climbing = false;
         break;
       case "down":

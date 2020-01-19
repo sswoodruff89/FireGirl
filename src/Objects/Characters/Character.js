@@ -15,12 +15,17 @@ class Character extends GameObject {
     this.vel = [0, 0];
     this.health = 200;
  
-    
   }
 
   loadImage() {
     let spriteMap = new Image();
     spriteMap.src = "./assets/charSprite.png";
+    return spriteMap;
+    // this.tileMap.onLoad = this.drawLevel(ctx);
+  }
+  loadImage2() {
+    let spriteMap = new Image();
+    spriteMap.src = "./assets/SeisaSpriteSheet.png";
     return spriteMap;
     // this.tileMap.onLoad = this.drawLevel(ctx);
   }
