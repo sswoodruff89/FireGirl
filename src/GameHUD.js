@@ -5,10 +5,12 @@ class GameHUD {
     this.fire = this.loadImage();
     
 
+
     this.drawHealth = this.drawHealth.bind(this);
     this.loadImage = this.loadImage.bind(this);
     this.drawHUD = this.drawHUD.bind(this);
     this.drawAmmo = this.drawAmmo.bind(this);
+    this.drawPoints = this.drawPoints.bind(this);
   }
 
   loadImage() {
@@ -17,30 +19,31 @@ class GameHUD {
     return img;
   }
 
-  drawHUD(canvas, ctx, player, frameCount) {
+  drawHUD(canvas, ctx, player, frameCount, points) {
     ctx.beginPath();
-    ctx.rect(0, (canvas.height - 40), canvas.width, 40);
+    ctx.rect(0, (canvas.height - 55), canvas.width, 55);
     ctx.fillStyle = "black";
     ctx.fill();
     ctx.closePath();
 
     this.drawHealth(canvas, ctx, player);
+    this.drawPoints(ctx, canvas, points)
     this.drawAmmo(canvas, ctx, player, frameCount);
   }
 
 
   drawHealth(canvas, ctx, player) {
 
-    let healthMeter = ((canvas.width / 3) * (player.health / 200));
+    let healthMeter = ((canvas.width / 2) * (player.health / 200));
 
     ctx.beginPath();
-    ctx.rect(20, (canvas.height - 30), (canvas.width / 3), 18);
+    ctx.rect(150, (canvas.height - 40), (canvas.width / 2), 20);
     ctx.fillStyle = "rgba(255, 255, 255, .1)";
     ctx.fill();
     ctx.closePath();
 
     ctx.beginPath();
-    ctx.rect(20, (canvas.height - 30), (healthMeter), 18);
+    ctx.rect(150, (canvas.height - 40), (healthMeter), 20);
     ctx.fillStyle = "red";
     ctx.fill();
     ctx.closePath();
@@ -78,44 +81,61 @@ class GameHUD {
 
 
     switch (Object.keys(player.fireballs).length) {
-      case 0: 
+      case 0:
         ctx.drawImage(
           this.fire,
-          (frameCount % 8) * 43 + (((frameCount % 8) + 1) * 21),
+          (frameCount % 8) * 43 + ((frameCount % 8) + 1) * 21,
           400,
           22,
           35,
-          canvas.width - 165, canvas.height - 40,
-          30, 30
+          canvas.width - 170,
+          canvas.height - 50,
+          40,
+          40
         );
       case 1:
         ctx.drawImage(
           this.fire,
-          (frameCount % 8) * 43 + (((frameCount % 8) + 1) * 21),
+          (frameCount % 8) * 43 + ((frameCount % 8) + 1) * 21,
           400,
           22,
           35,
-          canvas.width - 114, canvas.height - 40,
-          30, 30
+          canvas.width - 120,
+          canvas.height - 50,
+          40,
+          40
         );
       case 2:
         ctx.drawImage(
           this.fire,
-          (frameCount % 8) * 43 + (((frameCount % 8) + 1) * 21),
+          (frameCount % 8) * 43 + ((frameCount % 8) + 1) * 21,
           400,
-          25,
+          22,
           35,
-          canvas.width - 64, canvas.height - 40,
-          30, 30
+          canvas.width - 70,
+          canvas.height - 50,
+          40,
+          40
         );
       default:
         break;
-
     }
 
 
   }
 
+  drawPoints(ctx, canvas, points) {
+        ctx.font = "20px Arial";
+        // ctx.fillStyle = "rgb(46, 2, 2)";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "left";
+        ctx.fillText(
+          `Score: ${points}`,
+          20,
+          canvas.height - 25
+        );
+
+  }
 
 }
 

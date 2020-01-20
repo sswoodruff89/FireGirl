@@ -48,6 +48,7 @@ class GameView {
   newGame() {
     if (!this.game || this.game.gameOver) {
       this.game = new Game(this.canvas, this.ctx);
+      this.game.HUD = new GameHUD();
       this.game.level.theme.play();
     }
   }

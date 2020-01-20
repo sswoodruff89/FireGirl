@@ -25,6 +25,8 @@ class Helicopter extends Enemy {
     this.projectiles = {};
     this.bounds = options.bounds;
 
+    this.points = 6 * options.multiplier;
+
     this.loadImage = this.loadImage.bind(this);
     this.drawEnemy = this.drawEnemy.bind(this);
     this.shootProj = this.shootProj.bind(this);
@@ -140,7 +142,7 @@ class Helicopter extends Enemy {
 
 
 
-  static hel1(pos, bounds, dir = "right", velY) {
+  static hel1(pos, bounds, dir = "right", velY, multiplier = 1) {
     return {
       name: "helicopter",
       image: "./assets/footEn.png",
@@ -152,11 +154,12 @@ class Helicopter extends Enemy {
       velX: (dir === "left") ? -3 : 3,
       velY: velY || 0,
       dir: dir,
-      bounds: bounds
+      bounds: bounds,
+      multiplier: multiplier
     };
   }
   
-  static hel2(pos, bounds, dir = "right") {
+  static hel2(pos, bounds, dir = "right", multiplier = .5) {
     return {
       name: "helicopter",
       image: "./assets/footEn.png",
@@ -167,7 +170,8 @@ class Helicopter extends Enemy {
       health: 100,
       velX: (dir === "left") ? -3 : 3,
       dir: dir,
-      bounds: bounds
+      bounds: bounds,
+      multiplier: multiplier
     };
   }
 

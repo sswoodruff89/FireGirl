@@ -26,6 +26,9 @@ class Spider extends Enemy {
     this.bounds = options.bounds;
     this.damage = options.damage;
 
+    this.points = 5 * options.multiplier;
+
+
 
     this.projectiles = {};
 
@@ -74,39 +77,8 @@ class Spider extends Enemy {
         this.width, this.height
       );
       ctx.scale(1, -1);
-
   }
 
-  shootProj() {
-
-    if (Object.keys(this.projectiles).length === 3) return;
-
-    let key;
-    for (let i = 1; i <= 3; i++) {
-      if (!this.projectiles[i]) {
-        key = i;
-        break;
-      }
-    }
-
-    if (this.dir === "left") {
-
-      this.projectiles[key] = new Projectile(
-        Projectile.helibullet(
-          [this.leftSide() + 30,
-          this.bottomSide() - 23],
-          -9, 7, "left")
-      );
-    } else {
-      this.projectiles[key] = new Projectile(
-        Projectile.helibullet(
-          [this.rightSide() - 40,
-          this.bottomSide() - 23],
-          9, 7, "right")
-      );
-
-    }
-  }
 
   setDying() {
     if (this.health <= 0) {
@@ -165,7 +137,7 @@ class Spider extends Enemy {
 
 
 
-  static spider1(pos, bounds, dir = "right") {
+  static spider1(pos, bounds, multiplier = 1) {
     return {
       name: "spider",
       image: "./assets/spider.png",
@@ -176,12 +148,12 @@ class Spider extends Enemy {
       health: 110,
       velX: 0,
       velY: 1,
-      dir: dir,
       damage: 25,
-      bounds: bounds
+      bounds: bounds,
+      multiplier: multiplier
     };
   }
-  static spider2(pos, bounds, dir = "right") {
+  static spider2(pos, bounds, multiplier = .6) {
     return {
       name: "spider",
       image: "./assets/spider.png",
@@ -192,12 +164,12 @@ class Spider extends Enemy {
       health: 70,
       velX: 0,
       velY: 1.5,
-      dir: dir,
       damage: 30,
-      bounds: bounds
+      bounds: bounds,
+      multiplier: multiplier
     };
   }
-  static spider3(pos, bounds, dir = "right") {
+  static spider3(pos, bounds, multiplier = 0.2) {
     return {
       name: "spider",
       image: "./assets/spider.png",
@@ -208,9 +180,9 @@ class Spider extends Enemy {
       health: 70,
       velX: 0,
       velY: 2.5,
-      dir: dir,
       bounds: bounds,
-      damage: 50
+      damage: 50,
+      multiplier: multiplier
     };
   }
 

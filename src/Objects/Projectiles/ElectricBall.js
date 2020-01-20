@@ -123,7 +123,7 @@ class ElectricBall extends Projectile {
 
     timeOutHit() {
         this.hitTimeout = setTimeout(() => {
-            this.setHit()
+            this.isHit = true;
         }, 7000);
     }
 

@@ -38,6 +38,8 @@ class Game {
     this.embers.src = "./assets/embers.jpg";
     // this.getPlayerTilePos = this.getPlayerTilePos.bind(this);
 
+    this.highScore = 0;
+
     this.getTopLeftPos = this.getTopLeftPos.bind(this);
     this.getTopRightPos = this.getTopRightPos.bind(this);
     this.getBottomLeftPos = this.getBottomLeftPos.bind(this);
@@ -96,10 +98,11 @@ class Game {
 
 
   enemiesCleared() {
+    if (this.level.screen === 8) return;
     if (Object.keys(this.enemies).length === 0) {
       this.cleared = true;
       return true;
-    }else {
+    } else {
       return false;
     }
   }
@@ -261,9 +264,12 @@ class Game {
   }
 
   renderEnemies() {
-    if (this.level.screen === 6) {
+    if (this.level.screen === 6 || this.level.screen === 8) {
       this.enemyCount = Object.keys(this.level.enemies).length;
-    }
+    } 
+    // else if (this.level.screen = 8) {
+    //   this.enemyCount = 100;
+    // }
 
     if (!this.cleared) {
       for (let key in this.enemies) {
@@ -276,6 +282,7 @@ class Game {
           this.enemies[key].move(this.canvas, this.player, this.ctx);
 
         } else {
+          this.highScore += this.enemies[key].points;
           delete this.enemies[key];
           this.enemyCount -= 1;
         }
@@ -369,11 +376,12 @@ class Game {
       this.renderEnemyProjectiles();
       this.renderFireballs();
       
-      this.HUD.drawHUD(this.canvas, this.ctx, this.player, this.frameCount);
+      this.HUD.drawHUD(this.canvas, this.ctx, this.player, this.frameCount, this.highScore);
 
     } else {
       if (!this.won) {
         this.level.theme.pause();
+        this.highScore = Math.floor(this.highScore + this.player.health);
         // this.ctx.beginPath();
         // this.ctx.rect(0, 0, this.canvas.width, this.canvas.height);
         // this.ctx.fillStyle = "rgba(255, 255, 255, .1)";
@@ -429,11 +437,16 @@ class Game {
         this.ctx.textAlign = "center";
         this.ctx.fillText("YOU BEAT LEVEL 1", this.canvas.width / 2, this.canvas.height / 2);
 
+        this.ctx.font = "80px Arial";
+        this.ctx.fillStyle = "pink";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText(`YOUR SCORE IS ${this.highScore}`, this.canvas.width / 2, 450);
+
 
         this.ctx.font = "50px Arial";
         this.ctx.fillStyle = "pink";
         this.ctx.textAlign = "center";
-        this.ctx.fillText("Press Enter to Play Again", this.canvas.width / 2, 400);
+        this.ctx.fillText("Press Enter to Play Again", this.canvas.width / 2, 550);
       }
 
     } 

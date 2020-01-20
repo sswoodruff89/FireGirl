@@ -29,6 +29,8 @@ class Vinehead extends Enemy {
     this.playerCheckTimeout = "";
     this.damage = 20;
 
+    this.points = 10 * options.multiplier;
+
     this.drawEnemy = this.drawEnemy.bind(this);
     this.shootProj = this.shootProj.bind(this);
     // this.setPlayerCheckInterval = this.setPlayerCheckInterval.bind();
@@ -180,7 +182,7 @@ class Vinehead extends Enemy {
 
 
 
-  static vine1(pos, player, dir = "right") {
+  static vine1(pos, player, dir = "right", multiplier = .6) {
     
     return {
       name: "vinehead",
@@ -192,10 +194,11 @@ class Vinehead extends Enemy {
       health: 75,
       velX: 1,
       dir: dir,
-      player: player
+      player: player,
+      multiplier: multiplier
     };
   }
-  static vine2(pos, player, dir = "right") {
+  static vine2(pos, player, dir = "right", multiplier = 1) {
     
     return {
       name: "vinehead",
@@ -207,10 +210,11 @@ class Vinehead extends Enemy {
       health: 120,
       velX: 1,
       dir: dir,
-      player: player
+      player: player,
+      multiplier: multiplier
     };
   }
-  static vine3(pos, player, dir = "right") {
+  static vine3(pos, player, dir = "right", multiplier = .2) {
     
     return {
       name: "vinehead",
@@ -222,7 +226,8 @@ class Vinehead extends Enemy {
       health: 50,
       velX: 1,
       dir: dir,
-      player: player
+      player: player,
+      multiplier: multiplier
     };
   }
   

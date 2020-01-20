@@ -343,7 +343,9 @@ class Player {
             [this.rightSide() - (this.width / 2),
             this.bottomSide() - this.height],
             0, 20, vert)
-        );
+            );
+          this.velY = -3;
+        
       } else {
         this.fireballs[key] = new Projectile(
           Projectile.fireball(
@@ -393,7 +395,6 @@ class Player {
   }
     
   setHit(damage = 10) {
-    debugger
     if (!this.isHit) {
       this.isHit = true;
       this.hitCooldown = setTimeout(() => {

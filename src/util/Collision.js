@@ -353,7 +353,7 @@ class Collision {
       },
       38: (obj, x, y, colVal, tileSize) => {
         //22 deg left top half
-        this.collideSlopeTwentyLeft(obj, x, y + tileSize, tileSize / 2);
+        this.collideSlopeTwentyLeft(obj, x, y + tileSize, 30);
       },
       39: (obj, x, y, colVal, tileSize) => {
         //22 deg right top half
@@ -808,8 +808,14 @@ class Collision {
       }
       if (obj1 instanceof Projectile) {
         obj2.setHit(obj1.damage);
+        
+        if (obj2.health <= 0 && obj1.dir === "down") {
+          obj2.points *= 2
+        }
+        
         setTimeout(() => {
           obj1.setHit();
+
         }, 10);
 
         return true;

@@ -29,6 +29,8 @@ class Jellyfish extends Enemy {
         this.playerCheckTimeout = "";
         this.damage = 20;
 
+        this.points = 10 * options.multiplier;
+
         this.drawEnemy = this.drawEnemy.bind(this);
         this.shootProj = this.shootProj.bind(this);
         // this.setPlayerCheckInterval = this.setPlayerCheckInterval.bind();
@@ -177,7 +179,9 @@ class Jellyfish extends Enemy {
             health: 130,
             velX: 1,
             dir: dir,
-            player: player
+            player: player,
+            multiplier: 1
+
         };
     }
     static jell2(pos, player, dir = "right") {
@@ -187,12 +191,13 @@ class Jellyfish extends Enemy {
             image: "./assets/jellyfish.png",
             frameNum: 8,
             pos: pos,
-            width: 100,
-            height: 145,
-            health: 120,
+            width: 60,
+            height: 66,
+            health: 90,
             velX: 1,
             dir: dir,
-            player: player
+            player: player,
+            multiplier: .5
         };
     }
     static jell3(pos, player, dir = "right") {
@@ -207,7 +212,9 @@ class Jellyfish extends Enemy {
             health: 50,
             velX: 1,
             dir: dir,
-            player: player
+            player: player,
+            multiplier: .5
+
         };
     }
 

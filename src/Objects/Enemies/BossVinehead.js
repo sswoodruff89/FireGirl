@@ -37,6 +37,8 @@ class BossVinehead extends Enemy {
     this.charging = false;
     this.frameCount = 0;
 
+    this.points = 50;
+
     this.vines = [
       new Vine(Vine.vines1(this, [600, 60])),
       new Vine(Vine.vines1(this, [600, 150])),
