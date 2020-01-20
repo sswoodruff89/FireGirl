@@ -1,5 +1,6 @@
 import Player from "../Player";
 import Projectile from "../Objects/Projectiles/Projectile";
+// import ElectricBall from "../Objects/Projectiles/ElectricBall";
 import Enemy from "../Objects/Enemies/Enemy";
 // import Helicopter from "../Objects/Enemies/Helicopter";
 
@@ -736,7 +737,6 @@ class Collision {
   }
 
   collidePlayer(player, canvas, cleared) {
-    // debugger
     if (player.x < 0) {
       player.x = 0.01;
       player.velX = 0;
@@ -767,12 +767,14 @@ class Collision {
   collideProjectile(obj1, obj2) {
     // if (!obj1 || !obj2) return false;
     // if (obj2.dying || obj2.dead) return false;
+    let hitBox = obj2.hitBox();
+ 
 
     if (
-      obj1.x < obj2.x + obj2.width &&
-      obj1.x + obj1.width > obj2.x &&
-      obj1.y < obj2.y + obj2.height &&
-      obj1.y + obj1.height > obj2.y
+      obj1.x < hitBox.right &&
+      obj1.x + obj1.width > hitBox.left &&
+      obj1.y < hitBox.bottom &&
+      obj1.y + obj1.height > hitBox.top
     ) {
       obj1.velY = -(obj1.velY / 3);
       obj1.velX = -(obj1.velX / 3);
@@ -821,7 +823,6 @@ class Collision {
 
   collideSlopeFortyFiveRight(gameObj, tileLeft, tileBottom) {
     ///60 x60 120 y 60 120 (60, 120] [ 60, 120])
-    // debugger
     let tileY = tileBottom - (gameObj.rightSide() - tileLeft);
     if (gameObj instanceof Player) {
       if (gameObj.onGround) {
@@ -851,19 +852,26 @@ class Collision {
         }
       }
     }
-
+    if (gameObj instanceof Projectile) {
+      gameObj.setHit();
+      //set null
+      return true;
+    }
   }
 
   collideSlopeFortyFiveRightBottom(gameObj, tileLeft, tileBottom) {
     ///60 x60 120 y 60 120 (60, 120] [ 60, 120])
-    // debugger
     let tileY = tileBottom - (gameObj.rightSide() - tileLeft);
     if (
       gameObj.rightSide() > tileLeft &&
       gameObj.topSide() < tileY &&
       gameObj.oldY > tileY
     ) {
-
+      if (gameObj instanceof Projectile) {
+        gameObj.setHit();
+        //set null
+        return true;
+      }
       // gameObj.getDirY() + 60 > tileY) {
       gameObj.y = tileY + 0.05;
     }
@@ -900,6 +908,11 @@ class Collision {
         }
       }
     }
+    if (gameObj instanceof Projectile) {
+      gameObj.setHit();
+      //set null
+      return true;
+    }
   }
 
   collideSlopeFortyFiveLeftBottom(gameObj, tileRight, tileBottom) {
@@ -909,10 +922,16 @@ class Collision {
       gameObj.topSide() < tileY &&
       gameObj.oldY > tileY
     ) {
-
+      if (gameObj instanceof Projectile) {
+        gameObj.setHit();
+        //set null
+        return true;
+      }
       // gameObj.getDirY() + 60 > tileY) {
       gameObj.y = tileY + 0.05;
     }
+
+    
 
   }
 
@@ -948,6 +967,11 @@ class Collision {
         }
       }
     }
+    if (gameObj instanceof Projectile) {
+      gameObj.setHit();
+      //set null
+      return true;
+    }
   }
 
   collideSlopeTwentyRightBottom(gameObj, tileLeft, tileBottom, half = 0) {
@@ -958,7 +982,11 @@ class Collision {
       gameObj.topSide() < tileY &&
       gameObj.oldY > tileY
     ) {
-
+      if (gameObj instanceof Projectile) {
+        gameObj.setHit();
+        //set null
+        return true;
+      }
       gameObj.y = tileY + 0.05;
     }
 
@@ -995,6 +1023,11 @@ class Collision {
         }
       }
     }
+    if (gameObj instanceof Projectile) {
+      gameObj.setHit();
+      //set null
+      return true;
+    }
   }
 
   collideSlopeTwentyLeftBottom(gameObj, tileRight, tileBottom, half = 0) {
@@ -1004,7 +1037,11 @@ class Collision {
       gameObj.topSide() < tileY &&
       gameObj.oldY > tileY
     ) {
-
+      if (gameObj instanceof Projectile) {
+        gameObj.setHit();
+        //set null
+        return true;
+      }
       gameObj.y = tileY + 0.05;
     }
 
@@ -1045,6 +1082,7 @@ class Collision {
     ) {
       if (gameObj instanceof Projectile) {
         gameObj.setHit();
+        return true;
       }
       gameObj.y = tileBottom + 0.1;
       gameObj.velY = 0;
@@ -1060,6 +1098,7 @@ class Collision {
     ) {
       if (gameObj instanceof Projectile) {
         gameObj.setHit();
+        return true;
       }
       gameObj.x = tileRight + 0.1;
       // if (gameObj instanceof Enemy) {
@@ -1076,6 +1115,7 @@ class Collision {
     if (gameObj.rightSide() > tileLeft && gameObj.oldX < tileLeft) {
       if (gameObj instanceof Projectile) {
         gameObj.setHit();
+        return true;
       }
       gameObj.x = tileLeft - gameObj.width - 0.1;
       // if (!gameObj instanceof Enemy) {

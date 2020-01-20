@@ -4,6 +4,7 @@ import GameObject from "../GameObject";
 import Projectile from "../Projectiles/Projectile";
 import Player from "../../Player";
 import Vinehead from "./Vinehead";
+import Vine from '../Projectiles/Vine';
 
 const CONSTANTS = {
   GRAVITY: 0.8,
@@ -37,10 +38,12 @@ class BossVinehead extends Enemy {
     this.frameCount = 0;
 
     this.vines = [
-      new Vine(Vine.vines1(this, [750, 60])),
-      new Vine(Vine.vines1(this, [750, 450])),
-      new Vine(Vine.vines1(this, [750, 175])),
-      new Vine(Vine.vines1(this, [750, 340])),
+      new Vine(Vine.vines1(this, [600, 60])),
+      new Vine(Vine.vines1(this, [600, 150])),
+      new Vine(Vine.vines1(this, [600, 500])),
+      new Vine(Vine.vines1(this, [700, 100])),
+      new Vine(Vine.vines1(this, [600, 300])),
+      new Vine(Vine.vines1(this, [700, 400])),
     ]
 
     this.drawEnemy = this.drawEnemy.bind(this);
@@ -53,25 +56,28 @@ class BossVinehead extends Enemy {
     this.shuffleVines = this.shuffleVines.bind(this);
     this.renderVines = this.renderVines.bind(this);
     this.attackVines = this.attackVines.bind(this);
-
+    this.startAttack = this.startAttack.bind(this);
     this.startFrameCount();
+    this.startAttack();
   }
 
   startFrameCount() {
     this.bossInterval = setInterval(() => {
       this.frameCount++;
     }, 1000 / 30);
+    // }, 5000)
+  }
 
+  startAttack() {
     this.attackTimeout = setTimeout(() => {
       this.attack();
     }, 1000);
 
     // setTimeout(() => {
     this.vineInterval = setInterval(() => {
-      // debugger
+
       this.attackVines();
     }, 10000);
-    // }, 5000)
   }
 
   spawnEnemies() {
@@ -117,6 +123,7 @@ class BossVinehead extends Enemy {
   }
 
   attackVines() {
+
     this.vines.forEach((vine, i) => {
       vine.attack((1500) + i * 300);
     })
@@ -195,6 +202,10 @@ class BossVinehead extends Enemy {
   setDying() {
     if (this.health <= 0) {
       this.dying = true;
+      this.vines.forEach((vine) => {
+        clearTimeout(vine.chargeTimeout);
+        clearTimeout(vine.vineTimeout);
+      })
       this.damage = 0;
       this.velX = 0;
       this.velY = 0;
@@ -202,6 +213,7 @@ class BossVinehead extends Enemy {
       clearInterval(this.vineInterval);
       setTimeout(() => {
         this.dead = true;
+        clearInterval(this.startFrameCount);
       }, 3000);
     }
   }
@@ -226,9 +238,9 @@ class BossVinehead extends Enemy {
       this.attacking = false;
       this.x = 650;
 
-      // this.attackTimeout = setTimeout(() => {
-      //   this.attack();
-      // }, 10000);
+      this.attackTimeout = setTimeout(() => {
+        this.attack();
+      }, 7000);
     }
 
     this.renderVines(ctx, player)
@@ -240,7 +252,6 @@ class BossVinehead extends Enemy {
 
 
   static boss1(pos, player, dir = "right") {
-
     return {
       name: "vinehead",
       image: "./assets/vinehead.png",
@@ -254,144 +265,10 @@ class BossVinehead extends Enemy {
       player: player
     };
   }
+
 }
 
 
 
-
-class Vine {
-  constructor(options) {
-    this.boss = options.boss;
-    this.vine = this.loadImage("../assets/vines.png");
-    this.attacking = false;
-    this.charging = false;
-    this.frameNum = 7;
-    this.velX = 0;
-    this.velY = options.velY;
-    this.x = options.pos[0];
-    this.y = options.pos[1];
-    this.boundsY = options.boundsY;
-    this.damage = options.damage || 10;
-    this.frameCountOffset = options.frameCountOffset;
-
-    this.attack = this.attack.bind(this);
-    this.loadImage = this.loadImage.bind(this);
-    this.backUp = this.backUp.bind(this);
-    this.charge = this.charge.bind(this);
-    this.drawVines = this.drawVines.bind(this);
-    this.playerCheck = this.playerCheck.bind(this);
-    this.move = this.move.bind(this);
-  }
-
-  loadImage(image) {
-    let vine = new Image();
-    vine.src = image;
-    return vine;
-  }
-
-  attack(int) {
-    debugger
-    this.attacking = true;
-    this.chargeTimeout = setTimeout(() => {
-      this.charge();
-    }, int);
-  }
-
-  backUp() {
-    this.vineTimeout = setTimeout(() => {
-      this.charging = false;
-      this.velX = 10;
-    }, 300)
-  }
-
-  charge() {
-    this.charging = true;
-    this.velX = -20;
-  }
-
-
-  drawVines(ctx, frameCount) {
-    if (this.boss.dying && frameCount % 3 === 0) return;
-
-    let state = (this.charging) ? 0 :
-        (this.attacking) ? (frameCount + this.frameCountOffset ) % this.frameNum :
-        ((Math.floor(frameCount / 2.5) + this.frameCountOffset ) % this.frameNum)
-    let width = (this.attacking) ? 1000 : 200
-
-    // let count = Math.floor(frameCount / 2.5) + this.frameCountOffset % this.frameNum;
-    if (this.boss.dir === "left") {
-      ctx.drawImage(
-        this.vine,
-        2,
-        state * 95,
-        width,
-        95,
-        this.x, this.y,
-        width, 60
-      );
-    } else {
-      ctx.scale(-1, 1);
-      ctx.drawImage(
-        this.vine,
-        2,
-        state * 95,
-        width,
-        95,
-        -this.x - width, this.y,
-        width, 60
-      );
-      ctx.scale(-1, 1);
-
-    }
-  }
-
-  playerCheck(player) {
-    if (this.boss.dying) return;
-    if (player.x > this.x && 
-        (player.y + player.height > (this.y + 10)) && 
-        player.y < (this.y + 50) ){
-        player.setHit(this.damage);
-      }
-  }
-
-  move(ctx, frameCount, player) {
-    this.oldX = this.x;
-    this.x += this.velX;
-    if (!this.attacking) {
-      this.y += this.velY;
-    }
-
-    this.playerCheck(player);
-    if (this.x < -20) {
-      this.x = -20;
-      // this.attacking = false;
-      this.backUp();
-    } else if (this.x > 750) {
-      this.velX = 0;
-      this.attacking = false;
-      this.x = 750;
-
-      
-      // this.attackTimeout = setTimeout(() => {
-        //   this.attack();
-        // }, 10000);
-      }
-    if (this.y < this.boundsY[0] || this.y > this.boundsY[1]) {
-      this.velY *= -1;
-    }
-    this.drawVines(ctx, frameCount);
-  }
-
-  static vines1(boss, pos) {
-    let round = Math.floor(Math.random() * 10);
-    return {
-      boss: boss,
-      pos: pos,
-      velY: (round <= 5) ? -1 : 1,
-      boundsY: [pos[1] - 75, pos[1] + 75],
-      frameCountOffset: Math.floor(Math.random() * 7)
-    }
-  }
-}
 
 export default BossVinehead;

@@ -294,7 +294,7 @@ class Player {
     this.setDying();
     // this.isIdle();
     if (this.isHit && frameCount % 3 === 0) return;
-    
+
     if (this.isRunning) {
       (!this.attacking) ? this.drawRunning(frameCount) : this.drawAttack(frameCount, this.isRunning);
     } else {
@@ -385,9 +385,10 @@ class Player {
             "left"
           )
         );
-        
       }
+
     }
+    this.fireballs[key].launchSound.play();
 
   }
     

@@ -264,7 +264,7 @@ class Game {
     if (this.level.screen === 6) {
       this.enemyCount = Object.keys(this.level.enemies).length;
     }
-    
+
     if (!this.cleared) {
       for (let key in this.enemies) {
         // if (this.enemies[key].dying && !this.enemies[key].dead) continue;
@@ -322,7 +322,7 @@ class Game {
   }
 
   loadLevel() {
-    // debugger
+
     if (((this.player.x + (this.player.width / 2)) >= this.canvas.width)) {
       this.level.loadLevel(1);
       this.cleared = false;

@@ -1,5 +1,6 @@
 import GameObject from "../GameObject";
 import Collision from "../../util/Collision";
+import Sound from "../../util/Sound";
 
 const CONSTANTS = {
   GRAVITY: 0.8,
@@ -12,24 +13,41 @@ class Projectile extends GameObject {
   constructor(options) {
     super(options);
     this.proj = this.loadImage(options.image);
+    // this.impact = ;
     this.velX = options.velX;
     this.velY = options.velY;
     this.oldX = this.x;
     this.oldY = this.y;
     this.dir = options.dir || "right";
     this.damage = options.damage;
-
+    this.impacted = false;
+    this.impactTimeout = options.impactTimeout || 0;
+    this.impactSrc = options.impact;
+    
     this.frameStartX = options.frameStartX;
     this.frameStartY = options.frameStartY;
     this.frameWidth = options.frameWidth;
     this.frameHeight = options.frameHeight;
     this.frameNum = options.frameNum;
 
+    this.impactWidth = options.impactWidth;
+    this.impactHeight = options.impactHeight;
+    this.impactFrameWidth = options.impactFrameWidth || this.frameStartX;
+    this.impactFrameHeight = options.impactFrameHeight || this.frameStartY;
+    this.impactStartX = options.impactStartX || 145;
+    this.impactStartY = options.impactStartY || 150;
+
+    this.hitTimeout = options.hitTimeout || 2000;
+
+
 
     this.tileSize = 60;
     
     this.collider = new Collision();
     this.isHit = false;
+
+    this.launchSound = new Sound(Sound.fire());
+    // this.impactSound = new Sound({ src: this.mapKeys[this.screen].theme });
 
 
 
@@ -42,8 +60,19 @@ class Projectile extends GameObject {
     this.timeOutHit = this.timeOutHit.bind(this);
     this.updateProjectile = this.updateProjectile.bind(this);
     this.drawProjectile = this.drawProjectile.bind(this);
+    this.drawImpact = this.drawImpact.bind(this);
+
 
     this.timeOutHit();
+  }
+
+  hitBox() {
+    return {
+      left: this.x,
+      right: this.x + (this.width),
+      top: this.y,
+      bottom: this.y + (this.height)
+    }
   }
 
   loadImage(image) {
@@ -74,13 +103,28 @@ class Projectile extends GameObject {
     return [x, y];
   }
 
-  setHit() {
-    this.isHit = !this.isHit;
+  setHit(pos) {
+
+    // setTimeout(() => {
+      this.proj.src = this.impactSrc;
+      this.impacted = true;
+  
+      this.velX = 0;
+      this.velY = 0;
+    
+      // clearInterval(this.hitTimeout);
+      this.hitTimeout = setTimeout(() => {
+        this.isHit = true;
+  
+      }, 100)
+
+
+    // }, this.impactTimeout)
   }
 
   timeOutHit() {
     this.hitTimeout = setTimeout(() => {
-      this.setHit();
+      this.isHit = true;
     }, 2000);
   }
 
@@ -148,6 +192,11 @@ class Projectile extends GameObject {
   drawProjectile(ctx, frameCount) {
     if (this.hit) return;
 
+    if (this.impacted) {
+      this.drawImpact(ctx, frameCount);
+      return;
+    }
+
     this.updateProjectile();
     if (this.dir === "up") {
       ctx.scale(1, -1);
@@ -204,6 +253,55 @@ class Projectile extends GameObject {
     }
   }
 
+  drawImpact(ctx, frameCount) {
+    if (this.dir === "up") {
+      ctx.drawImage(
+        this.proj,
+        this.impactStartX,
+        this.impactStartY,
+        this.impactFrameWidth,
+        this.impactFrameHeight,
+        this.x - (this.impactFrameWidth / 2), this.y - (this.impactFrameHeight / 2),
+        this.impactWidth, this.impactHeight
+      );
+
+
+    } else if (this.dir === "down") {
+
+      ctx.drawImage(
+        this.proj,
+        this.impactStartX,
+        this.impactStartY,
+        this.impactFrameWidth,
+        this.impactFrameHeight,
+        this.x - (this.impactFrameWidth / 2), this.y + this.height - (this.impactFrameHeight / 2),
+        this.impactWidth, this.impactHeight
+      );
+
+
+    } else if (this.dir === "right") {
+      ctx.drawImage(
+        this.proj,
+        this.impactStartX,
+        this.impactStartY,
+        this.impactFrameWidth,
+        this.impactFrameHeight,
+        this.x + this.width / 3, this.y - (this.height * 2),
+        this.impactWidth, this.impactHeight
+      );
+    } else {
+      ctx.drawImage(
+        this.proj,
+        this.impactStartX,
+        this.impactStartY,
+        this.impactFrameWidth,
+        this.impactFrameHeight,
+        this.x - this.width / 3, this.y - (this.impactFrameHeight / 3),
+        this.impactWidth, this.impactHeight
+      );
+    }
+  }
+
   static fireball(pos, velX, velY, dir) {
     return {
       pos: pos,
@@ -219,6 +317,13 @@ class Projectile extends GameObject {
       frameHeight: 16,
       frameNum: 8,
       image: "./assets/fireball.png",
+      impact: "./assets/burst.png",
+      impactWidth: 60,
+      impactHeight: 60,
+      impactStartX: 145,
+      impactStartY: 150,
+      impactFrameWidth: 90,
+      impactFrameHeight: 90,
       damage: 25
     };
   }
@@ -231,6 +336,7 @@ class Projectile extends GameObject {
       velX: velX,
       velY: velY,
       dir: dir,
+      impact: "./assets/burst.png",
 
       frameStartX: 10,
       frameStartY: 400,
@@ -238,6 +344,12 @@ class Projectile extends GameObject {
       frameHeight: 35,
       frameNum: 8,
       image: "./assets/fireball.png",
+      impactFrameWidth: 90,
+      impactFrameHeight: 90,
+      impactWidth: 60,
+      impactHeight: 60,
+      impactStartX: 145,
+      impactStartY: 150,
       damage: 25
     };
   }
@@ -256,7 +368,33 @@ class Projectile extends GameObject {
       frameHeight: 15,
       frameNum: 1,
       image: "./assets/footEn.png",
+      impact: "./assets/burst.png",
       damage: 10
+    };
+  }
+
+  static electricBall(pos, velX = 0, velY = 1, dir = "right") {
+    return {
+      pos: pos,
+      width: 78.5,
+      height: 86,
+      velX: velX,
+      velY: velY,
+      dir: "up",
+      frameStartX: 0,
+      frameStartY: 435,
+      frameWidth: 180,
+      frameHeight: 145,
+      frameNum: 4,
+      image: "./assets/electric_ball.png",
+      impact: "./assets/electric_ball.png",
+      impactTimeout: 6000,
+      impactWidth: 180,
+      impactHeight: 145,
+      impactFrameWidth: 180,
+      impactFrameHeight: 145,
+      hitTimeout: 6000,
+      damage: 20
     };
   }
 }

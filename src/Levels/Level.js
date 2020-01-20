@@ -5,6 +5,7 @@ import Helicopter from "../Objects/Enemies/Helicopter";
 import Flower from "../Objects/Enemies/Flower";
 import Spider from "../Objects/Enemies/Spider";
 import Vinehead from "../Objects/Enemies/Vinehead";
+import Jellyfish from "../Objects/Enemies/Jellyfish";
 import BossVinehead from "../Objects/Enemies/BossVinehead";
 
 class Level {
@@ -12,7 +13,7 @@ class Level {
     this.ctx = options.ctx;
     this.player = options.player;
     this.mapKeys = options.mapKeys;
-    this.screen = 6;
+    this.screen = 1;
     this.renderMap = options.renderMap || this.mapKeys[this.screen].renderMap;
     this.physicalMap = options.physicalMap || this.mapKeys[this.screen].physicalMap;
     this.cols = 15;
@@ -20,13 +21,12 @@ class Level {
     this.tileSize = options.tileSize;
     this.tileMap = this.loadImage();
     this.mapTileSize = this.tileMap.width / this.rows;
-    this.enemies = this.mapKeys[this.screen].enemies;
+    this.enemies = this.mapKeys[this.screen].enemies();
     this.enemyCount = 1;
     this.theme = new Music({src: this.mapKeys[this.screen].theme});
     
     this.levelLayers = this.loadImages(this.mapKeys[this.screen].levelLayers);
-    
-
+        
     this.getTile = this.getTile.bind(this);
     this.getLeft = this.getLeft.bind(this);
     this.getRight = this.getRight.bind(this);
@@ -160,7 +160,7 @@ class Level {
 
     this.renderMap = this.mapKeys[this.screen].renderMap;
     this.physicalMap = this.mapKeys[this.screen].physicalMap;
-    this.enemies = this.mapKeys[this.screen].enemies;
+    this.enemies = this.mapKeys[this.screen].enemies();
     if (this.mapKeys[this.screen].levelLayers) {
 
       this.levelLayers = this.loadImages(this.mapKeys[this.screen].levelLayers);
@@ -241,12 +241,14 @@ class Level {
         //   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  3,  1,  1,  1,
         //   1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1
         // ],
-        enemies: {
-          // 1: new Spider(Spider.spider2([470, 0], [0, 350])),
-          // 2: new Helicopter(Helicopter.hel1([570, 50], "left")),
-          // 3: new Flower(Flower.flow1([600, 500])),
-          // 4: new Flower(Flower.flow1([400, 320])),
-          // 5: new Flower(Flower.flow1([240, 500])),
+        enemies: () => {
+          return {
+            // 1: new Spider(Spider.spider2([470, 0], [0, 350])),
+            // 2: new Helicopter(Helicopter.hel1([570, 50], "left")),
+            1: new Jellyfish(Jellyfish.jell1([300, 300]))
+            // 4: new Flower(Flower.flow1([400, 320])),
+            // 5: new Flower(Flower.flow1([240, 500])),
+          }
  
         },
         theme: "./assets/Sound/ff9_stirring_forest.mp3",
@@ -288,18 +290,19 @@ class Level {
           front: "./assets/Level1/lvl2_front.png"
         },
 
-        enemies: {
-          // 1: new Helicopter(Helicopter.hel2([10, 10], [0, 700])),
-          // // 2: new Helicopter(Helicopter.hel2([570, 0], [0, 700], "left")),
-          // 3: new Helicopter(Helicopter.hel2([10, 140], [0, 335], "left")),
-          // 4: new Spider(Spider.spider1([600, 0], [0, 380])),
-          // 5: new Spider(Spider.spider2([520, 0], [20, 440])),
-          // 6: new Spider(Spider.spider3([150, 0], [20, 250]))
+        enemies: () => {
+          return {
+            1: new Helicopter(Helicopter.hel2([10, 10], [0, 700])),
+            // 2: new Helicopter(Helicopter.hel2([570, 0], [0, 700], "left")),
+            3: new Helicopter(Helicopter.hel2([10, 140], [0, 335], "left")),
+            4: new Spider(Spider.spider1([600, 0], [0, 380])),
+            5: new Spider(Spider.spider2([520, 0], [20, 440])),
+            6: new Spider(Spider.spider3([150, 0], [20, 250]))
 
-          // 3: new Flower(Flower.flow2([120, 200])),
-          // 4: new Flower(Flower.flow1([400, 320])),
-          // 5: new Flower(Flower.flow1([240, 500])),
- 
+            // 3: new Flower(Flower.flow2([120, 200])),
+            // 4: new Flower(Flower.flow1([400, 320])),
+            // 5: new Flower(Flower.flow1([240, 500])),
+          }
         }
       },
       3: {
@@ -330,14 +333,15 @@ class Level {
           5,  0, 2, 24,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           5,  5,  0,  0, 15, 15, 15, 15, 15, 20,  0, 33, 33, 33, 33
         ],
-        enemies: {
-          // 1: new Helicopter(Helicopter.hel1([100, 25])),
-          // 3: new Flower(Flower.flow2([250, 140])),
-          // 5: new Vinehead(Vinehead.vine1([500, 100], this.player)),
-          // 6: new Vinehead(Vinehead.vine3([800, 20], this.player)),
+        enemies: () => {
+          return {
+            // 1: new Helicopter(Helicopter.hel1([100, 25])),
+            // 3: new Flower(Flower.flow2([250, 140])),
+            // 5: new Vinehead(Vinehead.vine1([500, 100], this.player)),
+            // 6: new Vinehead(Vinehead.vine3([800, 20], this.player)),
 
-          // 4: new Flower(Flower.flow2([450, 140])),
-
+            // 4: new Flower(Flower.flow2([450, 140])),
+          }
         },
         levelLayers: {
           background: "./assets/Level1/lvl3_back.png",
@@ -370,14 +374,15 @@ class Level {
           0,  0,  0,  0,  0,  3,  1,  1,  1,  2,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  9,  0,  0,  0, 10,  0,  1,  1,  1,  1
         ],
-        enemies: {
-          1: new Helicopter(Helicopter.hel2([500, 0])),
-          // // 3: new Flower(Flower.flow2([290, 190])),
-          4: new Vinehead(Vinehead.vine3([500, 100], this.player)),
-          5: new Vinehead(Vinehead.vine3([300, 450], this.player)),
-          6: new Vinehead(Vinehead.vine3([850, 500], this.player)),
-          7: new Vinehead(Vinehead.vine1([800, -20], this.player)),
-
+        enemies: () => {
+          return {
+            1: new Helicopter(Helicopter.hel2([500, 0])),
+            // // 3: new Flower(Flower.flow2([290, 190])),
+            4: new Vinehead(Vinehead.vine3([500, 100], this.player)),
+            5: new Vinehead(Vinehead.vine3([300, 450], this.player)),
+            6: new Vinehead(Vinehead.vine3([850, 500], this.player)),
+            7: new Vinehead(Vinehead.vine1([800, -20], this.player)),
+          }
           // 4: new Flower(Flower.flow2([530, 190])),
 
         }
@@ -407,14 +412,16 @@ class Level {
           0,  0,  0,  0,  0,  3,  1,  1,  1,  1,  0,  0,  0,  0,  0,
           1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1
         ],
-        enemies: {
-          1: new Vinehead(Vinehead.vine3([10, 530], this.player)),
-          2: new Vinehead(Vinehead.vine3([830, 0], this.player)),
-          3: new Vinehead(Vinehead.vine2([600, 600], this.player)),
-          4: new Vinehead(Vinehead.vine1([500, 100], this.player)),
-          5: new Vinehead(Vinehead.vine2([200, 450], this.player)),
-          6: new Vinehead(Vinehead.vine2([850, 500], this.player)),
-          7: new Vinehead(Vinehead.vine1([800, -20], this.player)),
+        enemies: () => {
+          return {
+            1: new Vinehead(Vinehead.vine3([10, 530], this.player)),
+            2: new Vinehead(Vinehead.vine3([830, 0], this.player)),
+            3: new Vinehead(Vinehead.vine2([600, 600], this.player)),
+            4: new Vinehead(Vinehead.vine1([500, 100], this.player)),
+            5: new Vinehead(Vinehead.vine2([200, 450], this.player)),
+            6: new Vinehead(Vinehead.vine2([850, 500], this.player)),
+            7: new Vinehead(Vinehead.vine1([800, -20], this.player)),
+          }
         }
       },
       6: {
@@ -442,8 +449,10 @@ class Level {
           1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
           1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1
         ],
-        enemies: {
-          1: new BossVinehead(BossVinehead.boss1([650, 100], this.player))
+        enemies: () => {
+          return {
+            1: new BossVinehead(BossVinehead.boss1([650, 100], this.player))
+          }
         },
         theme: "./assets/Sound/dk3_boss_boogie.mp3",
         levelLayers: {
