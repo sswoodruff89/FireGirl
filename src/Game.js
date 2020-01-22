@@ -431,7 +431,6 @@ class Game {
         this.level.renderMid(this.ctx, this.canvas);
         this.level.renderFront(this.ctx, this.canvas);
       }
-      debugger
       this.survivalMode(this.level, this.highScore);
 
       // this.enemies[1].drawEnemy(this.ctx, this.frameCount);
