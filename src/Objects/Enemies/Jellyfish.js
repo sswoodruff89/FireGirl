@@ -27,7 +27,7 @@ class Jellyfish extends Enemy {
         this.opening = false;
         this.projectiles = {};
         this.playerCheckTimeout = "";
-        this.damage = 20;
+        this.damage = options.damage;
 
         this.points = 10 * options.multiplier;
 
@@ -44,7 +44,7 @@ class Jellyfish extends Enemy {
         setTimeout(() => {
             this.attackInterval = setInterval(() => {
                 this.shootProj();
-            }, 4)
+            }, 4000)
         }, 2000)
     }
 
@@ -120,10 +120,10 @@ class Jellyfish extends Enemy {
     }
 
     shootProj() {
-        if (Object.keys(this.projectiles).length === 3) return;
+        if (Object.keys(this.projectiles).length === 10) return;
 
         let key;
-        for (let i = 1; i <= 3; i++) {
+        for (let i = 1; i <= 10; i++) {
             if (!this.projectiles[i]) {
                 key = i;
                 break;
@@ -167,7 +167,7 @@ class Jellyfish extends Enemy {
 
 
 
-    static jell1(pos, player, dir = "right") {
+    static jell1(pos, player, dir = "right", damage = 20) {
 
         return {
             name: "Jellyfish",
@@ -184,7 +184,7 @@ class Jellyfish extends Enemy {
 
         };
     }
-    static jell2(pos, player, dir = "right") {
+    static jell2(pos, player, dir = "right", damage = 15) {
 
         return {
             name: "Jellyfish",
@@ -200,7 +200,7 @@ class Jellyfish extends Enemy {
             multiplier: .5
         };
     }
-    static jell3(pos, player, dir = "right") {
+    static jell3(pos, player, dir = "right", damage = 10) {
 
         return {
             name: "Jellyfish",

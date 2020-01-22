@@ -20,23 +20,29 @@ class GameView {
     this.renderGame = this.renderGame.bind(this);
     this.loadImage = this.loadImage.bind(this);
     this.newGame = this.newGame.bind(this);
+    this.newEnemyRush = this.newEnemyRush.bind(this);
 
     window.addEventListener("keydown", (event) => {
-      if ((!this.game || this.game.gameOver) && event.keyCode === 13) {
-        this.newGame();
-
-      } else if (event.keyCode === 77) {
-        this.game.level.theme.mute();
-        // let music = document.getElementById("theme");
-        // (music.muted === false) ? music.muted = true : false;
+      event.preventDefault();
+      switch (event.key) {
+        case "Enter": 
+          if (!this.game || this.game.gameOver) {
+            this.newGame();
+          }
+          break;
+        case " ":
+          if (!this.game || this.game.gameOver) {
+            this.newEnemyRush();
+          };
+          break;
+        case "m": 
+          this.game.level.theme.mute();
+          break;
+        default:
+          return;
       }
     });
 
-    window.addEventListener("resize", () => {
-      if (this.game) {
-        this.game.resizeGame(this.canvas);
-      }
-    });
   }
 
   loadImage() {
@@ -53,6 +59,28 @@ class GameView {
     }
   }
 
+  newEnemyRush() {
+    if (!this.game || this.game.gameOver) {
+      this.game = new Game(this.canvas, this.ctx, 2);
+      // this.game.newLevel();
+      // this.game.level = new Level({
+      //   ctx: this.ctx,
+      //   mapKeys: Level.level2(),
+      //   player: this.game.player,
+      //   tileSize: this.game.tileSize
+      // });
+      this.game.HUD = new GameHUD();
+      this.game.level.theme.play();
+    }
+    // if (!this.game || this.game.gameOver) {
+    //   this.game = new Game(this.canvas, this.ctx);
+    //   this.game.level.loadLevel(8);
+    //   this.game.level.enemiesInterval();
+    //   this.game.HUD = new GameHUD();
+    //   this.game.level.theme.play();
+    // }
+  }
+
 
   renderGame() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -67,15 +95,20 @@ class GameView {
             this.canvas.width, this.canvas.height
         );
 
-      this.ctx.font = "50px Arial";
+      this.ctx.font = "100px Arial";
       this.ctx.fillStyle = "rgb(46, 2, 2)";
       this.ctx.textAlign = "center";
       this.ctx.fillText("FIRE GIRL", this.canvas.width / 2, this.canvas.height / 3);
 
-      this.ctx.font = "1.1em Arial";
+      this.ctx.font = "1.8em Arial";
       this.ctx.fillStyle = "pink";
       this.ctx.textAlign = "center";
-      this.ctx.fillText("Press Enter to Play", this.canvas.width / 2, this.canvas.height * (2/3));
+      this.ctx.fillText("Press Enter to Play Level 1", this.canvas.width / 2, this.canvas.height * (2/3));
+
+      this.ctx.font = "1.8em Arial";
+      this.ctx.fillStyle = "pink";
+      this.ctx.textAlign = "center";
+      this.ctx.fillText("Press Space to Play Survival Mode", this.canvas.width / 2, this.canvas.height * (7/9));
     }
 
     if (this.game) {

@@ -154,6 +154,7 @@ class Helicopter extends Enemy {
       velX: (dir === "left") ? -3 : 3,
       velY: velY || 0,
       dir: dir,
+      damage: 20,
       bounds: bounds,
       multiplier: multiplier
     };
@@ -168,8 +169,9 @@ class Helicopter extends Enemy {
       width: 150,
       height: 85,
       health: 100,
-      velX: (dir === "left") ? -3 : 3,
+      velX: dir === "left" ? -3 : 3,
       dir: dir,
+      damage: 10,
       bounds: bounds,
       multiplier: multiplier
     };

@@ -45,6 +45,7 @@ class Player {
     this.onGround = false;
     this.idle = true;
     this.keydown = false;
+    this.runningKeyDown = false;
     this.isRunning = false;
     this.direction = "right";
     this.jumpCount = 2;
@@ -54,6 +55,8 @@ class Player {
     this.attacking = false;
     this.upPressed = false;
     this.attackAnimTimeout = "";
+    this.dashing = false;
+
     this.isHit = false;
     this.dying = false;
     this.dead = false;
@@ -474,6 +477,36 @@ class Player {
     }
   }
 
+  // isDashing() {
+  //   if (this.dashing && this.runningKeyDown) {
+  //     if (this.velX > 7) {
+  //       this.velX -= .1;
+  //     } else if (this.velX < -7) {
+  //       this.velX += .1;
+  //     }
+        
+  //   } 
+  //   // else if (this.dashing && !this.runningKeyDown) {
+  //   //   if (this.velX > 0) {
+  //   //     this.velX -= .5;
+  //   //   } else if (this.velX < 0) {
+  //   //     this.velX += .5;
+  //   //   }
+  //   // }
+
+  // }
+
+  // dash() {
+  //   if (this.dashing) return;
+
+  //   this.dashing = true;
+  //   this.velX = (this.direction === "right") ? 15 : -15;
+  //   this.dashTimeout = setTimeout(() => {
+  //     this.dashing = false;
+  //   }, 1000)
+  // }
+
+
   jump() {
     if (this.jumpCount === 2) {
       this.onGround = false;
@@ -488,6 +521,7 @@ class Player {
   climb() {
     this.climb = (this.climb) ? false : true;
   }
+
 
 
 

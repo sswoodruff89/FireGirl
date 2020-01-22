@@ -16,15 +16,19 @@ const CONSTANTS = {
 
 
 class Game {
-  constructor(canvas, ctx) {
+  constructor(canvas, ctx, lvl = 1) {
     this.canvas = canvas;
     this.ctx = ctx;
+    this.levelCall = {
+      1: Level.level1(),
+      2: Level.level2()
+    }
     this.player = new Player(this.ctx, this.canvas);
     this.controller = new Controller(this.player);
-    this.tileSize = this.canvas.width / 15;
+    this.tileSize = canvas.width / 15;
     this.level = new Level({ 
       ctx: ctx,
-      mapKeys: Level.level1(),
+      mapKeys: this.levelCall[lvl],
       player: this.player,
       tileSize: this.tileSize
     });
@@ -57,9 +61,13 @@ class Game {
     this.enemiesCleared = this.enemiesCleared.bind(this);
     this.loadLevel = this.loadLevel.bind(this);
     this.resizeGame = this.resizeGame.bind(this);
+    this.newLevel = this.newLevel.bind(this);
+
 
     this.enemyCount = Object.keys(this.enemies).length;
     this.cleared = false;
+
+    this.survivalMode = this.survivalMode.bind(this);
 
     this.startFrameCount();
   }
@@ -68,6 +76,21 @@ class Game {
     this.frameInterval = setInterval(() => {
       this.frameCount++;
     }, (1000 / 30));
+  }
+
+
+  newLevel() {
+    this.level = new Level({
+      ctx: this.ctx,
+      mapKeys: Level.level2(),
+      player: this.player,
+      tileSize: this.tileSize
+    });
+    this.renderMap = this.level.mapKeys[this.level.screen].renderMap;
+    this.physicalMap = this.level.mapKeys[this.level.screen].physicalMap;
+    this.enemies = this.level.enemies();
+    this.level.enemiesInterval();
+    // this.level.loadLevel(8);
   }
 
   resizeGame(canvas) {
@@ -98,7 +121,7 @@ class Game {
 
 
   enemiesCleared() {
-    if (this.level.screen === 8) return;
+    if (parseInt(this.level.screen) === 8) return;
     if (Object.keys(this.enemies).length === 0) {
       this.cleared = true;
       return true;
@@ -239,17 +262,33 @@ class Game {
     this.player.setOldPos();
 
     if (!this.player.idle) {
-      
+      // if (this.player.velX > 7 || this.player.velX < -7) {
+      //   if (this.player.keydown)
+      //   this.player.velX += (this.player.velX > 0) ? -1 : 1;
+      // } else {
+      //   this.player.dash = false;
+      // }
+
+      // if (this.player.runningKeyDown && this.player.dashing) {
+      //   if (this.player.velX > 7 || this.player.velX < -7) {
+      //     this.player.velX += (this.player.velX > 0) ? -1 : 1;
+      //   }
+
+      // } else if (this.player.onGround && this.player.dashing && !this.player.runningKeyDown) {
+      //   this.player.velX += (this.player.velX > 0) ? -1 : (this.player.velX < 0) ? 1 : 0;
+      // }
       // if (this.player.direction === "right") {
-      //   if (this.player.onGround && !this.player.keydown) {
-      //     this.player.velX < 1 ? (this.player.velX = 0) : (this.player.velX /= CONSTANTS.FRICTION);
+      //   if ((this.player.onGround && !this.player.keydown && this.player.velX > 0)) {
+      //     this.player.velX -= 1;
+      //     // this.player.velX < 1 ? (this.player.velX = 0) : (this.player.velX /= CONSTANTS.FRICTION);
       //   }
       // } else if (this.player.direction === "left") {
-      //   if (this.player.onGround && !this.player.keydown) {
-      //     this.player.velX > -1 ? (this.player.velX = 0) : (this.player.velX /= CONSTANTS.FRICTION);
+      //   if ((this.player.onGround && !this.player.keydown && this.player.velX > 0)) {
+      //     this.player.velX += 1;
       //   }
       // }
       this.player.x += this.player.velX;
+      // this.player.isDashing();
     }
 
     if (this.player.climbing) {
@@ -264,9 +303,9 @@ class Game {
   }
 
   renderEnemies() {
-    if (this.level.screen === 6 || this.level.screen === 8) {
+    // if (this.level.screen === 6 || this.level.screen === 8) {
       this.enemyCount = Object.keys(this.level.enemies).length;
-    } 
+    // } 
     // else if (this.level.screen = 8) {
     //   this.enemyCount = 100;
     // }
@@ -331,7 +370,7 @@ class Game {
   loadLevel() {
 
     if (((this.player.x + (this.player.width / 2)) >= this.canvas.width)) {
-      this.level.loadLevel(1);
+      this.level.loadLevel(parseInt(this.level.screen) + 1);
       this.cleared = false;
       this.enemies = this.level.enemies;
       this.enemyCount = Object.keys(this.enemies);
@@ -339,6 +378,31 @@ class Game {
     } else if ((this.player.x + (this.player.width / 2)) <= 0) {
       this.level.loadLevel(-1);
       this.player.x = this.canvas.width - this.player.width;
+    }
+  }
+
+  survivalMode() {
+    if (this.level.screen !== "8") return;
+
+    if (this.level.rushLevel === 0) {
+      this.level.rushLevel++;
+      this.level.enemyRushInterval(7000, 6);
+    } else if (this.highScore > 30 && this.level.rushLevel === 1) {
+      this.level.rushLevel++;
+      this.level.enemyRushInterval(6000, 7);
+    } else if (this.highScore > 60 && this.level.rushLevel === 2) {
+      this.level.rushLevel++;
+      this.level.enemyRushInterval(5000, 7);
+    } else if (this.highScore > 100 && this.level.rushLevel === 3) {
+      this.level.rushLevel++;
+      this.level.enemyRushInterval(4000, 8);
+    } else if (this.highScore > 150 && this.level.rushLevel === 4) {
+      this.level.rushLevel++;
+      this.level.enemyRushInterval(3000, 8);
+    } else if (this.highScore > 250 && this.level.rushLevel === 4) {
+      this.level.rushLevel++;
+      this.level.enemyRushInterval(2000, 9);
+
     }
   }
 
@@ -367,7 +431,8 @@ class Game {
         this.level.renderMid(this.ctx, this.canvas);
         this.level.renderFront(this.ctx, this.canvas);
       }
-
+      debugger
+      this.survivalMode(this.level, this.highScore);
 
       // this.enemies[1].drawEnemy(this.ctx, this.frameCount);
       this.renderEnemies();

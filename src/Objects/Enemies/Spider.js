@@ -147,7 +147,7 @@ class Spider extends Enemy {
       height: 102,
       health: 110,
       velX: 0,
-      velY: 1,
+      velY: 3,
       damage: 25,
       bounds: bounds,
       multiplier: multiplier

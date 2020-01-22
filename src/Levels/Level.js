@@ -13,7 +13,7 @@ class Level {
     this.ctx = options.ctx;
     this.player = options.player;
     this.mapKeys = options.mapKeys;
-    this.screen = 8;
+    this.screen = Object.keys(this.mapKeys)[0];
     this.renderMap = options.renderMap || this.mapKeys[this.screen].renderMap;
     this.physicalMap = options.physicalMap || this.mapKeys[this.screen].physicalMap;
     this.cols = 15;
@@ -27,6 +27,17 @@ class Level {
     
     this.levelLayers = this.loadImages(this.mapKeys[this.screen].levelLayers);
         
+////Enemy Rush////
+    this.spawnTier = this.mapKeys[this.screen].spawnTier || null;
+    this.rushLevel = 0;
+    this.spawnTierGroup = 2;
+    this.rushInterval = "";
+
+    this.enemyRushSpawn = this.enemyRushSpawn.bind(this);
+    this.enemyRushInterval = this.enemyRushInterval.bind(this);
+
+//////
+
     this.getTile = this.getTile.bind(this);
     this.getLeft = this.getLeft.bind(this);
     this.getRight = this.getRight.bind(this);
@@ -46,7 +57,7 @@ class Level {
     // this.loadImage(this.ctx);
 
     this.enemiesInterval();
-
+    // this.enemyRushInterval();
   }
 
 //15 x 10
@@ -90,7 +101,7 @@ class Level {
   }
 
   renderMid(ctx, canvas) {
-
+    if (!this.levelLayers.mid) return;
     ctx.drawImage(
       this.levelLayers.mid,
       0,
@@ -105,6 +116,7 @@ class Level {
   }
 
   renderFront(ctx, canvas) {
+    if (!this.levelLayers.front) return;
 
     ctx.drawImage(
       this.levelLayers.front,
@@ -137,15 +149,14 @@ class Level {
   }
 
   enemiesInterval() {
-    
-    if (this.screen < 6) return;
+    if (parseInt(this.screen) < 6 || parseInt(this.screen) === 8) return;
 
-    if (this.screen === 8) {
-      this.enemyRush();
-      this.spawnInterval = setInterval(() => {
-        this.enemyRush();
-      }, 5000);
-    } else {
+    // if (parseInt(this.screen) === 8) {
+    //   this.enemyRush();
+    //   this.spawnInterval = setInterval(() => {
+    //     this.enemyRush();
+    //   }, 12000);
+    // } else {
       
       this.spawnInterval = setInterval(() => {
         if (!this.enemies[1]) {
@@ -153,7 +164,7 @@ class Level {
         }
         this.spawnEnemies();
       }, 7000);
-    }
+    // }
   }
 
   spawnEnemies() {
@@ -167,16 +178,38 @@ class Level {
   enemyRush() {
     if (Object.keys(this.enemies).length >= 6) return;
     this.enemyCount++;
-    let key = this.enemyCount;
+    let key = this.enemyCount + (Math.floor(Math.random() * 100));
     let y = Math.random() * 600;
     let x = (Object.keys(this.enemies).length % 2 === 0) ? 10 : 890
     this.enemies[key] = new Vinehead(Vinehead.vine2([x, y], this.player, "left"));
   }
 
+  enemyRushSpawn(num) {
+    if (Object.keys(this.enemies).length >= num) return;
+    let key = this.enemyCount + Math.floor(Math.random() * 100);
+    let tierAmount = Object.keys(this.spawnTier[this.spawnTierGroup]).length
+    let enemy = Math.floor(Math.random() * tierAmount);
+
+    this.enemies[key] = this.spawnTier[this.spawnTierGroup][enemy]();
+
+    this.spawnTierGroup = (this.spawnTierGroup === 4) ? 1 : this.spawnTierGroup + 1;
+  }
+
+  enemyRushInterval(int = 12000, enemyCount = 6) {
+    if (this.screen !== "8") return;
+
+    clearInterval(this.rushInterval);
+    
+    this.rushInterval = setInterval(() => {
+      this.enemyRushSpawn(enemyCount);
+    }, int);
+  }
+
+
+
   loadLevel(num) {
     // if (this.screen + num === 0) return;
-    this.screen += num;
-
+    this.screen = num;
     this.renderMap = this.mapKeys[this.screen].renderMap;
     this.physicalMap = this.mapKeys[this.screen].physicalMap;
     this.enemies = this.mapKeys[this.screen].enemies();
@@ -221,6 +254,125 @@ class Level {
   }
 
 
+  static level2() {
+    return {
+      8: {
+        renderMap: [
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0, 29, 29, 29,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  3,  1,  2,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0, 29, 29, 29,  0,  0,  0, 29, 29, 29,  0,  0,  0,
+          0,  0,  0,  3,  1,  2,  0,  0,  0,  3,  1,  2,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,        ],
+        physicalMap: [
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  2,  2,  2,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  2,  2,  2,  0,  0,  0,  2,  2,  2,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          1,  1,  1,  2,  2,  2,  2,  2,  2,  2,  2,  1,  1,  1,  1
+        ],
+        enemies: () => {
+          return {
+            1: new Spider(Spider.spider1([600, 0], [20, 359])),
+            2: new Spider(Spider.spider1([420, 0], [20, 179])),
+            3: new Spider(Spider.spider1([240, 0], [20, 359])),
+            4: new Spider(Spider.spider1([780, 0], [20, 479])),
+            5: new Spider(Spider.spider1([60, 0], [20, 479])),
+            // 5: new Helicopter(Helicopter.hel1([0, 15], [-50, 950], "right"))
+            // 1: new BossVinehead(BossVinehead.boss1([650, 100], this.player))
+          };
+        },
+        spawnTier: {
+          1: {
+              // 0: () => {
+              //   return new Spider(Spider.spider2([600, 0], [20, 359]));
+              // },
+              // 1: () => {
+              //   return new Spider(Spider.spider2([420, 0], [20, 179]));
+              // },
+              // 2: () => {
+              //   return new Spider(Spider.spider2([240, 0], [20, 359]));
+              // },
+              // 3: () => {
+              //   return new Spider(Spider.spider2([780, 0], [20, 479]));
+              // },
+              // 4: () => {
+              //   return new Spider(Spider.spider2([60, 0], [20, 479]));
+              // },
+              0: () => {
+                return new Spider(Spider.spider1([600, 0], [20, 359]));
+              },
+              1: () => {
+                return new Spider(Spider.spider1([420, 0], [20, 179]));
+              },
+              2: () => {
+                return new Spider(Spider.spider1([240, 0], [20, 359]));
+              }
+            },
+            
+        2: {
+              0: () => {
+                return new Helicopter(Helicopter.hel2([800, 50], [-50, 950], "left"));
+              },
+              1: () => {
+                return new Helicopter(Helicopter.hel2([0, 50], [-50, 950], "right"));
+              },
+              2: () => {
+                return new Helicopter(Helicopter.hel1([800, 15], [-50, 950], "left"));
+              },
+              3: () => {
+                return new Helicopter(Helicopter.hel1([0, 15], [-50, 950], "right"));
+              },
+           },
+        3: {
+              0: () => {
+                let y = Math.random() * 600;
+                let x = (y % 2 === 0) ? 1 : 839;
+                return new Jellyfish(Jellyfish.jell2([x, y], this.player));
+              },
+              1: () => {
+                let y = Math.random() * 600;
+                let x = (y % 2 === 0) ? 1 : 809;
+                return new Jellyfish(Jellyfish.jell1([x, y], this.player));
+              },
+           },
+        4: {
+              0: () => {
+                let y = Math.random() * 600;
+                let x = (y % 2 === 0) ? 1 : 890;
+                return new Vinehead(Vinehead.vine3([x, y], this.player));
+              },
+              1: () => {
+                let y = Math.random() * 600;
+                let x = y % 2 === 0 ? 1 : 890;
+                return new Vinehead(Vinehead.vine1([x, y], this.player));
+              },
+              2: () => {
+                let y = Math.random() * 600;
+                let x = y % 2 === 0 ? 1 : 890;
+                return new Vinehead(Vinehead.vine2([x, y], this.player));
+              },
+           },
+           
+        },
+        theme: "./assets/Sound/dk3_boss_boogie.mp3",
+        levelLayers: {
+          background: "./assets/Level1/lv1_back.png",
+          // mid: "./assets/Level1/lv1_mid.png",
+          // front: "./assets/Level1/lv1_front.png"
+        }
+      }
+    };
+  }
   static level1() {
     return {
       1: {

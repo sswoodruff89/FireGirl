@@ -15,16 +15,20 @@ class Controller {
     event.preventDefault();
     this.player.idle = false;
     this.player.keydown = true;
-
-    switch (Controller.KEYS[event.keyCode]) {
+    
+    switch (Controller.KEYS[event.key]) {
+    // switch (Controller.KEYS[event.keyCode]) {
       case "left":
         this.keysPressed.left = true;
+        // this.player.runningKeyDown = true;
         this.player.direction = "left";
-        this.player.velX = -6;
+        this.player.velX = -7;
 
         break;
       case "right":
         this.keysPressed.right = true;
+        // this.player.runningKeyDown = true;
+
         this.player.direction = "right";
         this.player.velX = 7;
         break;
@@ -64,6 +68,17 @@ class Controller {
 
         }
         break;
+      case "dash":
+        this.keysPressed.dash = true;
+        // this.player.dash = true;
+        // if (this.keysPressed.left || this.keysPressed.right) {
+        //   this.player.dash();
+        // }
+        // if (this.player.direction === "right") {
+        //   this.player.velX = 14;
+        // } else {
+        //   this.player.velX = -14;
+        // }
       case "space":
         // this.gameview.Ticker.paused = (this.gameview.Ticker.paused) ? false: true;
         break;
@@ -83,18 +98,21 @@ class Controller {
     // }
     event.preventDefault();
 
-    switch (Controller.KEYS[event.keyCode]) {
+    switch (Controller.KEYS[event.key]) {
+    // switch (Controller.KEYS[event.keyCode]) {
 
       case "left":
         this.keysPressed.left = false;
         // this.player.velX = 0;
+        this.player.runningKeyDown = false;
 
         if (!this.keysPressed.left && !this.keysPressed.right) this.player.velX = 0;
 
         break;
       case "right":
         this.keysPressed.right = false;
-        
+        // this.player.runningKeyDown = false;
+
         // this.player.velX *= -1;
         if (!this.keysPressed.left && !this.keysPressed.right) this.player.velX = 0;
         break;
@@ -113,6 +131,8 @@ class Controller {
       case "fire":
         this.keysPressed.fire = false;
         break;
+      case "dash":
+        this.keysPressed.dash = false;
       case "space":
         // this.gameview.Ticker.paused = (this.gameview.Ticker.paused) ? false: true;
         break;
@@ -130,15 +150,28 @@ class Controller {
 }
 
 
+// Controller.KEYS = {
+//   19: 'space',
+//   37: 'left',
+//   38: 'up',
+//   39: 'right',
+//   40: 'down',
+//   65: 'jump',
+//   68: 'fire',
+//   83: 'dash',
+//   13: 'enter'
+// };
+
 Controller.KEYS = {
-  19: 'space',
-  37: 'left',
-  38: 'up',
-  39: 'right',
-  40: 'down',
-  65: 'jump',
-  68: 'fire',
-  13: 'enter'
+  "space": 'space',
+  "ArrowLeft": 'left',
+  "ArrowUp": 'up',
+  "ArrowRight": 'right',
+  "ArrowDown": 'down',
+  "a": 'jump',
+  "d": 'fire',
+  "s": 'dash',
+  "Enter": 'enter'
 };
 
 
