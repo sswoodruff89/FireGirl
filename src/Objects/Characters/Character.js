@@ -19,16 +19,17 @@ class Character extends GameObject {
 
   loadImage() {
     let spriteMap = new Image();
-    spriteMap.src = "./assets/charSprite.png";
-    return spriteMap;
-    // this.tileMap.onLoad = this.drawLevel(ctx);
-  }
-  loadImage2() {
-    let spriteMap = new Image();
     spriteMap.src = "./assets/SeisaSpriteSheet.png";
     return spriteMap;
     // this.tileMap.onLoad = this.drawLevel(ctx);
   }
+  
+  // loadImage2() {
+  //   let spriteMap = new Image();
+  //   spriteMap.src = "./assets/SeisaSpriteSheet.png";
+  //   return spriteMap;
+  //   // this.tileMap.onLoad = this.drawLevel(ctx);
+  // }
 
   // drawModel() {
   //   this.ctx.beginPath();

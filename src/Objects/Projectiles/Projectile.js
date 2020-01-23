@@ -286,7 +286,7 @@ class Projectile extends GameObject {
         this.impactStartY,
         this.impactFrameWidth,
         this.impactFrameHeight,
-        this.x + this.width / 3, this.y - (this.height * 2),
+        this.x, this.y ,
         this.impactWidth, this.impactHeight
       );
     } else {
@@ -314,7 +314,7 @@ class Projectile extends GameObject {
       frameStartX: 10,
       frameStartY: 277,
       frameWidth: 65,
-      frameHeight: 16,
+      frameHeight: 18,
       frameNum: 8,
       image: "./assets/fireball.png",
       impact: "./assets/burst.png",
@@ -351,6 +351,58 @@ class Projectile extends GameObject {
       impactStartX: 145,
       impactStartY: 150,
       damage: 25
+    };
+  }
+  
+  static blueFireball(pos, velX, velY, dir) {
+    return {
+      pos: pos,
+      width: 70,
+      height: 36,
+      velX: velX,
+      velY: velY,
+      dir: dir,
+
+      frameStartX: 10,
+      frameStartY: 277,
+      frameWidth: 65,
+      frameHeight: 18,
+      frameNum: 8,
+      image: "./assets/blue_fireball.png",
+      impact: "./assets/blue_burst.png",
+      impactWidth: 60,
+      impactHeight: 60,
+      impactStartX: 145,
+      impactStartY: 150,
+      impactFrameWidth: 90,
+      impactFrameHeight: 90,
+      damage: 50
+    };
+  }
+
+  static blueFireballVert(pos, velX, velY, dir) {
+    return {
+      pos: pos,
+      width: 36,
+      height: 70,
+      velX: velX,
+      velY: velY,
+      dir: dir,
+      impact: "./assets/blue_burst.png",
+
+      frameStartX: 10,
+      frameStartY: 400,
+      frameWidth: 22,
+      frameHeight: 35,
+      frameNum: 8,
+      image: "./assets/blue_fireball.png",
+      impactFrameWidth: 90,
+      impactFrameHeight: 90,
+      impactWidth: 60,
+      impactHeight: 60,
+      impactStartX: 145,
+      impactStartY: 150,
+      damage: 50
     };
   }
 

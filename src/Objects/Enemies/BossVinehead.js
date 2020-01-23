@@ -100,15 +100,6 @@ class BossVinehead extends Enemy {
     this.velX = -10;
   }
 
-  // checkPlayerPos(x, y, homing) {
-
-  // }
-
-  // setPlayerCheckInterval(player) {
-  //   this.playerCheckInterval = setInterval(() => {
-  //     this.checkPlayerPos(player);
-  //   }, 2);
-  // }
 
   shuffleVines(vines) {
     for (let i = vines.length - 1; i > 0; i--) {

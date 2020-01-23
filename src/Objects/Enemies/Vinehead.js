@@ -73,7 +73,6 @@ class Vinehead extends Enemy {
   }
 
   setPlayerCheckInterval(player) {
-    // debugger
     this.playerCheckInterval = setInterval(() => {
       this.checkPlayerPos(player);
     }, 2);
