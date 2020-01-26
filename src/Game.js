@@ -475,10 +475,23 @@ class Game {
         this.ctx.fillText("GAME OVER", this.canvas.width / 2, this.canvas.height / 2);
 
 
+        this.ctx.font = "80px Arial";
+        this.ctx.fillStyle = "pink";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText(
+          `YOUR SCORE IS ${this.highScore}`,
+          this.canvas.width / 2,
+          450
+        );
+
         this.ctx.font = "50px Arial";
         this.ctx.fillStyle = "pink";
         this.ctx.textAlign = "center";
-        this.ctx.fillText("Press Enter to Play Again", this.canvas.width / 2, 400);
+        this.ctx.fillText(
+          "Press Enter to Play Again",
+          this.canvas.width / 2,
+          550
+        );
 
       } else {
         this.level.theme.pause();
