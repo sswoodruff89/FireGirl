@@ -14,7 +14,7 @@ class GameView {
     this.splash = new Image();
     this.splash.src = "./assets/firegirl.jpg";
     this.logo = new Image();
-    this.logo.src = "./assets/firegirl_logo_dark.pngit g";
+    this.logo.src = "./assets/firegirl_logo_dark.png";
 
 
     this.renderGame = this.renderGame.bind(this);
