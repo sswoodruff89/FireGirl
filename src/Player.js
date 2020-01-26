@@ -55,7 +55,7 @@ class Player {
     this.climbing = false;
     this.frameCount = 0;
     this.attacking = false;
-
+    this.aura = this.loadImage("./assets/aura.png")
 
     this.upPressed = false;
     this.attackAnimTimeout = "";
@@ -80,6 +80,8 @@ class Player {
     this.drawRunning = this.drawRunning.bind(this);
     this.drawIdle = this.drawIdle.bind(this);
     this.drawSprite = this.drawSprite.bind(this);
+    this.drawJump = this.drawJump.bind(this);
+    this.loadImage = this.loadImage.bind(this);
 
     this.setOldPos = this.setOldPos.bind(this);
     this.inAir = this.inAir.bind(this);
@@ -95,6 +97,12 @@ class Player {
     this.isClimbing = this.isClimbing.bind(this);
     this.getDirX = this.getDirX.bind(this);
     this.getDirY = this.getDirY.bind(this);
+  }
+
+  loadImage(image) {
+    let proj = new Image();
+    proj.src = image;
+    return proj;
   }
 
   drawPlayer(frameCount) {
@@ -198,84 +206,202 @@ class Player {
 
     } 
   }
+  
+  
+  drawAttack(frameCount, state) {
+    switch (state) {
+      case "jumping":
+        if (this.velY < 0) {
+          if (this.direction === "right") {
+            this.ctx.drawImage(
+              this.spriteMap,
+              (Math.floor(frameCount / 2) % 3) * 108,
+              1145,
+              108,
+              172,
+              this.x, this.y,
+              this.width + 5, this.height
+              // this.width - 5, this.height
+            );
+          } else {
+            this.ctx.scale(-1, 1);
+            this.ctx.drawImage(
+              this.spriteMap,
+              (Math.floor(frameCount / 2) % 3) * 108,
+              1145,
+              108,
+              172,
+              -this.x - this.width, this.y,
+              // -this.x - this.width - 5, this.y,
+              this.width + 5, this.height
+              // this.width - 5, this.height
+            );
+            this.ctx.scale(-1, 1);
+          }
+        } else if (this.velY > 0) {
+          if (this.direction === "right") {
+            this.ctx.drawImage(
+              this.spriteMap,
+              (Math.floor(frameCount / 2) % 3) * 108,
+              1510,
+              108,
+              175,
+              this.x, this.y,
+              this.width, this.height
+              // this.width - 5, this.height
+            );
+          } else {
+            this.ctx.scale(-1, 1);
+            this.ctx.drawImage(
+              this.spriteMap,
+              (Math.floor(frameCount / 2) % 3) * 108,
+              1510,
+              108,
+              175,
+              -this.x - this.width, this.y,
+              // -this.x - this.width - 5, this.y,
+              this.width, this.height
+              // this.width - 5, this.height
+            );
+            this.ctx.scale(-1, 1);
+          }
+        }
+        break;
+      case "running":
+        if (this.direction === "right") {
+          this.ctx.drawImage(
+            this.spriteMap,
+            (Math.floor(frameCount / 2) % 4) * 160,
+            176,
+            160,
+            175,
+            this.x, this.y,
+            this.width + (this.width / 3), this.height
+          );
+        } else if (this.direction === "left") {
+          this.ctx.scale(-1, 1);
+          this.ctx.drawImage(
+            this.spriteMap,
+            (Math.floor(frameCount / 2) % 4) * 160,
+            176,
+            160,
+            175,
+            -this.x - this.width, this.y,
+            this.width + (this.width / 3), this.height
+          );
+          this.ctx.scale(-1, 1);
+        };
+        break;
+      default: 
+        if (this.direction === "right") {
+          if (this.upPressed) {
+            this.ctx.drawImage(
+              this.spriteMap,
+              (Math.floor(frameCount / 2) % 4) * 89,
+              730,
+              89,
+              195,
+              this.x, this.y - (this.height / 10),
+              this.width, this.height * 1.1
+            );
+          } else {
+            this.ctx.drawImage(
+              this.spriteMap,
+              (Math.floor(frameCount / 2) % 4) * 125.1,
+              353,
+              123.25,
+              175,
+              this.x, this.y,
+              this.width + (this.width / 2.5), this.height
+            );
+          }
+        } else if (this.direction === "left") {
+          this.ctx.scale(-1, 1);
+          if (this.upPressed) {
+            this.ctx.drawImage(
+              this.spriteMap,
+              (Math.floor(frameCount / 2) % 4) * 89,
+              730,
+              89,
+              195,
+              -this.x - this.width, this.y - (this.height / 10),
+              this.width, this.height * 1.1
+            );
+          } else {
+            this.ctx.drawImage(
+              this.spriteMap,
+              (Math.floor(frameCount / 2) % 4) * 125.1,
+              353,
+              123.25,
+              175,
+              -this.x - this.width, this.y,
+              this.width + (this.width / 2.5), this.height
+            );
+          }
+          this.ctx.scale(-1, 1);
+        }
+       break;
+    }
+   
+}
 
-
-  drawAttack(frameCount, isRunning) {
-    if (isRunning) {
+  drawJump(frameCount) {
+    if (!this.onGround && this.velY < 0) {
       if (this.direction === "right") {
         this.ctx.drawImage(
           this.spriteMap,
-          (Math.floor(frameCount / 2) % 4) * 160,
+          (Math.floor(frameCount / 2) % 3) * 94,
+          959,
+          94,
           176,
-          160,
-          175,
           this.x, this.y,
-          this.width + (this.width / 3), this.height
+          this.width - (this.width / 8), this.height
+          // this.width - 5, this.height
         );
-      } else if (this.direction === "left") {
+      } else {
         this.ctx.scale(-1, 1);
         this.ctx.drawImage(
           this.spriteMap,
-          (Math.floor(frameCount / 2) % 4) * 160,
+          (Math.floor(frameCount / 2) % 3) * 94,
+          959,
+          94,
           176,
-          160,
-          175,
           -this.x - this.width, this.y,
-          this.width + (this.width / 3), this.height
+          // -this.x - this.width - 5, this.y,
+          this.width - (this.width / 8), this.height
+          // this.width - 5, this.height
         );
         this.ctx.scale(-1, 1);
       }
-    } else {
-
+    } else if (!this.onGround && this.velY > 1) {
       if (this.direction === "right") {
-        if (this.upPressed) {
-          this.ctx.drawImage(
-            this.spriteMap,
-            (Math.floor(frameCount / 2) % 4) * 89,
-            730,
-            89,
-            195,
-            this.x, this.y - (this.height / 10),
-            this.width, this.height * 1.1
-          );
-        } else {
-          this.ctx.drawImage(
-            this.spriteMap,
-            (Math.floor(frameCount / 2) % 4) * 125.1,
-            353,
-            123.25,
-            175,
-            this.x, this.y,
-            this.width + (this.width / 2.5), this.height
-          );
-        }
-      } else if (this.direction === "left") {
+        this.ctx.drawImage(
+          this.spriteMap,
+          (Math.floor(frameCount / 2) % 2) * 98,
+          1325,
+          98,
+          175,
+          this.x, this.y,
+          this.width, this.height
+          // this.width - 5, this.height
+        );
+      } else {
         this.ctx.scale(-1, 1);
-        if (this.upPressed) {
-          this.ctx.drawImage(
-            this.spriteMap,
-            (Math.floor(frameCount / 2) % 4) * 89,
-            730,
-            89,
-            195,
-            -this.x - this.width, this.y - (this.height / 10),
-            this.width, this.height * 1.1
-          );
-        } else {
-          this.ctx.drawImage(
-            this.spriteMap,
-            (Math.floor(frameCount / 2) % 4) * 125.1,
-            353,
-            123.25,
-            175,
-            -this.x - this.width, this.y,
-            this.width + (this.width / 2.5), this.height
-          );
-        }
+        this.ctx.drawImage(
+          this.spriteMap,
+          (Math.floor(frameCount / 2) % 2) * 98,
+          1325,
+          98,
+          175,
+          -this.x - this.width, this.y,
+          // -this.x - this.width - 5, this.y,
+          this.width, this.height
+          // this.width - 5, this.height
+        );
         this.ctx.scale(-1, 1);
+      }
     }
   }
-}
 
   drawIdle(frameCount) {
     if (this.direction === "right") {
@@ -309,12 +435,43 @@ class Player {
   drawSprite(frameCount) {
     this.setDying();
     // this.isIdle();
+    if (this.damageBoost) {
+      this.ctx.drawImage(
+        this.aura,
+        (Math.floor(frameCount / 3) % 4) * 82,
+        0,
+        82,
+        93,
+        this.x - 28, this.y - 42,
+        100, 130
+        // this.width - 5, this.height
+      );
+    }
     if (this.isHit && frameCount % 3 === 0) return;
 
-    if (this.isRunning) {
-      (!this.attacking) ? this.drawRunning(frameCount) : this.drawAttack(frameCount, this.isRunning);
-    } else {
-      (!this.attacking) ? this.drawIdle(frameCount) : this.drawAttack(frameCount, this.isRunning);
+
+
+    if (this.velY >= 0 && this.velY <= 1) {
+      if (this.isRunning) {
+        (!this.attacking) ? this.drawRunning(frameCount) : this.drawAttack(frameCount, "running");
+      } else {
+        (!this.attacking) ? this.drawIdle(frameCount) : this.drawAttack(frameCount, null);
+      }
+    } else if (!this.onGround) {
+      (!this.attacking) ? this.drawJump(frameCount) : this.drawAttack(frameCount, "jumping");
+    }
+
+    if (this.damageBoost) {
+      this.ctx.drawImage(
+        this.aura,
+        (Math.floor(frameCount / 3) % 4) * 82,
+        0,
+        82,
+        93,
+        this.x - 28, this.y - 42,
+        100, 130
+        // this.width - 5, this.height
+      );
     }
   }
 
@@ -538,7 +695,8 @@ class Player {
   damageBoostCountdown() {
     this.damageMeterInterval = setInterval(() => {
       this.damageMeter -= 1;
-      if (this.damageMeter === 0) {
+      if (this.damageMeter <= 0) {
+        this.damageMeter = 0;
         clearInterval(this.damageMeterInterval);
         this.damageBoost = false;
       };

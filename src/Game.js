@@ -321,7 +321,9 @@ class Game {
           this.enemies[key].move(this.canvas, this.player, this.ctx);
 
         } else {
+          this.player.damageMeter += (this.enemies[key].points / 6);
           this.highScore += this.enemies[key].points;
+
           delete this.enemies[key];
           this.enemyCount -= 1;
         }
@@ -427,7 +429,7 @@ class Game {
       this.player.drawSprite(this.frameCount);
       // this.player.drawPlayer(this.frameCount);
       this.playerUpdate();
-      if (this.level.screen < 4) {
+      if (this.level.screen < 5) {
         this.level.renderMid(this.ctx, this.canvas);
         this.level.renderFront(this.ctx, this.canvas);
       }

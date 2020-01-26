@@ -464,12 +464,24 @@ class Collision {
         }
       },
 
+      54: (obj, x, y, colVal, tileSize) => {
+        ////For Bottom of Screen
+        if (this.collidePlatTop(obj, y + (tileSize * 0.9))) {
+          return;
+        } else {
+          this.collidePlatRight(obj, x + tileSize);
+          return;
+        }
+      },
 
       58: (obj, x, y, colVal, tileSize) => {
         // climb
-        if (obj.x + obj.width > x + (tileSize / 4) && obj.x < x + (tileSize * (3/4))) {
+
+      if (obj.x + obj.width > x + (tileSize / 4) && obj.x < x + (tileSize * (3/4))) {
 
           this.climbable(obj, x, y, tileSize);
+        } else if (this.collidePlatTop(obj, y)) {
+          return;
         }
       },
 

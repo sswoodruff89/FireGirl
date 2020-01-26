@@ -261,7 +261,7 @@ class Projectile extends GameObject {
         this.impactStartY,
         this.impactFrameWidth,
         this.impactFrameHeight,
-        this.x - (this.impactFrameWidth / 2), this.y - (this.impactFrameHeight / 2),
+        this.x - (this.impactFrameWidth / 3), this.y - (this.impactFrameHeight / 2),
         this.impactWidth, this.impactHeight
       );
 
@@ -286,7 +286,7 @@ class Projectile extends GameObject {
         this.impactStartY,
         this.impactFrameWidth,
         this.impactFrameHeight,
-        this.x, this.y ,
+        this.x - this.width / 3, this.y - (this.impactFrameHeight / 3),
         this.impactWidth, this.impactHeight
       );
     } else {
