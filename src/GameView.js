@@ -13,8 +13,8 @@ class GameView {
     this.game = null;
     this.splash = new Image();
     this.splash.src = "./assets/firegirl.jpg";
-    // this.HUD = new GameHUD();
-    // this.tileMap = this.loadImage();
+    this.logo = new Image();
+    this.logo.src = "./assets/firegirl_logo_dark.png";
 
 
     this.renderGame = this.renderGame.bind(this);
@@ -85,21 +85,32 @@ class GameView {
   renderGame() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     if (!this.game) {
-        this.ctx.drawImage(
-            this.splash,
-            0,
-            0,
-            920,
-            644,
-            0, 0,
-            this.canvas.width, this.canvas.height
-        );
+      this.ctx.drawImage(
+          this.splash,
+          0,
+          0,
+          920,
+          644,
+          0, 0,
+          this.canvas.width, this.canvas.height
+      );
 
-      this.ctx.font = "100px Arial";
-      this.ctx.fillStyle = "rgb(46, 2, 2)";
-      this.ctx.textAlign = "center";
-      this.ctx.fillText("FIRE GIRL", this.canvas.width / 2, this.canvas.height / 3);
-
+      // this.ctx.font = "100px Arial";
+      // this.ctx.fillStyle = "rgb(46, 2, 2)";
+      // this.ctx.textAlign = "center";
+      // this.ctx.fillText("FIRE GIRL", this.canvas.width / 2, this.canvas.height / 3);
+      // this.ctx.filter = "brightness(50%)";
+      this.ctx.drawImage(
+        this.logo,
+        0,
+        0,
+        636,
+        171,
+        this.canvas.width / 6,
+        this.canvas.height / 5,
+        636,
+        171
+      );
       this.ctx.font = "1.8em Arial";
       this.ctx.fillStyle = "pink";
       this.ctx.textAlign = "center";
