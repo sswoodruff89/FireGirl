@@ -3,7 +3,7 @@
 class Vine {
     constructor(options) {
         this.boss = options.boss;
-        this.vine = this.loadImage("../assets/vines.png");
+        this.vine = this.loadImage();
         this.attacking = false;
         this.charging = false;
         this.frameNum = 7;
@@ -27,9 +27,9 @@ class Vine {
 
     }
 
-    loadImage(image) {
+    loadImage() {
         let vine = new Image();
-        vine.src = image;
+        vine.src = "./assets/vines.png";
         return vine;
     }
 
