@@ -448,26 +448,16 @@ class Game {
       if (!this.won) {
         this.level.theme.pause();
         this.highScore = Math.floor(this.highScore + this.player.health);
-        // this.ctx.beginPath();
-        // this.ctx.rect(0, 0, this.canvas.width, this.canvas.height);
-        // this.ctx.fillStyle = "rgba(255, 255, 255, .1)";
-        // this.ctx.fill();
-        // this.ctx.closePath();
-
-        // // let img = new Image();
-        // // img.src = "./assets/embers.jpg";
-        // // img.onload = () => {
-        //   // ctx.drawImage(img, 0, 0);
-            this.ctx.drawImage(
-                this.embers,
-                0,
-                0,
-                852,
-                400,
-                0, 0,
-                900, 600
-          );
-        // };
+ 
+        this.ctx.drawImage(
+            this.embers,
+            0,
+            0,
+            852,
+            400,
+            0, 0,
+            900, 600
+        );
   
         this.ctx.font = "130px Arial";
         this.ctx.fillStyle = "rgb(46, 2, 2)";
