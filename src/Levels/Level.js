@@ -7,6 +7,8 @@ import Spider from "../Objects/Enemies/Spider";
 import Vinehead from "../Objects/Enemies/Vinehead";
 import Jellyfish from "../Objects/Enemies/Jellyfish";
 import BossVinehead from "../Objects/Enemies/BossVinehead";
+import Item from "../Objects/Items/Item";
+
 
 class Level {
   constructor(options) {
@@ -24,8 +26,8 @@ class Level {
     this.enemies = this.mapKeys[this.screen].enemies();
     this.enemyCount = 1;
     this.theme = new Music({src: this.mapKeys[this.screen].theme});
-    
     this.levelLayers = this.loadImages(this.mapKeys[this.screen].levelLayers);
+    this.items = this.mapKeys[this.screen].items();
         
 ////Enemy Rush////
     this.spawnTier = this.mapKeys[this.screen].spawnTier || null;
@@ -213,6 +215,7 @@ class Level {
     this.renderMap = this.mapKeys[this.screen].renderMap;
     this.physicalMap = this.mapKeys[this.screen].physicalMap;
     this.enemies = this.mapKeys[this.screen].enemies();
+    this.items = this.mapKeys[this.screen].items();
     if (this.mapKeys[this.screen].levelLayers) {
 
       this.levelLayers = this.loadImages(this.mapKeys[this.screen].levelLayers);
@@ -369,6 +372,9 @@ class Level {
           background: "./assets/Level1/lv1_back.png",
           // mid: "./assets/Level1/lv1_mid.png",
           // front: "./assets/Level1/lv1_front.png"
+        },
+        items: () => {
+          return {}
         }
       }
     };
@@ -400,25 +406,9 @@ class Level {
           0,  0,  0, 34,  0,  0,  0, 17,  0,  0,  0, 18,  0,  0,  0,
           1,  1,  1,  1,  2,  2,  1,  1,  1,  1,  1,  1,  1,  1,  1
         ],
-        // physicalMap: [
-        //   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-        //   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-        //   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-        //   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-        //   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-        //   2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-        //   0,  0,  0,  0,  0,  2,  2,  2,  2,  0,  0,  0,  0,  0,  0,
-        //   6,  5,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-        //   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  3,  1,  1,  1,
-        //   1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1
-        // ],
         enemies: () => {
           return {
-            // 1: new Spider(Spider.spider2([470, 0], [0, 350])),
-            // 2: new Helicopter(Helicopter.hel1([570, 50], "left")),
             // 1: new Jellyfish(Jellyfish.jell1([300, 300]))
-            // 4: new Flower(Flower.flow1([400, 320])),
-            // 5: new Flower(Flower.flow1([240, 500])),
           }
  
         },
@@ -427,7 +417,13 @@ class Level {
           background: "./assets/Level1/lv1_back.png",
           mid: "./assets/Level1/lv1_mid.png",
           front:  "./assets/Level1/lv1_front.png"
+        },
+        items: () => {
+          return {
+            1: new Item(Item.shield([400, 200], false))
+          };
         }
+        
       },
       2: {
         renderMap: [
@@ -474,6 +470,9 @@ class Level {
             // 4: new Flower(Flower.flow1([400, 320])),
             // 5: new Flower(Flower.flow1([240, 500])),
           }
+        },
+        items: () => {
+          return {}
         }
       },
       3: {
@@ -522,6 +521,9 @@ class Level {
           mid: "./assets/Level1/lvl3_mid.png",
           front: "./assets/Level1/lvl3_front.png"
         },
+        items: () => {
+          return {}
+        }
       },
       4: {
         renderMap: [
@@ -541,7 +543,6 @@ class Level {
         enemies: () => {
           return {
             1: new Helicopter(Helicopter.hel2([500, 0])),
-            // // 3: new Flower(Flower.flow2([290, 190])),
             4: new Vinehead(Vinehead.vine3([500, 100], this.player)),
             5: new Vinehead(Vinehead.vine3([300, 450], this.player)),
             6: new Vinehead(Vinehead.vine3([850, 500], this.player)),
@@ -554,6 +555,11 @@ class Level {
           background: "./assets/Level1/lvl4_back.png",
           mid: "./assets/Level1/lvl4_mid.png",
           front: "./assets/Level1/lvl4_front.png"
+        },
+        items: () => {
+          return {
+            // 1: new Item(Item.shield([80, 460], false))
+          }
         }
       },
       // 44: {
@@ -581,19 +587,19 @@ class Level {
       //     0,  0,  0,  0,  0,  3,  1,  1,  1,  2,  0,  0,  0,  0,  0,
       //     0,  0,  0,  0,  0,  9,  0,  0,  0, 10,  0,  1,  1,  1,  1
       //   ],
-      //   enemies: () => {
-      //     return {
-      //       1: new Helicopter(Helicopter.hel2([500, 0])),
-      //       // // 3: new Flower(Flower.flow2([290, 190])),
-      //       4: new Vinehead(Vinehead.vine3([500, 100], this.player)),
-      //       5: new Vinehead(Vinehead.vine3([300, 450], this.player)),
-      //       6: new Vinehead(Vinehead.vine3([850, 500], this.player)),
-      //       7: new Vinehead(Vinehead.vine1([800, -20], this.player)),
+        enemies: () => {
+          return {
+            1: new Helicopter(Helicopter.hel2([500, 0])),
+            // // 3: new Flower(Flower.flow2([290, 190])),
+            4: new Vinehead(Vinehead.vine3([500, 100], this.player)),
+            5: new Vinehead(Vinehead.vine3([300, 450], this.player)),
+            6: new Vinehead(Vinehead.vine3([850, 500], this.player)),
+            7: new Vinehead(Vinehead.vine1([800, -20], this.player)),
       //     }
       //     // 4: new Flower(Flower.flow2([530, 190])),
 
-      //   }
-      // },
+        }
+      },
       5: {
         renderMap: [
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -635,6 +641,9 @@ class Level {
           // mid: "./assets/Level1/lvl3_mid.png",
           // front: "./assets/Level1/lvl3_front.png"
         },
+        items: () => {
+          return {}
+        }
       },
       6: {
         renderMap: [
@@ -671,6 +680,9 @@ class Level {
           background: "./assets/Level1/lv1_back.png",
           // mid: "./assets/Level1/lv1_mid.png",
           // front: "./assets/Level1/lv1_front.png"
+        },
+        items: () => {
+          return {}
         }
       },
 

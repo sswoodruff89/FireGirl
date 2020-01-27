@@ -836,6 +836,7 @@ class Collision {
       return false;
     }
   }
+  
 
   ////////PLATFORM COLLISION
 

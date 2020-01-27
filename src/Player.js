@@ -25,11 +25,14 @@ class Player {
       // height: 45
       // height: 54
     });
+
     this.health = this.character.health;
     this.damageMeter = 0;
     this.damageBoost = false;
+
+    this.shield = false;
+
     this.spriteMap = this.character.loadImage();
-    // this.spriteMap = this.character.loadImage2();
     this.fireballs = {};
     
     this.vel = this.character.vel;
@@ -55,7 +58,8 @@ class Player {
     this.climbing = false;
     this.frameCount = 0;
     this.attacking = false;
-    this.aura = this.loadImage("./assets/aura.png")
+    this.aura = this.loadImage("./assets/aura.png");
+    this.shieldImg = this.loadImage("./assets/shield_aura.png");
 
     this.upPressed = false;
     this.attackAnimTimeout = "";
@@ -92,6 +96,8 @@ class Player {
 
     this.setDamageMeter = this.setDamageMeter.bind(this);
     this.damageBoostCountdown = this.damageBoostCountdown.bind(this);
+    this.setShieldTimeOut = this.setShieldTimeOut.bind(this);
+    this.setShield = this.setShield.bind(this);
     
     this.setDying = this.setDying.bind(this);
     this.isClimbing = this.isClimbing.bind(this);
@@ -447,6 +453,7 @@ class Player {
         // this.width - 5, this.height
       );
     }
+
     if (this.isHit && frameCount % 3 === 0) return;
 
 
@@ -470,6 +477,22 @@ class Player {
         93,
         this.x - 28, this.y - 42,
         100, 130
+        // this.width - 5, this.height
+      );
+    }
+    if (this.shield) {
+      let count = Math.floor(frameCount / 3) % 11;
+      this.ctx.drawImage(
+        this.shieldImg,
+        (count) * 145.75 + (count * 46.5) + 23,
+        // (count) * 145.75 + 46.5,
+        0,
+        145.75,
+        143,
+        this.x - 12,
+        this.y - 10,
+        85,
+        100
         // this.width - 5, this.height
       );
     }
@@ -669,6 +692,7 @@ class Player {
   }
     
   setHit(damage = 10) {
+    if (this.shield) return;
     if (!this.isHit) {
       this.isHit = true;
       this.hitCooldown = setTimeout(() => {
@@ -701,6 +725,17 @@ class Player {
         this.damageBoost = false;
       };
     }, 100);
+  }
+
+  setShield() {
+    this.shield = true;
+    this.setShieldTimeOut();
+  }
+
+  setShieldTimeOut() {
+    this.shieldTimeOut = setTimeout(() => {
+      this.shield = false;
+    }, 10000);
   }
 
   setDying() {

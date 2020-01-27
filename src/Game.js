@@ -6,6 +6,7 @@ import Controller from "./util/Controller";
 import Enemy from "./Objects/Enemies/Enemy";
 import Helicopter from "./Objects/Enemies/Helicopter";
 import Flower from "./Objects/Enemies/Flower";
+import Item from "./Objects/Items/Item";
 import GameHUD from "./GameHUD";
 
 const CONSTANTS = {
@@ -51,6 +52,7 @@ class Game {
     this.playerPlatformCheck = this.playerPlatformCheck.bind(this);
     this.playerUpdate = this.playerUpdate.bind(this);
     this.projectilePlatformCheck = this.projectilePlatformCheck.bind(this);
+    this.renderItems = this.renderItems.bind(this);
     this.renderFireballs = this.renderFireballs.bind(this);
     this.renderEnemies = this.renderEnemies.bind(this);
     this.renderEnemyProjectiles = this.renderEnemyProjectiles.bind(this);
@@ -332,6 +334,19 @@ class Game {
     }
   }
 
+  renderItems() {
+      if (Object.keys(this.level.items).length === 0) return;
+
+      for (let key in this.level.items) {
+        this.level.items[key].checkCollected(this.player);
+        if (!this.level.items[key].collected) {
+          this.level.items[key].drawItem(this.ctx, this.frameCount);
+        } else {
+          delete this.level.items[key];
+        }
+      }
+  }
+
   renderFireballs() {
     if (Object.keys(this.player.fireballs).length !== 0) {
       for (let key in this.player.fireballs) {
@@ -438,7 +453,7 @@ class Game {
       // this.enemies[1].drawEnemy(this.ctx, this.frameCount);
       this.renderEnemies();
       // this.enemies[1].callAttack(this.frameCount);
-      
+      this.renderItems();
       this.renderEnemyProjectiles();
       this.renderFireballs();
       
