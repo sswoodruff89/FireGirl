@@ -420,7 +420,7 @@ class Level {
         },
         items: () => {
           return {
-            1: new Item(Item.shield([400, 200], false))
+            // 1: new Item(Item.shield([400, 200], false))
           };
         }
         
@@ -558,7 +558,7 @@ class Level {
         },
         items: () => {
           return {
-            // 1: new Item(Item.shield([80, 460], false))
+            1: new Item(Item.shield([80, 460], false))
           }
         }
       },
