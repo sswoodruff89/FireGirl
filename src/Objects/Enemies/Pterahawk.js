@@ -38,7 +38,6 @@ class Pterahawk extends Enemy {
   
 
   drawEnemy(ctx, frameCount) {
-    //   debugger
     this.setDying();
     if ((this.isHit || this.dying) && frameCount % 3 === 0) return;
 

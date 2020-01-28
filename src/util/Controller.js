@@ -144,7 +144,6 @@ class Controller {
     this.player.idle = true;
     // this.keysPressed = {};
     // console.log(Controller.KEYS[event.keyCode])
-    // debugger
 
   }
 }

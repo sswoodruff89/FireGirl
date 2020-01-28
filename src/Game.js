@@ -394,10 +394,8 @@ class Game {
   }
 
   loadLevel() {
-    debugger
     if (((this.player.x + (this.player.width / 2)) >= this.canvas.width)) {
       if (this.level.screen === parseInt(this.level.lastScreen)) {
-        debugger;
         this.won = true;
         return;
       } else {
@@ -477,7 +475,6 @@ class Game {
     } else if (this.gameOver) {
       clearInterval(this.frameInterval);
       clearInterval(this.level.spawnInterval);
-      debugger
       if (!this.won) {
         this.level.theme.pause();
         this.highScore = Math.floor(this.highScore + this.player.health);
