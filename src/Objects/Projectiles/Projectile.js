@@ -425,6 +425,25 @@ class Projectile extends GameObject {
     };
   }
 
+  static pteraBall(pos, velX, velY, dir) {
+    return {
+      pos: pos,
+      width: 25,
+      height: 25,
+      velX: velX,
+      velY: velY,
+      dir: dir,
+      frameStartX: 420,
+      frameStartY: 330,
+      frameWidth: 15,
+      frameHeight: 15,
+      frameNum: 1,
+      image: "./assets/footEn.png",
+      impact: "./assets/burst.png",
+      damage: 15
+    };
+  }
+
   static electricBall(pos, velX = 0, velY = 1, dir = "right") {
     return {
       pos: pos,

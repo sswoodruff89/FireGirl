@@ -32,7 +32,7 @@ class GameHUD {
   drawHUD(canvas, ctx, player, frameCount, points) {
     ctx.beginPath();
     ctx.rect(0, (canvas.height - 55), canvas.width, 55);
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
     ctx.fill();
     ctx.closePath();
 

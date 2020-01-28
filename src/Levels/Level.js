@@ -2,6 +2,7 @@ import Tile from "../Objects/Platforms/Tile";
 import Music from "../util/Music";
 import Enemy from "../Objects/Enemies/Enemy";
 import Helicopter from "../Objects/Enemies/Helicopter";
+import Pterahawk from "../Objects/Enemies/Pterahawk";
 import Flower from "../Objects/Enemies/Flower";
 import Spider from "../Objects/Enemies/Spider";
 import Vinehead from "../Objects/Enemies/Vinehead";
@@ -216,10 +217,12 @@ class Level {
     this.physicalMap = this.mapKeys[this.screen].physicalMap;
     this.enemies = this.mapKeys[this.screen].enemies();
     this.items = this.mapKeys[this.screen].items();
+
     if (this.mapKeys[this.screen].levelLayers) {
 
       this.levelLayers = this.loadImages(this.mapKeys[this.screen].levelLayers);
     }
+    
     if (this.mapKeys[this.screen].theme) {
       let muted = this.theme.music.muted;
       this.theme.pause();
@@ -324,16 +327,22 @@ class Level {
             
         2: {
               0: () => {
-                return new Helicopter(Helicopter.hel2([800, 50], [-50, 950], "left"));
+                return new Pterahawk(Pterahawk.pter4([800, 125], [-50, 950], "left"));
               },
               1: () => {
-                return new Helicopter(Helicopter.hel2([0, 50], [-50, 950], "right"));
+                return new Pterahawk(Pterahawk.pter4([0, 125], [-50, 950], "right"));
               },
               2: () => {
-                return new Helicopter(Helicopter.hel1([800, 15], [-50, 950], "left"));
+                return new Pterahawk(Pterahawk.pter2([800, 100], [-50, 950], "left"));
               },
               3: () => {
-                return new Helicopter(Helicopter.hel1([0, 15], [-50, 950], "right"));
+                return new Pterahawk(Pterahawk.pter2([0, 100], [-50, 950], "right"));
+              },
+              4: () => {
+                return new Pterahawk(Pterahawk.pter1([800, 80], [-50, 950], "left"));
+              },
+              5: () => {
+                return new Pterahawk(Pterahawk.pter1([0, 80], [-50, 950], "right"));
               },
            },
         3: {
@@ -408,8 +417,10 @@ class Level {
         ],
         enemies: () => {
           return {
+            1: new Pterahawk(Pterahawk.pter4([800, 30], [300, 950], "left")),
+            2: new Pterahawk(Pterahawk.pter2([800, 120], [300, 950], "right"))
             // 1: new Jellyfish(Jellyfish.jell1([300, 300]))
-          }
+          };
  
         },
         theme: "./assets/Sound/ff9_stirring_forest.mp3",
@@ -459,9 +470,13 @@ class Level {
 
         enemies: () => {
           return {
-            1: new Helicopter(Helicopter.hel2([10, 10], [0, 700])),
-            // 2: new Helicopter(Helicopter.hel2([570, 0], [0, 700], "left")),
-            3: new Helicopter(Helicopter.hel2([10, 140], [0, 335], "left")),
+            1: new Pterahawk(Pterahawk.pter2([10, 35], [0, 700])),
+            2: new Pterahawk(Pterahawk.pter4([200, 10], [0, 700])),
+            // 2: new Pterahawk(Pterahawk.hel2([570, 0], [0, 700], "left")),
+            3: new Pterahawk(Pterahawk.pter4([10, 140], [0, 335], "left")),
+            // 1: new Helicopter(Helicopter.hel2([10, 10], [0, 700])),
+            // // 2: new Helicopter(Helicopter.hel2([570, 0], [0, 700], "left")),
+            // 3: new Helicopter(Helicopter.hel2([10, 140], [0, 335], "left")),
             4: new Spider(Spider.spider1([700, 0], [0, 380])),
             5: new Spider(Spider.spider2([600, 0], [20, 440])),
             6: new Spider(Spider.spider3([150, 0], [20, 250]))
@@ -542,7 +557,7 @@ class Level {
         ],
         enemies: () => {
           return {
-            1: new Helicopter(Helicopter.hel2([500, 0])),
+            1: new Pterahawk(Pterahawk.pter2([500, 20])),
             4: new Vinehead(Vinehead.vine3([500, 100], this.player)),
             5: new Vinehead(Vinehead.vine3([300, 450], this.player)),
             6: new Vinehead(Vinehead.vine3([850, 500], this.player)),
