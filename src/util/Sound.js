@@ -31,13 +31,26 @@ class Sound {
     static fire() {
         return {
             src: "./assets/Sound/fireSound.mp3",
-            id: "fire"
+            idName: "fire"
         }
     }
     static shock() {
         return {
             src: "./assets/Sound/shock.mp3",
-            id: "shock"
+            idName: "shock"
+        }
+    }
+
+    static healItem() {
+        return {
+            src: "./assets/Sound/heal.mp3",
+            idName: "healItem"
+        }
+    }
+    static shieldItem() {
+        return {
+            src: "./assets/Sound/shieldItem.wav",
+            idName: "shieldItem"
         }
     }
 }

@@ -13,29 +13,32 @@ class Item extends GameObject{
     this.item = this.loadImage();
     this.width = options.width;
     this.height = options.height;
+    this.velY = options.velY || 0;
     this.frameStartX = options.frameStartX;
     this.frameStartY = options.frameStartY;
     this.frameWidth = options.frameWidth;
     this.frameHeight = options.frameHeight;
     this.frameNum = options.frameNum;
     this.disappear = options.disappear
+    this.collectedSound = new Sound(options.soundSrc);
 
+    this.fading = false;
 
     this.collected = false;
-
-    // this.impactSound = new Sound({ src: this.mapKeys[this.screen].theme });
 
     this.loadImage = this.loadImage.bind(this);
     this.drawItem = this.drawItem.bind(this);
     this.timeOutCollected = this.timeOutCollected.bind(this);
 
-    this.impactSound = new Sound(Sound.shock());
 
     this.timeOutCollected();
   }
 
   timeOutCollected() {
     if (this.disappear) {
+        this.fadeTimeOut = setTimeout(() => {
+          this.fading = true;
+        }, 7000);
         this.collectedTimeOut = setTimeout(() => {
             this.collected = true;
         }, 10000)
@@ -58,9 +61,17 @@ class Item extends GameObject{
       this.y + this.height * .75 > player.y
     ) {
       this.collected = true;
+      this.collectedSound.play();
+
       switch (this.name) {
         case "Shield":
           player.setShield();
+          return;
+        case "Health":
+          if (player.health < 200) {
+            player.health += 30;
+            if (player.health > 200) player.health = 200;
+          }
           return;
         default:
           return;
@@ -70,6 +81,8 @@ class Item extends GameObject{
 
   drawItem(ctx, frameCount) {
     if (this.collected) return;
+    this.y += this.velY;
+    if ((this.fading) && frameCount % 2 === 0) return;
 
     ctx.drawImage(
       this.item,
@@ -96,6 +109,26 @@ class Item extends GameObject{
       frameWidth: 93,
       frameHeight: 118,
       frameNum: 1,
+      soundSrc: Sound.shieldItem(),
+
+      disappear: disappear
+    };
+  }
+
+  static health(pos, disappear) {
+    return {
+      name: "Health",
+      pos: pos,
+      width: 46.5,
+      height: 50.5,
+      velY: (disappear) ? 0.4 : 0,
+
+      frameStartX: 0,
+      frameStartY: 125,
+      frameWidth: 93,
+      frameHeight: 101,
+      frameNum: 1,
+      soundSrc: Sound.healItem(),
       disappear: disappear
     }
   }

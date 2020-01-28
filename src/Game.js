@@ -44,6 +44,7 @@ class Game {
     // this.getPlayerTilePos = this.getPlayerTilePos.bind(this);
 
     this.highScore = 0;
+    this.killCount = 0;
 
     this.getTopLeftPos = this.getTopLeftPos.bind(this);
     this.getTopRightPos = this.getTopRightPos.bind(this);
@@ -64,7 +65,7 @@ class Game {
     this.loadLevel = this.loadLevel.bind(this);
     this.resizeGame = this.resizeGame.bind(this);
     this.newLevel = this.newLevel.bind(this);
-
+    this.spawnItems = this.spawnItems.bind(this);
 
     this.enemyCount = Object.keys(this.enemies).length;
     this.cleared = false;
@@ -325,6 +326,10 @@ class Game {
         } else {
           this.player.damageMeter += (this.enemies[key].points / 6);
           this.highScore += this.enemies[key].points;
+          this.killCount++;
+          if (this.killCount % 22 === 0) {
+            this.spawnItems([this.enemies[key].x, this.enemies[key].y]);
+          }
 
           delete this.enemies[key];
           this.enemyCount -= 1;
@@ -332,6 +337,10 @@ class Game {
       }
       this.enemiesCleared();
     }
+  }
+
+  spawnItems(pos) {
+    this.level.items[100] = new Item(Item.health(pos, true));
   }
 
   renderItems() {
@@ -385,13 +394,19 @@ class Game {
   }
 
   loadLevel() {
-
+    debugger
     if (((this.player.x + (this.player.width / 2)) >= this.canvas.width)) {
-      this.level.loadLevel(parseInt(this.level.screen) + 1);
-      this.cleared = false;
-      this.enemies = this.level.enemies;
-      this.enemyCount = Object.keys(this.enemies);
-      this.player.x = 0;
+      if (this.level.screen === parseInt(this.level.lastScreen)) {
+        debugger;
+        this.won = true;
+        return;
+      } else {
+        this.level.loadLevel(parseInt(this.level.screen) + 1);
+        this.cleared = false;
+        this.enemies = this.level.enemies;
+        this.enemyCount = Object.keys(this.enemies);
+        this.player.x = 0 - this.player.width / 3;
+      }
     } else if ((this.player.x + (this.player.width / 2)) <= 0) {
       this.level.loadLevel(-1);
       this.player.x = this.canvas.width - this.player.width;
@@ -424,21 +439,21 @@ class Game {
   }
 
   isGameOver() {
-    this.win();
+    // this.win();
     this.gameOver = (this.player.dead || this.won) ? true : false;
   }
 
   //refactor
   win() {
-    this.won = (this.level.screen === 6 && Object.keys(this.enemies).length === 0) ? true : false;
+    // this.won = (this.level.screen === 6 && Object.keys(this.enemies).length === 0) ? true : false;
   }
   
 
   runGame() {
+    this.loadLevel();
     this.isGameOver();
-
+    
     if (!this.gameOver) {
-      this.loadLevel();
       this.level.renderBackground(this.ctx, this.canvas);
       if (this.level.screen > 3) this.level.drawLevel(this.ctx);
       this.player.drawSprite(this.frameCount);
@@ -459,7 +474,10 @@ class Game {
       
       this.HUD.drawHUD(this.canvas, this.ctx, this.player, this.frameCount, this.highScore);
 
-    } else {
+    } else if (this.gameOver) {
+      clearInterval(this.frameInterval);
+      clearInterval(this.level.spawnInterval);
+      debugger
       if (!this.won) {
         this.level.theme.pause();
         this.highScore = Math.floor(this.highScore + this.player.health);
@@ -498,7 +516,7 @@ class Game {
           550
         );
 
-      } else {
+      } else if (this.won) {
         this.level.theme.pause();
 
         this.ctx.drawImage(

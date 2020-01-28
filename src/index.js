@@ -1,38 +1,44 @@
 import "./styles/index.scss";
+// import * as firebase from "firebase/app";
+
+// // Add the Firebase services that you want to use
+// import "firebase/auth";
+// import "firebase/firestore";
+import firebaseConfig from "../config/firebase";
+import firebase from "firebase/app";
+import "firebase/database";
 import GameView from "./GameView";
 
 // const greeting = testObj?.key2?.key3 || testObj.key1;
 window.addEventListener("DOMContentLoaded", () => {
+  
+  firebase.initializeApp(firebaseConfig);
+
+  const leaderboard = firebase.database()
+    .ref("leaderboard")
+    .orderByChild("score")
+    .limitToLast(10);
+
+  console.log(leaderboard);
+  const scores = document.getElementById("leaderboard");
+
+  leaderboard.on("child_added", (obj) => {
+    const li = document.createElement('li');
+    li.innerText = `${obj.val().name}: ${obj.val().score}`;
+    li.value = obj.val().score;
+    scores.appendChild(li);
+   } 
+  );
+
+
+
   let canvas = document.getElementById("gameCanvas");
   let ctx = canvas.getContext("2d");
   let gameView = new GameView(canvas, ctx);
 
   gameView.renderGame();
 
-  // ctx.beginPath();
-  // ctx.rect(0, 0, canvas.width, canvas.height);
-  // ctx.fillStyle = "rgba(255, 255, 255, .1)";
-  // ctx.fill();
-  // ctx.closePath();
 
-  // ctx.font = "130px Arial";
-  // ctx.fillStyle = "red";
-  // ctx.textAlign = "center";
-  // ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
-  // let img = new Image();
-  // img.src = "./assets/firegirl.jpg";
-  // img.onload = () => {
-  //   // ctx.drawImage(img, 0, 0);
-  //         ctx.drawImage(
-  //         img,
-  //         0,
-  //         0,
-  //         920,
-  //         644,
-  //         0, 0,
-  //         900, 600
-  //   );
-  // };
   
 
   // let fromRight = canvas.width - 50;

@@ -95,11 +95,7 @@ class GameView {
           this.canvas.width, this.canvas.height
       );
 
-      // this.ctx.font = "100px Arial";
-      // this.ctx.fillStyle = "rgb(46, 2, 2)";
-      // this.ctx.textAlign = "center";
-      // this.ctx.fillText("FIRE GIRL", this.canvas.width / 2, this.canvas.height / 3);
-      // this.ctx.filter = "brightness(50%)";
+
       this.ctx.drawImage(
         this.logo,
         0,
