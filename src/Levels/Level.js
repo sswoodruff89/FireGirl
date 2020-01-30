@@ -17,7 +17,7 @@ class Level {
     this.player = options.player;
     this.mapKeys = options.mapKeys;
     this.screen = Object.keys(this.mapKeys)[0];
-    // this.screen = 6;
+    // this.screen = 5;
     this.lastScreen = Object.keys(this.mapKeys)[Object.keys(this.mapKeys).length - 1];
     this.renderMap = options.renderMap || this.mapKeys[this.screen].renderMap;
     this.physicalMap = options.physicalMap || this.mapKeys[this.screen].physicalMap;
@@ -631,32 +631,33 @@ class Level {
           1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1
         ],
         physicalMap: [
+        //0       2       4       6       8      10      12
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          1,  1,  1,  1,  1,  1,  1,  0,  1,  1,  1,  1,  1,  1,  1,
-          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          1,  1,  2,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,
-          7,  7,  7,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  3,  1,  1,  1,  1,
-          0,  0,  0,  0,  0,  3,  1,  1,  1,  1,  0,  0,  0,  0,  0,
-          1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1
+          0,  0,  0,  0,  0,  0,  0,  0, 35, 54, 54, 54, 56,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  4,  0,  0,  0,  0,  0,  0,
+          0,  0,  0, 12, 54, 56,  0,  0, 55, 54, 54, 55,  0,  0,  0,
+          2, 34,  0, 57,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0, 57,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0, 55, 54, 54, 54, 54, 54, 54, 54, 56,  0,  0, 55, 54,  6,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  6,
+          0,  0,  0, 35, 34,  0,  0,  0,  0,  0,  0,  0,  0,  0,  6,
+          0, 29, 54, 54, 54, 56,  0,  0, 55, 54, 54, 54, 54, 54, 54
         ],
         enemies: () => {
           return {
             1: new Vinehead(Vinehead.vine3([10, 530], this.player)),
-            2: new Vinehead(Vinehead.vine3([830, 0], this.player)),
-            3: new Vinehead(Vinehead.vine2([600, 600], this.player)),
-            4: new Vinehead(Vinehead.vine1([500, 100], this.player)),
-            5: new Vinehead(Vinehead.vine2([200, 450], this.player)),
+            2: new Vinehead(Vinehead.vine3([830, 80], this.player, "left")),
+            3: new Vinehead(Vinehead.vine2([600, 180], this.player)),
+            4: new Vinehead(Vinehead.vine1([360, 540], this.player, "left")),
+            5: new Vinehead(Vinehead.vine2([120, 420], this.player)),
             6: new Vinehead(Vinehead.vine2([850, 500], this.player)),
-            7: new Vinehead(Vinehead.vine1([800, -20], this.player)),
+            7: new Vinehead(Vinehead.vine1([890, 220], this.player, "left")),
           }
         },
         levelLayers: {
-          background: "./assets/Level1/lvl3_back.png",
-          // mid: "./assets/Level1/lvl3_mid.png",
-          // front: "./assets/Level1/lvl3_front.png"
+          background: "./assets/Level1/lvl5_back.png",
+          // mid: "./assets/Level1/lvl5_mid.png",
+          front: "./assets/Level1/lvl5_front.png"
         },
         items: () => {
           return {}

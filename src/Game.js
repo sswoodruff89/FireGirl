@@ -20,12 +20,13 @@ class Game {
   constructor(canvas, ctx, lvl = 1) {
     this.canvas = canvas;
     this.ctx = ctx;
+    this.lvl = lvl;
     this.levelCall = {
       1: Level.level1(),
       2: Level.level2()
     }
     this.player = new Player(this.ctx, this.canvas);
-    this.controller = new Controller(this.player);
+    this.controller = new Controller(this.player, this);
     this.tileSize = canvas.width / 15;
     this.level = new Level({ 
       ctx: ctx,
@@ -41,10 +42,10 @@ class Game {
     this.gameOver = false;
     this.embers = new Image();
     this.embers.src = "./assets/embers.jpg";
-    // this.getPlayerTilePos = this.getPlayerTilePos.bind(this);
 
     this.highScore = 0;
     this.killCount = 0;
+    this.pause = false;
 
     this.getTopLeftPos = this.getTopLeftPos.bind(this);
     this.getTopRightPos = this.getTopRightPos.bind(this);
@@ -66,6 +67,7 @@ class Game {
     this.resizeGame = this.resizeGame.bind(this);
     this.newLevel = this.newLevel.bind(this);
     this.spawnItems = this.spawnItems.bind(this);
+    this.renderPause = this.renderPause.bind(this);
 
     this.enemyCount = Object.keys(this.enemies).length;
     this.cleared = false;
@@ -324,7 +326,7 @@ class Game {
           this.enemies[key].move(this.canvas, this.player, this.ctx);
 
         } else {
-          this.player.damageMeter += (this.enemies[key].points / 6);
+          this.player.damageMeter += (this.enemies[key].points / 2);
           this.highScore += this.enemies[key].points;
           this.killCount++;
           if (this.killCount % 22 === 0) {
@@ -393,6 +395,25 @@ class Game {
     });
   }
 
+  renderPause() {
+    this.ctx.beginPath();
+    this.ctx.rect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.fillStyle = "rgb(0, 0, 0)";
+    this.ctx.fill();
+    this.ctx.closePath();
+
+
+    this.ctx.font = "1.8em Arial";
+    this.ctx.fillStyle = "pink";
+    this.ctx.textAlign = "center";
+    this.ctx.fillText(
+      "Paused",
+      this.canvas.width / 2,
+      this.canvas.height / 2
+    );
+
+  }
+
   loadLevel() {
     if (((this.player.x + (this.player.width / 2)) >= this.canvas.width)) {
       if (this.level.screen === parseInt(this.level.lastScreen)) {
@@ -416,23 +437,28 @@ class Game {
 
     if (this.level.rushLevel === 0) {
       this.level.rushLevel++;
-      this.level.enemyRushInterval(7000, 6);
+      this.level.enemyRushInterval(6000, 6);
     } else if (this.highScore > 30 && this.level.rushLevel === 1) {
       this.level.rushLevel++;
-      this.level.enemyRushInterval(6000, 7);
+      this.level.enemyRushInterval(5000, 7);
     } else if (this.highScore > 60 && this.level.rushLevel === 2) {
       this.level.rushLevel++;
-      this.level.enemyRushInterval(5000, 7);
+      this.level.enemyRushInterval(4500, 7);
     } else if (this.highScore > 100 && this.level.rushLevel === 3) {
       this.level.rushLevel++;
       this.level.enemyRushInterval(4000, 8);
-    } else if (this.highScore > 150 && this.level.rushLevel === 4) {
+    } else if (this.highScore > 140 && this.level.rushLevel === 4) {
+      this.level.rushLevel++;
+      this.level.enemyRushInterval(3500, 8);
+    } else if (this.highScore > 180 && this.level.rushLevel === 5) {
       this.level.rushLevel++;
       this.level.enemyRushInterval(3000, 8);
-    } else if (this.highScore > 250 && this.level.rushLevel === 4) {
+    } else if (this.highScore > 220 && this.level.rushLevel === 6) {
+      this.level.rushLevel++;
+      this.level.enemyRushInterval(2500, 9);
+    } else if (this.highScore > 260 && this.level.rushLevel === 7) {
       this.level.rushLevel++;
       this.level.enemyRushInterval(2000, 9);
-
     }
   }
 
@@ -448,18 +474,21 @@ class Game {
   
 
   runGame() {
+    if (this.pause) {
+      this.renderPause();
+      return;
+    }
     this.loadLevel();
     this.isGameOver();
     
     if (!this.gameOver) {
       this.level.renderBackground(this.ctx, this.canvas);
-      if (this.level.screen > 3) this.level.drawLevel(this.ctx);
+      if (this.level.screen > 5) this.level.drawLevel(this.ctx);
       this.player.drawSprite(this.frameCount);
       // this.player.drawPlayer(this.frameCount);
       this.playerUpdate();
-      if (this.level.screen < 5) {
+      if (this.level.screen < 6) {
         this.level.renderMid(this.ctx, this.canvas);
-        this.level.renderFront(this.ctx, this.canvas);
       }
       this.survivalMode(this.level, this.highScore);
 
@@ -469,10 +498,14 @@ class Game {
       this.renderItems();
       this.renderEnemyProjectiles();
       this.renderFireballs();
+      if (this.level.screen < 6) {
+        this.level.renderFront(this.ctx, this.canvas);
+      }
       
       this.HUD.drawHUD(this.canvas, this.ctx, this.player, this.frameCount, this.highScore);
 
     } else if (this.gameOver) {
+      this.controller = null;
       clearInterval(this.frameInterval);
       clearInterval(this.level.spawnInterval);
       if (!this.won) {

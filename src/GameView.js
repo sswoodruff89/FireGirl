@@ -1,4 +1,3 @@
-import Controller from "./util/Controller";
 import Level from "./Levels/Level";
 import Player from "./Player";
 import Game from "./Game";
@@ -6,31 +5,34 @@ import GameHUD from "./GameHUD";
 
 
 class GameView {
-  constructor (canvas, ctx) {
+  constructor (canvas, ctx, ref) {
     this.canvas = canvas;
     this.ctx = ctx;
-    // this.game = new Game(this.canvas, this.ctx);
+    this.ref = ref;
     this.game = null;
     this.splash = new Image();
     this.splash.src = "./assets/firegirl.jpg";
     this.logo = new Image();
     this.logo.src = "./assets/firegirl_logo_dark.png";
-
+    this.scoreFormOpen = false;
 
     this.renderGame = this.renderGame.bind(this);
     this.loadImage = this.loadImage.bind(this);
     this.newGame = this.newGame.bind(this);
     this.newEnemyRush = this.newEnemyRush.bind(this);
+    this.renderScoreSubmission = this.renderScoreSubmission.bind(this);
 
     window.addEventListener("keydown", (event) => {
-      event.preventDefault();
+      // event.preventDefault();
+      if (this.scoreFormOpen) return;
+
       switch (event.key) {
         case "Enter": 
           if (!this.game || this.game.gameOver) {
             this.newGame();
           }
           break;
-        case " ":
+        case "s":
           if (!this.game || this.game.gameOver) {
             this.newEnemyRush();
           };
@@ -42,7 +44,7 @@ class GameView {
           return;
       }
     });
-
+    // this.renderScoreSubmission();
   }
 
   loadImage() {
@@ -62,23 +64,66 @@ class GameView {
   newEnemyRush() {
     if (!this.game || this.game.gameOver) {
       this.game = new Game(this.canvas, this.ctx, 2);
-      // this.game.newLevel();
-      // this.game.level = new Level({
-      //   ctx: this.ctx,
-      //   mapKeys: Level.level2(),
-      //   player: this.game.player,
-      //   tileSize: this.game.tileSize
-      // });
+
       this.game.HUD = new GameHUD();
       this.game.level.theme.play();
     }
-    // if (!this.game || this.game.gameOver) {
-    //   this.game = new Game(this.canvas, this.ctx);
-    //   this.game.level.loadLevel(8);
-    //   this.game.level.enemiesInterval();
-    //   this.game.HUD = new GameHUD();
-    //   this.game.level.theme.play();
-    // }
+  }
+
+  renderScoreSubmission() {
+    let leaderboard = document.getElementById("leaderboard");
+
+    if (
+      leaderboard.length === 10 &&
+      this.game.highScore < leaderboard.lastChild.getAttribute("data-score")
+    )
+      return;
+    
+    let canvasContainer = document.getElementById("canvas-container");
+
+    let scoreForm = document.createElement("form");
+    scoreForm.className = "highscore-form";
+    let head1 = document.createElement("h3")
+    head1.innerText = "New High Score!";
+    let head2 = document.createElement("h4")
+    head2.innerText = "-Enter your Name-";
+    let input = document.createElement('input');
+    input.setAttribute("type", "text");
+    input.focus = "true";
+    input.placeholder = "10 characters or less";
+    let submit = document.createElement("input");
+    submit.type = "submit";
+    submit.className = "score-submit";
+    submit.value = "Submit to Leaderboard";
+
+    scoreForm.appendChild(head1);
+    scoreForm.appendChild(head2);
+    scoreForm.appendChild(input);
+    scoreForm.appendChild(submit);
+
+    
+    canvasContainer.appendChild(scoreForm);
+    scoreForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      let error = document.createElement('div');
+      error.innerHTML = "Name must be 10 characters or less";
+
+      let name = e.currentTarget.childNodes[2].value;
+      let score = this.game.highScore;
+      if (name.length > 10) {
+        e.currentTarget.insertBefore(error, e.currentTarget.childNodes[3]);
+        return;
+      } else {
+        this.ref.push().set({
+          name: name,
+          score: score
+        });
+        this.game = null;
+        this.scoreFormOpen = false;
+        scoreForm.remove();
+
+      }
+    })
   }
 
 
@@ -115,12 +160,19 @@ class GameView {
       this.ctx.font = "1.8em Arial";
       this.ctx.fillStyle = "pink";
       this.ctx.textAlign = "center";
-      this.ctx.fillText("Press Space to Play Survival Mode", this.canvas.width / 2, this.canvas.height * (7/9));
+      this.ctx.fillText("Press S to Play Survival Mode", this.canvas.width / 2, this.canvas.height * (7/9));
     }
 
     if (this.game) {
 
       this.game.runGame();
+
+      if (this.game.gameOver && this.game.lvl === 2 && !this.scoreFormOpen) {
+        this.scoreFormOpen = true;
+        setTimeout(() => {
+          this.renderScoreSubmission();
+        }, 1000);
+      }
       
     }
 

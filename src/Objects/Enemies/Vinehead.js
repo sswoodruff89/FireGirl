@@ -29,7 +29,7 @@ class Vinehead extends Enemy {
     this.playerCheckTimeout = "";
     this.damage = 20;
 
-    this.points = 10 * options.multiplier;
+    this.points = Math.floor(5 * options.multiplier);
 
     this.drawEnemy = this.drawEnemy.bind(this);
     this.shootProj = this.shootProj.bind(this);
@@ -213,7 +213,7 @@ class Vinehead extends Enemy {
       multiplier: multiplier
     };
   }
-  static vine3(pos, player, dir = "right", multiplier = .2) {
+  static vine3(pos, player, dir = "right", multiplier = .25) {
     
     return {
       name: "vinehead",

@@ -26,7 +26,7 @@ class Pterahawk extends Enemy {
     this.bounds = options.bounds;
     this.sizeRatio = options.sizeRatio || 1;
 
-    this.points = 6 * options.multiplier;
+    this.points = Math.floor(5 * options.multiplier);
 
     this.loadImage = this.loadImage.bind(this);
     this.drawEnemy = this.drawEnemy.bind(this);
@@ -173,7 +173,7 @@ class Pterahawk extends Enemy {
     };
   }
 
-  static pter2(pos, bounds, dir = "right", velY, multiplier = 1) {
+  static pter2(pos, bounds, dir = "right", velY, multiplier = .6) {
     return {
       name: "Pterahawk",
       image: "./assets/pterahawk.png",
@@ -192,7 +192,7 @@ class Pterahawk extends Enemy {
     };
   }
 
-  static pter4(pos, bounds, dir = "right", velY, multiplier = 1) {
+  static pter4(pos, bounds, dir = "right", velY, multiplier = .4) {
     return {
       name: "Pterahawk",
       image: "./assets/pterahawk.png",

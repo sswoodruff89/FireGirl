@@ -22,15 +22,17 @@
       <!-- <h1 class="title">FIRE GIRL</h1> -->
 
       <section class="game-instructions">
+  
+
         <div class="instructions">
             <ul class="controls">
               <h2>CONTROLS</h2>
-              <li>A: JUMP</li>
-              <li>D: FIRE</li>
-              <li>UP + D: FIRE UP</li>
-              <li>DOWN + D: FIRE DOWN</li>
-              <li>ARROWS: MOVE</li>
-              <li>M: MUTE / UNMUTE MUSIC</li>
+              <li><span>Arrows<br> or <br> ASDW</span><span>Move</span></li>
+              <li><span>Shift</span><span>Jump</span></li>
+              <li><span>Z or /</span> <span>Fire</span></li>
+              <li><span>Up + Z<br> or <br>W + /</span> <span>Fire Up</span></li>
+              <li><span>Down + Z <br> or <br> S + /</span> <span>Fire Down</span></li>
+              <li><span>M</span> <span>Mute / Unmute<br>Music</span></li>
               
           
             </ul>
@@ -39,17 +41,15 @@
             </p>
 
           </div>
-          <div class="canvas-container">
+          <div id="canvas-container" class="canvas-container">
             <canvas id="gameCanvas" width="900" height="600"></canvas>
-
           </div>
 
 
-        <div class="instructions">
+        <div class="leaderboard-container">
           <h2>HIGH SCORES</h2>
-            <ul id="leaderboard">
-          
-            </ul>
+            <ol id="leaderboard">
+            </ol>
           
           </div>
           <ul class="links">

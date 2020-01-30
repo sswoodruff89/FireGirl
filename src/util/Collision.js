@@ -341,7 +341,13 @@ class Collision {
       },
       35: (obj, x, y, colVal, tileSize) => {
         //45 deg right
-        this.collideSlopeFortyFiveRight(obj, x, y + tileSize);
+          if (this.collidePlatBottom(obj, y + tileSize)) {
+            return;
+
+          } else {
+            this.collideSlopeFortyFiveRight(obj, x, y + tileSize);
+          }
+        // this.collideSlopeFortyFiveRight(obj, x, y + tileSize);
       },
       36: (obj, x, y, colVal, tileSize) => {
         //22 deg left bottom half
@@ -463,16 +469,62 @@ class Collision {
           this.collidePlatLeft(obj, x);
         }
       },
-
       54: (obj, x, y, colVal, tileSize) => {
-        ////For Bottom of Screen
-        if (this.collidePlatTop(obj, y + (tileSize * 0.9))) {
+        ///top, bottom 3/4s in
+        ////   ___
+        ////  |___ |
+        if (this.collidePlatTop(obj, y)) {
           return;
         } else {
-          this.collidePlatRight(obj, x + tileSize);
+          this.collidePlatBottom(obj, y + tileSize / 4);
+        } 
+      },
+      55: (obj, x, y, colVal, tileSize) => {
+        ///top, bottom 3/4s in, left
+        ////   ___
+        ////  |___ |
+        if (this.collidePlatTop(obj, y)) {
           return;
+        } else if (this.collidePlatBottom(obj, y + tileSize / 4)){
+          return;
+        } else {
+          if (obj.y < y + tileSize / 4) {
+            this.collidePlatLeft(obj, x);
+          }
         }
       },
+      56: (obj, x, y, colVal, tileSize) => {
+        ///top, bottom 3/4s in, right
+        ////   ___
+        ////  |___ |
+        if (this.collidePlatTop(obj, y)) {
+          return;
+        } else if (this.collidePlatBottom(obj, y + tileSize / 4)){
+          return;
+        } else {
+          if (obj.y < y + tileSize / 4) {
+            this.collidePlatRight(obj, x + tileSize);
+          }
+        }
+      },
+      57: (obj, x, y, colVal, tileSize) => {
+        ///left / right
+        if (this.collidePlatRight(obj, x + tileSize)) {
+          return
+        } else {
+          this.collidePlatLeft(obj, x);
+        }
+      },
+    
+      // 54: (obj, x, y, colVal, tileSize) => {
+      //   ////For Bottom of Screen and right
+      //   if (this.collidePlatTop(obj, y + (tileSize * 0.9))) {
+      //     return;
+      //   } else {
+      //     this.collidePlatRight(obj, x + tileSize);
+      //     return;
+      //   }
+      // },
 
       58: (obj, x, y, colVal, tileSize) => {
         // climb

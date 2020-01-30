@@ -1,9 +1,5 @@
 import "./styles/index.scss";
-// import * as firebase from "firebase/app";
 
-// // Add the Firebase services that you want to use
-// import "firebase/auth";
-// import "firebase/firestore";
 import firebaseConfig from "../config/firebase";
 import firebase from "firebase/app";
 import "firebase/database";
@@ -18,23 +14,33 @@ window.addEventListener("DOMContentLoaded", () => {
     .ref("leaderboard")
     .orderByChild("score")
     .limitToLast(10);
+  // const leaderboard = firebase.database()
+  //   .ref()
+  //   .orderByChild("leaderboard/score")
+  //   .limitToLast(10);
+///sort not working
 
   console.log(leaderboard);
   const scores = document.getElementById("leaderboard");
-
+  while (scores.firstChild) {
+    scores.removeChild(scores.firstChild);
+  }
   leaderboard.on("child_added", (obj) => {
-    const li = document.createElement('li');
-    li.innerText = `${obj.val().name}: ${obj.val().score}`;
-    li.value = obj.val().score;
-    scores.appendChild(li);
+
+      const li = document.createElement('li');
+      li.innerText = `${obj.val().name}: ${obj.val().score}`;
+      li.setAttribute("data-score", obj.val().score);
+      scores.insertBefore(li, scores.firstChild)
    } 
   );
+
+  let scoreRef = firebase.database().ref("leaderboard");
 
 
 
   let canvas = document.getElementById("gameCanvas");
   let ctx = canvas.getContext("2d");
-  let gameView = new GameView(canvas, ctx);
+  let gameView = new GameView(canvas, ctx, scoreRef);
 
   gameView.renderGame();
 

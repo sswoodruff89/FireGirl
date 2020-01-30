@@ -26,7 +26,7 @@ class Spider extends Enemy {
     this.bounds = options.bounds;
     this.damage = options.damage;
 
-    this.points = 5 * options.multiplier;
+    this.points = Math.floor(3 * options.multiplier);
 
 
 
@@ -94,24 +94,6 @@ class Spider extends Enemy {
   }
 
   ////////CPU
-  // callAttack() {
-  //   this.attackInterval = setInterval(() => {
-
-  //     this.shootProj();
-
-  //   }, 500);
-  // }
-
-  // move(canvas) {
-  //   this.oldX = this.x;
-  //   this.x += this.velX;
-
-
-  //   if ((this.x + (this.width / 2)) < 0 || this.x + (this.width / 2) > canvas.width) {
-  //     this.velX *= -1;
-  //     this.dir = (this.dir === "right") ? "left" : "right";
-  //   }
-  // }
 
 
 
@@ -169,7 +151,7 @@ class Spider extends Enemy {
       multiplier: multiplier
     };
   }
-  static spider3(pos, bounds, multiplier = 0.2) {
+  static spider3(pos, bounds, multiplier = 0.3) {
     return {
       name: "spider",
       image: "./assets/spider.png",

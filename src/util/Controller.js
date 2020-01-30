@@ -1,7 +1,8 @@
 class Controller {
-  constructor(player) {
+  constructor(player, game) {
     // this.gameview = gameview;
     this.player = player;
+    this.game = game
 
     this.keysPressed = {};
 
@@ -12,7 +13,10 @@ class Controller {
   }
 
   keydown(event) {
-    event.preventDefault();
+    if (!this.game.gameOver) {
+      
+      event.preventDefault();
+    }
     this.player.idle = false;
     this.player.keydown = true;
     
@@ -134,7 +138,16 @@ class Controller {
       case "dash":
         this.keysPressed.dash = false;
       case "space":
-        // this.gameview.Ticker.paused = (this.gameview.Ticker.paused) ? false: true;
+        this.game.pause = !this.game.pause;
+        if (this.game.pause) {
+          clearInterval(this.game.frameInterval);
+          clearInterval(this.level.spawnInterval);
+          // this.game.level.theme.pause();
+        } else {
+          this.game.startFrameCount();
+          this.game.level.enemiesInterval();
+          // this.game.level.theme.play();
+        }
         break;
       default:
         return;
@@ -162,14 +175,18 @@ class Controller {
 // };
 
 Controller.KEYS = {
-  "space": 'space',
+  " ": 'space',
   "ArrowLeft": 'left',
   "ArrowUp": 'up',
   "ArrowRight": 'right',
   "ArrowDown": 'down',
-  "a": 'jump',
-  "d": 'fire',
-  "s": 'dash',
+  "a": 'left',
+  "w": 'up',
+  "d": 'right',
+  "s": 'down',
+  "Shift": 'jump',
+  "z": 'fire',
+  "/": 'fire',
   "Enter": 'enter'
 };
 

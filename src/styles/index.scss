@@ -1,6 +1,5 @@
 
 
-
 body {
   background-color: black;
   margin: 0;
@@ -67,22 +66,25 @@ h1.title {
   width: 100%;
   display: flex;
   max-height: 600px;
-  justify-content: flex-start;
-  padding-left: 5vw;
+  justify-content: center;
+  align-items: center;
   position: relative;
   top: 5vh;
 }
 
-.instructions {
-  background-color: rgba(255, 255, 255, 0.5);
-  color: rgb(104, 0, 0);
+
+
+.instructions, .leaderboard-container {
+  color: rgb(172, 0, 0);
   max-width: 250px;
   width: 20%;
   height: 600px;
-  margin-right: 60px;
   font-size: 1.2vw;
   padding: 10px;
+  display: flex;
+  align-items: center;
   box-sizing: border-box;
+  flex-direction: column;
 
 }
 
@@ -96,15 +98,28 @@ h1.title {
 
 .controls h2 {
   width: 100%;
+  font-size: 1.3em;
   margin: 0;
+  display: flex;
+  justify-content: center;
 }
 
 .instructions li {
   padding: 10px 0;
+  display: flex;
+  vertical-align: middle;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(99, 0, 0, .5);
 }
 
-.directive {
+li span:last-child {
+  text-align: right;
+}
+
+p.directive {
   padding: 0;
+  text-align: center;
 }
 
 
@@ -113,7 +128,7 @@ h1.title {
   width: 100%;
   position: absolute;
   bottom: -7vh;
-  justify-content: flex-start;
+  justify-content: center;
   color: white;
   list-style: none;
   margin: 0;
@@ -128,9 +143,78 @@ h1.title {
   text-decoration: none;
 }
 
+.canvas-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.highscore-form{
+  position: absolute;
+  width: 400px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 5;
+  background-color: red;
+}
+
+.highscore-form h3 {
+  font-size: 2em;
+  margin: 10px 0;
+}
+.highscore-form h4 {
+  font-size: 1.5em;
+  margin: 0 0 20px 0;
+}
+
+.highscore-form input {
+  width: 200px;
+  padding-left: 4px;
+  font-size: 1.1em;
+}
+
+.highscore-form div {
+  font-size: 0.9em;
+}
+
+.highscore-form .score-submit {
+  width: 200px;
+  background-color: darkred;
+  border: none;
+  border-radius: 3px;
+  padding: 5px;
+  margin: 20px 0;
+  position: relative;
+  z-index: 6;
+
+}
+
+.score-submit:hover {
+  cursor: pointer;
+  background-color: rgb(245, 63, 63);
+}
+
 canvas {
   background-color: black;
   align-self: center;
+}
 
+.leaderboard-container h2 {
+  width: 100%;
+  font-size: 1.3em;
+  margin: 0;
+  text-align: center;
+}
+
+#leaderboard {
+  padding-left: 0;
+}
+
+#leaderboard li {
+  font-size: 1em;
+  margin: 20px 0;
 }
 

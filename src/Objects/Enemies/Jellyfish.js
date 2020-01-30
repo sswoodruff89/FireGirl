@@ -29,7 +29,7 @@ class Jellyfish extends Enemy {
         this.playerCheckTimeout = "";
         this.damage = options.damage;
 
-        this.points = 10 * options.multiplier;
+        this.points = Math.floor(5 * options.multiplier);
 
         this.drawEnemy = this.drawEnemy.bind(this);
         this.shootProj = this.shootProj.bind(this);
