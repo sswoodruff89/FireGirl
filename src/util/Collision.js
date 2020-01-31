@@ -837,8 +837,8 @@ class Collision {
     if (
       obj1.x < hitBox.right &&
       obj1.x + obj1.width > hitBox.left &&
-      obj1.y < hitBox.bottom &&
-      obj1.y + obj1.height > hitBox.top
+      obj1.topSide() < hitBox.bottom &&
+      obj1.bottomSide() > hitBox.top
     ) {
       obj1.velY = -(obj1.velY / 3);
       obj1.velX = -(obj1.velX / 3);
@@ -859,8 +859,8 @@ class Collision {
     if (
       obj1.x < obj2.x + obj2.width &&
       obj1.x + obj1.width > obj2.x &&
-      obj1.y < obj2.y + obj2.height &&
-      obj1.y + obj1.height > obj2.y
+      obj1.topSide() < obj2.y + obj2.height &&
+      obj1.bottomSide() > obj2.y
     ) {
       // if (this.hitBox(obj1, obj2)) {
       if (obj1 instanceof Player && !obj1.isHit) {

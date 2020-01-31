@@ -14,6 +14,7 @@ class Vinehead extends Enemy {
   constructor(options) {
     super(options);
     this.player = options.player;
+
     this.velX = options.velX || 0;
     this.velY = 0;
     this.image = options.image || "./assets/vinehead.png";

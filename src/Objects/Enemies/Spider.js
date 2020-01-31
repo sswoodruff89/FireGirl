@@ -59,7 +59,7 @@ class Spider extends Enemy {
 
     if ((this.isHit || this.dying) && frameCount % 3 === 0) return;
 
-      let count = Math.floor(frameCount / 2.5) % this.frameNum;
+      let count = Math.floor(frameCount / 3) % this.frameNum;
       // let x = (count > 0) ? 20 : this.frameStartX;
 
 

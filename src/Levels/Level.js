@@ -646,11 +646,11 @@ class Level {
         enemies: () => {
           return {
             1: new Vinehead(Vinehead.vine3([10, 530], this.player)),
-            2: new Vinehead(Vinehead.vine3([830, 80], this.player, "left")),
+            2: new Vinehead(Vinehead.vine1([830, 80], this.player, "left")),
             3: new Vinehead(Vinehead.vine2([600, 180], this.player)),
             4: new Vinehead(Vinehead.vine1([360, 540], this.player, "left")),
-            5: new Vinehead(Vinehead.vine2([120, 420], this.player)),
-            6: new Vinehead(Vinehead.vine2([850, 500], this.player)),
+            5: new Vinehead(Vinehead.vine1([120, 420], this.player)),
+            6: new Vinehead(Vinehead.vine1([850, 500], this.player)),
             7: new Vinehead(Vinehead.vine1([890, 220], this.player, "left")),
           }
         },

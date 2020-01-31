@@ -306,7 +306,7 @@ class Projectile extends GameObject {
     return {
       pos: pos,
       width: 35,
-      height: 12,
+      height: 18,
       velX: velX,
       velY: velY,
       dir: dir,
@@ -331,7 +331,7 @@ class Projectile extends GameObject {
   static fireballVert(pos, velX, velY, dir) {
     return {
       pos: pos,
-      width: 12,
+      width: 18,
       height: 35,
       velX: velX,
       velY: velY,

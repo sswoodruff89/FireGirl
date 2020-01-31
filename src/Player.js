@@ -52,12 +52,14 @@ class Player {
     this.keydown = false;
     this.runningKeyDown = false;
     this.isRunning = false;
+    this.crouch = false;
     this.direction = "right";
     this.jumpCount = 2;
     this.canClimb = false;
     this.climbing = false;
     this.frameCount = 0;
     this.attacking = false;
+    this.downKey = false;
     this.aura = this.loadImage("./assets/aura.png");
     this.shieldImg = this.loadImage("./assets/shield_aura.png");
 
@@ -101,6 +103,12 @@ class Player {
     
     this.setDying = this.setDying.bind(this);
     this.isClimbing = this.isClimbing.bind(this);
+
+    this.rightSide = this.rightSide.bind(this);
+    this.leftSide = this.leftSide.bind(this);
+    this.topSide = this.topSide.bind(this);
+    this.bottomSide = this.bottomSide.bind(this);
+    this.setCrouch = this.setCrouch.bind(this);
     this.getDirX = this.getDirX.bind(this);
     this.getDirY = this.getDirY.bind(this);
   }
@@ -110,6 +118,28 @@ class Player {
     proj.src = image;
     return proj;
   }
+
+  rightSide() {
+    return this.x + this.width;
+  }
+
+  leftSide() {
+    return this.x;
+  }
+
+  topSide() {
+    if (this.crouch) {
+      return this.y + 32.5;
+    } else {
+
+      return this.y;
+    }
+  }
+
+  bottomSide() {
+    return this.y + this.height;
+  }
+
 
   drawPlayer(frameCount) {
 // .74
@@ -217,7 +247,34 @@ class Player {
   drawAttack(frameCount, state) {
     switch (state) {
       case "jumping":
-        if (this.velY < 0) {
+        if (this.downKey && this.velY !== 0) {
+          if (this.direction === "right") {
+            this.ctx.drawImage(
+              this.spriteMap,
+              (Math.floor(frameCount / 2) % 3) * 123,
+              1701,
+              123,
+              172,
+              this.x, this.y,
+              this.width + 7, this.height
+              // this.width - 5, this.height
+            );
+          } else {
+            this.ctx.scale(-1, 1);
+            this.ctx.drawImage(
+              this.spriteMap,
+              (Math.floor(frameCount / 2) % 3) * 123,
+              1701,
+              123,
+              172,
+              -this.x - this.width, this.y,
+              // -this.x - this.width - 5, this.y,
+              this.width + 7, this.height
+              // this.width - 5, this.height
+            );
+            this.ctx.scale(-1, 1);
+          }
+        } else if (this.velY < 0) {
           if (this.direction === "right") {
             this.ctx.drawImage(
               this.spriteMap,
@@ -410,31 +467,58 @@ class Player {
   }
 
   drawIdle(frameCount) {
-    if (this.direction === "right") {
-      this.ctx.drawImage(
-        this.spriteMap,
-        0,
-        529,
-        89,
-        175,
-        this.x, this.y,
-        this.width, this.height
-        // this.width - 5, this.height
-      );
+    if (this.crouch) {
+        if (this.direction === "right") {
+        this.ctx.drawImage(
+          this.spriteMap,
+          535,
+          352,
+          112,
+          175,
+          this.x, this.y,
+          this.width + 7, this.height
+        );
+      } else {
+        this.ctx.scale(-1, 1);
+        this.ctx.drawImage(
+          this.spriteMap,
+          535,
+          352,
+          112,
+          175,
+          -this.x - this.width, this.y,
+          this.width + 7, this.height
+        );
+        this.ctx.scale(-1, 1);
+      }
     } else {
-      this.ctx.scale(-1, 1);
-      this.ctx.drawImage(
-        this.spriteMap,
-        0,
-        529,
-        89,
-        175,
-        -this.x - this.width, this.y,
-        // -this.x - this.width - 5, this.y,
-        this.width, this.height
-        // this.width - 5, this.height
-      );
-      this.ctx.scale(-1, 1);
+
+      if (this.direction === "right") {
+        this.ctx.drawImage(
+          this.spriteMap,
+          0,
+          529,
+          89,
+          175,
+          this.x, this.y,
+          this.width, this.height
+          // this.width - 5, this.height
+        );
+      } else {
+        this.ctx.scale(-1, 1);
+        this.ctx.drawImage(
+          this.spriteMap,
+          0,
+          529,
+          89,
+          175,
+          -this.x - this.width, this.y,
+          // -this.x - this.width - 5, this.y,
+          this.width, this.height
+          // this.width - 5, this.height
+        );
+        this.ctx.scale(-1, 1);
+      }
     }
   }
 
@@ -523,6 +607,7 @@ class Player {
     this.attacking = true;
     this.attackAnimTimeout = setTimeout(() => {
       this.attacking = false;
+      this.downKey = false;
     }, 200);
 
     if (this.direction === "right") {
@@ -549,7 +634,7 @@ class Player {
             vert
           )
         );
-          this.velY = -3;
+          this.velY = -2;
         
       } else {
         this.fireballs[key] = new Projectile(
@@ -617,7 +702,8 @@ class Player {
         clearTimeout(this.attackAnimTimeout);
         this.attacking = true;
         this.attackAnimTimeout = setTimeout(() => {
-          this.attacking = false
+          this.attacking = false;
+          this.downKey = false;
         }, 200)
         ///////
         break;
@@ -641,7 +727,7 @@ class Player {
             this.bottomSide() - this.height],
             0, 20, vert)
             );
-          this.velY = -3;
+          this.velY = -2;
         
       } else {
         this.fireballs[key] = new Projectile(
@@ -853,7 +939,24 @@ class Player {
     this.climb = (this.climb) ? false : true;
   }
 
-
+  setCrouch() {
+    debugger
+    if (!this.crouch) {
+      this.crouch = true;
+      this.velY = 0;
+      this.height = 59.5;
+      this.velY = 0;
+      this.y = this.topSide() - 32.5;
+      this.velY = 0;
+    } else {
+      this.crouch = false;
+      this.velY = 0;
+      this.y = this.bottomSide() + 82.01;
+      this.velY = 0;
+      this.height = 82;
+      this.velY = 0;
+    };
+  }
 
 
   setRunning() {

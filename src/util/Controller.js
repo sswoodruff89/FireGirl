@@ -25,6 +25,8 @@ class Controller {
       case "left":
         this.keysPressed.left = true;
         // this.player.runningKeyDown = true;
+        this.player.crouch = false;
+
         this.player.direction = "left";
         this.player.velX = -7;
 
@@ -33,6 +35,7 @@ class Controller {
         this.keysPressed.right = true;
         // this.player.runningKeyDown = true;
 
+        this.player.crouch = false;
         this.player.direction = "right";
         this.player.velX = 7;
         break;
@@ -43,21 +46,35 @@ class Controller {
         if (this.player.canClimb) {
           console.log(this.player.canClimb);
           console.log(this.player.idle);
-
+          this.player.crouch = false;
           this.player.climbing = true;
           this.player.velY = -7;
         }
         break;
       case "down":
         this.keysPressed.down = true;
+        ///For jump down attack///
+        // clearTimeout(this.player.downKeyTimeout);
+        this.player.downKey = true;
+
         if (this.player.canClimb) {
           console.log(this.player.canClimb);
           this.player.climbing = true;
           this.player.velY = 7;
+          return;
+        }
+        if (
+          this.player.velY >= 0 &&
+          this.player.velY < 1 &&
+          !this.player.crouch
+        ) {
+          // this.player.setCrouch();
+          this.player.crouch = true;
         }
         break;
       case "jump":
         this.keysPressed.jump = true;
+        this.player.crouch = false;
         this.player.jump();
         break;
       case "fire":
@@ -128,6 +145,19 @@ class Controller {
         break;
       case "down":
         this.keysPressed.down = false;
+        // this.player.downKeyTimeout = setTimeout(() => {
+        //   this.player.downKey = false;
+        // }, 300);
+        if (
+          this.player.velY >= 0 &&
+          this.player.velY < 1 &&
+          this.player.crouch
+        ) {
+          // debugger
+          this.player.crouch = false;
+          // this.player.setCrouch();
+          return;
+        }
         break;
       case "jump":
         this.keysPressed.jump = false;

@@ -79,7 +79,7 @@ h1.title {
   max-width: 250px;
   width: 20%;
   height: 600px;
-  font-size: 1.2vw;
+  font-size: 1.2em;
   padding: 10px;
   display: flex;
   align-items: center;
@@ -96,7 +96,7 @@ h1.title {
   margin-top: 1vh;
 }
 
-.controls h2 {
+.instructions h2 {
   width: 100%;
   font-size: 1.3em;
   margin: 0;
@@ -104,7 +104,7 @@ h1.title {
   justify-content: center;
 }
 
-.instructions li {
+.controls li {
   padding: 10px 0;
   display: flex;
   vertical-align: middle;
@@ -216,5 +216,6 @@ canvas {
 #leaderboard li {
   font-size: 1em;
   margin: 20px 0;
+  text-align: right;
 }
 
