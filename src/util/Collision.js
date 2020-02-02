@@ -609,8 +609,6 @@ class Collision {
   } 
 
   collideProjectile(obj1, obj2) {
-    // if (!obj1 || !obj2) return false;
-    // if (obj2.dying || obj2.dead) return false;
     let hitBox = obj2.hitBox();
  
 
@@ -704,8 +702,9 @@ class Collision {
       }
     }
     if (gameObj instanceof Projectile) {
-      gameObj.setHit();
-      //set null
+      setTimeout(() => {
+        gameObj.setHit();
+      }, 100);
       return true;
     }
   }
@@ -719,8 +718,9 @@ class Collision {
       gameObj.oldY > tileY
     ) {
       if (gameObj instanceof Projectile) {
-        gameObj.setHit();
-        //set null
+        setTimeout(() => {
+          gameObj.setHit();
+        }, 100);
         return true;
       }
       // gameObj.getDirY() + 60 > tileY) {
@@ -760,8 +760,9 @@ class Collision {
       }
     }
     if (gameObj instanceof Projectile) {
-      gameObj.setHit();
-      //set null
+      setTimeout(() => {
+        gameObj.setHit();
+      }, 100);
       return true;
     }
   }
@@ -774,8 +775,9 @@ class Collision {
       gameObj.oldY > tileY
     ) {
       if (gameObj instanceof Projectile) {
-        gameObj.setHit();
-        //set null
+        setTimeout(() => {
+          gameObj.setHit();
+        }, 100);
         return true;
       }
       // gameObj.getDirY() + 60 > tileY) {
@@ -819,7 +821,9 @@ class Collision {
       }
     }
     if (gameObj instanceof Projectile) {
-      gameObj.setHit();
+      setTimeout(() => {
+        gameObj.setHit();
+      }, 100);
       //set null
       return true;
     }
@@ -834,7 +838,10 @@ class Collision {
       gameObj.oldY > tileY
     ) {
       if (gameObj instanceof Projectile) {
-        gameObj.setHit();
+        setTimeout(() => {
+          gameObj.setHit();
+
+        }, 100)
         //set null
         return true;
       }
@@ -875,8 +882,9 @@ class Collision {
       }
     }
     if (gameObj instanceof Projectile) {
-      gameObj.setHit();
-      //set null
+      setTimeout(() => {
+        gameObj.setHit();
+      }, 100);
       return true;
     }
   }
@@ -889,8 +897,10 @@ class Collision {
       gameObj.oldY > tileY
     ) {
       if (gameObj instanceof Projectile) {
-        gameObj.setHit();
-        //set null
+        setTimeout(() => {
+          gameObj.setHit();
+
+        }, 100);
         return true;
       }
       gameObj.y = tileY + 0.05;
