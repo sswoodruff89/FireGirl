@@ -23,7 +23,7 @@ class Game {
     this.lvl = lvl;
     this.levelCall = {
       1: Level.level1(),
-      2: Level.level2()
+      "survivalMode": Level.level2()
     }
     this.player = new Player(this.ctx, this.canvas);
     this.controller = new Controller(this.player, this);
@@ -34,7 +34,7 @@ class Game {
       player: this.player,
       tileSize: this.tileSize
     });
-    // this.physicalMap = this.level.physicalMap;
+
     this.collider = new Collision(this.tileSize);
     this.HUD = new GameHUD();
     this.frameCount = 0;
@@ -150,7 +150,7 @@ class Game {
 
     [left, top] = this.getTopLeftPos();
     colVal = physMap[top * cols + left];
-    colVal === 58 ? climbCount++ : "";
+    (colVal === 58 || colVal === 59) ? climbCount++ : "";
     this.collider.collidePlatform(
       this.player,
       left * this.tileSize,
@@ -161,7 +161,7 @@ class Game {
 
     [right, top] = this.getTopRightPos();
     colVal = physMap[top * cols + right];
-    colVal === 58 ? climbCount++ : "";
+    (colVal === 58 || colVal === 59) ? climbCount++ : "";
 
     this.collider.collidePlatform(
       this.player,
@@ -174,7 +174,7 @@ class Game {
     [left, bottom] = this.getBottomLeftPos();
     colVal = physMap[bottom * cols + left];
     (colVal === 0) ? floorCount++ : "";
-    colVal === 58 ? climbCount++ : "";
+    (colVal === 58 || colVal === 59) ? climbCount++ : "";
     this.collider.collidePlatform(
       this.player,
       left * this.tileSize,
@@ -187,8 +187,11 @@ class Game {
     [right, bottom] = this.getBottomRightPos();
     colVal = physMap[bottom * cols + right];
     (colVal === 0) ? floorCount++ : "";
-    colVal === 58 ? climbCount++ : "";
-    if (this.player.canClimb && climbCount === 0) this.player.canClimb = false;
+    (colVal === 58 || colVal === 59) ? climbCount++ : "";
+    if (this.player.canClimb && climbCount === 0) {
+      this.player.climbing = false;
+      this.player.canClimb = false;
+    }
     if (floorCount === 2) {
       this.player.onGround = false;
       // if (this.player.jumpCount === 2) this.player.jumpCount -=;
@@ -295,7 +298,6 @@ class Game {
       this.player.x += this.player.velX;
       // this.player.isDashing();
     }
-
     if (this.player.climbing) {
         this.player.isClimbing();
     } else {
@@ -308,12 +310,7 @@ class Game {
   }
 
   renderEnemies() {
-    // if (this.level.screen === 6 || this.level.screen === 8) {
-      this.enemyCount = Object.keys(this.level.enemies).length;
-    // } 
-    // else if (this.level.screen = 8) {
-    //   this.enemyCount = 100;
-    // }
+    this.enemyCount = Object.keys(this.level.enemies).length;
 
     if (!this.cleared) {
       for (let key in this.enemies) {

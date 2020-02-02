@@ -75,6 +75,7 @@ class Controller {
       case "jump":
         this.keysPressed.jump = true;
         this.player.crouch = false;
+        this.player.climbing = false;
         this.player.jump();
         break;
       case "fire":
@@ -140,20 +141,21 @@ class Controller {
       case "up":
         this.keysPressed.up = false;
         this.player.upPressed = this.keysPressed.up;
-
-        if (this.player.climbing) this.player.climbing = false;
+        if (this.player.climbing) {
+          this.player.velY = 0;
+        }
         break;
       case "down":
         this.keysPressed.down = false;
-        // this.player.downKeyTimeout = setTimeout(() => {
-        //   this.player.downKey = false;
-        // }, 300);
+
+        if (this.player.climbing) {
+          this.player.velY = 0;
+        }
         if (
           this.player.velY >= 0 &&
           this.player.velY < 1 &&
           this.player.crouch
         ) {
-          // debugger
           this.player.crouch = false;
           // this.player.setCrouch();
           return;
@@ -161,6 +163,8 @@ class Controller {
         break;
       case "jump":
         this.keysPressed.jump = false;
+        this.jumpKey = false;
+
         break;
       case "fire":
         this.keysPressed.fire = false;

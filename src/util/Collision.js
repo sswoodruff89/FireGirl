@@ -515,26 +515,30 @@ class Collision {
           this.collidePlatLeft(obj, x);
         }
       },
-    
-      // 54: (obj, x, y, colVal, tileSize) => {
-      //   ////For Bottom of Screen and right
-      //   if (this.collidePlatTop(obj, y + (tileSize * 0.9))) {
-      //     return;
-      //   } else {
-      //     this.collidePlatRight(obj, x + tileSize);
-      //     return;
-      //   }
-      // },
 
       58: (obj, x, y, colVal, tileSize) => {
-        // climb
+        // climb / top
 
-      if (obj.x + obj.width > x + (tileSize / 4) && obj.x < x + (tileSize * (3/4))) {
+      // if (obj.x + obj.width > x + (tileSize / 3) && obj.x < x + (tileSize * .66)) {
 
-          this.climbable(obj, x, y, tileSize);
-        } else if (this.collidePlatTop(obj, y)) {
-          return;
+      //     this.climbable(obj, x, y, tileSize);
+      //   } else if (this.collidePlatTop(obj, y)) {
+      //     return;
+      //   }
+        if (!obj.crouch) {
+          this.collidePlatTop(obj, y);
+        } else {
+            this.climbable(obj, x + (tileSize * .49), x + (tileSize * .51), y, tileSize);
+
         }
+      },
+      59: (obj, x, y, colVal, tileSize) => {
+        // climb
+            this.climbable(obj, x + (tileSize / 3), x + (tileSize * .66), y, tileSize);
+
+        // if (obj.x + obj.width > x + (tileSize / 4) && obj.x < x + (tileSize * (3/4))) {
+        //     this.climbable(obj, x, y, tileSize);
+        // }
       },
 
 
@@ -566,238 +570,6 @@ class Collision {
       },
     };
 
-
-  //   this.colsionPlatformKeys = {
-  //     1: (obj, x, y, colVal, tileSize) => {
-  //       this.collidePlatTop(obj, y);
-  //     },
-  //     2: (obj, x, y, colVal, tileSize) => {
-  //       ////thin platform
-  //       if (obj.velY > 0) {
-  //         this.collidePlatTop(obj, y);
-  //       }
-  //     },
-  //     3: (obj, x, y, colVal, tileSize) => {
-  //       ///top / left
-  //       if (this.collidePlatTop(obj, y)) {
-  //         return;
-  //       } else {
-  //         // this.collidePlatTop(obj, y)
-  //         this.collidePlatLeft(obj, x);
-  //       }
-  //     },
-  //     4: (obj, x, y, colVal, tileSize) => {
-  //       ///top / left / right
-  //       if (this.collidePlatTop(obj, y)) {
-  //         return;
-  //       } else if (this.collidePlatRight(obj, x + tileSize)) {
-  //         return;
-  //       } else {
-  //         this.collidePlatLeft(obj, x);
-  //       }
-  //     },
-  //     5: (obj, x, y, colVal, tileSize) => {
-  //       ///top / bottom / right
-  //       if (this.collidePlatTop(obj, y)) {
-  //         return;
-  //       } else if (this.collidePlatBottom(obj, y + tileSize)) {
-  //         return;
-  //       } else {
-  //         this.collidePlatRight(obj, x + tileSize);
-  //       }
-  //     },
-  //     6: (obj, x, y, colVal, tileSize) => {
-  //       ///top / bottom
-  //       if (this.collidePlatTop(obj, y)) {
-  //         return;
-  //       } else {
-  //         this.collidePlatBottom(obj, y + tileSize);
-  //       }
-  //     },
-  //     7: (obj, x, y, colVal, tileSize) => {
-  //       ///thorn bottom
-  //       this.collidePlatBottom(obj, y + tileSize / 6);
-  //       if (obj instanceof Player) {
-  //         obj.setHit(5);
-  //       }
-  //     },
-  //     8: (obj, x, y, colVal, tileSize) => {
-  //       ///top / right
-  //       if (this.collidePlatTop(obj, y)) {
-  //         return;
-  //       } else {
-  //         this.collidePlatRight(obj, x + tileSize);
-  //       }
-  //     },
-  //     9: (obj, x, y, colVal, tileSize) => {
-  //       ///left
-  //       this.collidePlatLeft(obj, x);
-  //     },
-  //     10: (obj, x, y, colVal, tileSize) => {
-  //       ///right
-  //       this.collidePlatRight(obj, x + tileSize);
-  //     },
-  //     11: (obj, x, y, colVal, tileSize) => {
-  //       ///right / left / bottom thorn
-  //       if (this.collidePlatLeft(obj, x)) {
-  //         if (obj instanceof Player) {
-  //           obj.setHit(5);
-  //         }
-  //         return;
-  //       } else if (this.collidePlatBottom(obj, y + tileSize / 6)) {
-  //         if (obj instanceof Player) {
-  //           obj.setHit(5);
-  //         }
-  //         return;
-  //       } else {
-  //         this.collidePlatRight(obj, x + tileSize);
-  //         if (obj instanceof Player) {
-  //           obj.setHit(5);
-  //         }
-  //       }
-  //     },
-  //     12: (obj, x, y, colVal, tileSize) => {
-  //       //top / left half in
-  //       if (this.collidePlatLeft(obj, x + tileSize / 2)) {
-  //         return;
-  //       } else if (obj.x + obj.width > x + tileSize / 2) {
-  //         this.collidePlatTop(obj, y);
-  //       }
-  //     },
-  //     13: (obj, x, y, colVal, tileSize) => {
-  //       //top / right half in
-  //       if (this.collidePlatRight(obj, x + tileSize / 2)) {
-  //         return;
-  //       } else if (obj.x < x + tileSize / 2) {
-  //         this.collidePlatTop(obj, y);
-  //       }
-  //     },
-  //     14: (obj, x, y, colVal, tileSize) => {
-  //       /// bottom / left
-  //       if (this.collidePlatBottom(obj, y + tileSize)) {
-  //         return;
-  //       } else {
-  //         this.collidePlatLeft(obj, x);
-  //       }
-  //     },
-  //     15: (obj, x, y, colVal, tileSize) => {
-  //       /// bottom / right
-  //       if (this.collidePlatBottom(obj, y + tileSize)) {
-  //         return;
-  //       } else {
-  //         this.collidePlatRight(obj, x);
-  //       }
-  //     },
-  //     16: (obj, x, y, colVal, tileSize) => {
-  //       /// bottom
-  //       this.collidePlatBottom(obj, y + tileSize);
-  //     },
-  //     17: (obj, x, y, colVal, tileSize) => {
-  //       ///left
-  //       this.collidePlatLeft(obj, x);
-  //     },
-
-  //     18: (obj, x, y, colVal, tileSize) => {
-  //       //45 deg right
-  //       this.collideSlopeFortyFiveRight(obj, x, y + tileSize);
-  //     },
-  //     19: (obj, x, y, colVal, tileSize) => {
-  //       //45 deg left
-  //       this.collideSlopeFortyFiveLeft(obj, x + tileSize, y + tileSize);
-  //     },
-  //     20: (obj, x, y, colVal, tileSize) => {
-  //       //22 deg right bottom half
-  //       this.collideSlopeTwentyRight(obj, x, y + tileSize);
-  //     },
-  //     21: (obj, x, y, colVal, tileSize) => {
-  //       //22 deg left bootom half
-  //       this.collideSlopeTwentyLeft(obj, x + tileSize, y + tileSize);
-  //     },
-  //     22: (obj, x, y, colVal, tileSize) => {
-  //       //22 deg right top half
-  //       this.collideSlopeTwentyRight(obj, x, y + tileSize, tileSize / 2);
-  //     },
-  //     23: (obj, x, y, colVal, tileSize) => {
-  //       //22 deg left top half
-  //       this.collideSlopeTwentyLeft(obj, x, y + tileSize, tileSize / 2);
-  //     },
-  //     24: (obj, x, y, colVal, tileSize) => {
-  //       //22 deg left top half & left
-  //       ///refactor////
-  //       if (this.collidePlatLeft(obj, x)) {
-  //         return;
-  //       } else {
-  //         this.collideSlopeTwentyLeft(obj, x, y + tileSize, tileSize / 2);
-  //       }
-  //     },
-  //     25: (obj, x, y, colVal, tileSize) => {
-  //       //right half in
-  //       this.collidePlatRight(obj, x + tileSize / 2);
-  //     },
-  //     26: (obj, x, y, colVal, tileSize) => {
-  //       //left half in
-  //       this.collidePlatLeft(obj, x + tileSize / 2);
-  //     },
-  //     27: (obj, x, y, colVal, tileSize) => {
-  //       //top  half in/ right half in
-  //       if (this.collidePlatRight(obj, x + tileSize / 2)) {
-  //         return;
-  //       } else if (obj.x < x + tileSize / 2) {
-  //         this.collidePlatTop(obj, y + tileSize / 2);
-  //       }
-  //     },
-  //     28: (obj, x, y, colVal, tileSize) => {
-  //       //top  half in/ right half in / bottom
-  //       if (obj.x < x + tileSize / 2) {
-  //         if (this.collidePlatTop(obj, y + tileSize / 2)) {
-  //           return;
-  //         } else if (this.collidePlatBottom(obj, y + tileSize)) {
-  //           return;
-  //         } else {
-  //           this.collidePlatRight(obj, x + tileSize / 2);
-  //         }
-  //       }
-  //     },
-  //     29: (obj, x, y, colVal, tileSize) => {
-  //       //top half in
-  //       this.collidePlatTop(obj, y + tileSize / 2);
-  //     },
-  //     30: (obj, x, y, colVal, tileSize) => {
-  //       //top  half in/ left half in / bottom
-  //       if (obj.x + obj.width > x + tileSize / 2) {
-  //         if (this.collidePlatTop(obj, y + tileSize / 2)) {
-  //           return;
-  //         } else if (this.collidePlatBottom(obj, y + tileSize)) {
-  //           return;
-  //         } else {
-  //           this.collidePlatLeft(obj, x + tileSize / 2);
-  //         }
-  //       }
-  //     },
-  //     31: (obj, x, y, colVal, tileSize) => {
-  //       //top  half in/ right
-  //       if (this.collidePlatTop(obj, y + tileSize / 2)) {
-  //         return;
-  //       } else {
-  //         this.collidePlatRight(obj, x + tileSize);
-  //       }
-  //     },
-  //     32: (obj, x, y, colVal, tileSize) => {
-  //       //top  half in/ left
-  //       if (this.collidePlatTop(obj, y + tileSize / 2)) {
-  //         return;
-  //       } else {
-  //         this.collidePlatLeft(obj, x);
-  //       }
-  //     },
-  //     33: (obj, x, y, colVal, tileSize) => {
-  //       //top  half in/ left
-  //       if (obj.x > x + (tileSize / 4) && obj.x < x + (tileSize * (3/4))) {
-
-  //         this.climbable(obj, x, y, tileSize);
-  //       }
-  //     }
-  //   };
   }
 
   collidePlayer(player, canvas, cleared) {
@@ -824,9 +596,17 @@ class Collision {
     }
   }
 
-  climbable(obj, x, y) {
-    obj.canClimb = true;
-  }
+  climbable(obj, x1, x2, y, tileSize) {
+    if ((obj.x + (obj.width / 2)) > x1  && (obj.x + (obj.width / 2)) < x2) {
+      obj.canClimb = true;
+      return true;
+    } else {
+      obj.canClimb = false;
+      obj.climbing = false;
+      obj.onGround = false;
+      return false;
+    }
+  } 
 
   collideProjectile(obj1, obj2) {
     // if (!obj1 || !obj2) return false;
@@ -1124,11 +904,10 @@ class Collision {
   collidePlatTop(gameObj, tileTop) {
     if (
       gameObj.bottomSide() > tileTop &&
-      gameObj.oldY + gameObj.height < tileTop
+      gameObj.oldY + (gameObj.height * .95) < tileTop
     ) {
       if (gameObj instanceof Projectile) {
         gameObj.setHit();
-        //set null
         return true;
       }
       gameObj.velY = 0;

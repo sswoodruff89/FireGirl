@@ -50,6 +50,7 @@ class Player {
     this.onGround = false;
     this.idle = true;
     this.keydown = false;
+    this.jumpKey = false;
     this.runningKeyDown = false;
     this.isRunning = false;
     this.crouch = false;
@@ -108,6 +109,7 @@ class Player {
     this.leftSide = this.leftSide.bind(this);
     this.topSide = this.topSide.bind(this);
     this.bottomSide = this.bottomSide.bind(this);
+    this.midX = this.midX.bind(this);
     this.setCrouch = this.setCrouch.bind(this);
     this.getDirX = this.getDirX.bind(this);
     this.getDirY = this.getDirY.bind(this);
@@ -138,6 +140,10 @@ class Player {
 
   bottomSide() {
     return this.y + this.height;
+  }
+
+  midX() {
+    return this.x + (this.width / 2);
   }
 
 
@@ -878,7 +884,7 @@ class Player {
   }
 
   inAir() {
-    if (!this.onGround ) {
+    if (!this.onGround) {
       this.y += this.velY;
       (this.velY + CONSTANTS.GRAVITY > 25) ? this.velY = 25 : this.velY += CONSTANTS.GRAVITY;
     } else {
@@ -887,7 +893,7 @@ class Player {
   }
 
   isClimbing() {
-    if (this.climbing && this.canClimb && this.keydown) {
+    if (this.climbing && this.canClimb && (this.keydown)) {
       this.y += this.velY;
     } else {
       this.velY = 0;
@@ -936,11 +942,10 @@ class Player {
   }
 
   climb() {
-    this.climb = (this.climb) ? false : true;
+    this.climbing = (this.climbing) ? false : true;
   }
 
   setCrouch() {
-    debugger
     if (!this.crouch) {
       this.crouch = true;
       this.velY = 0;

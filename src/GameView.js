@@ -63,7 +63,7 @@ class GameView {
 
   newEnemyRush() {
     if (!this.game || this.game.gameOver) {
-      this.game = new Game(this.canvas, this.ctx, 2);
+      this.game = new Game(this.canvas, this.ctx, "survivalMode");
 
       this.game.HUD = new GameHUD();
       this.game.level.theme.play();
@@ -167,7 +167,7 @@ class GameView {
 
       this.game.runGame();
 
-      if (this.game.gameOver && this.game.lvl === 2 && !this.scoreFormOpen) {
+      if (this.game.gameOver && this.game.lvl === "survivalMode" && !this.scoreFormOpen) {
         this.scoreFormOpen = true;
         setTimeout(() => {
           this.renderScoreSubmission();

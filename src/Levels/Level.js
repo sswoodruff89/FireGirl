@@ -17,7 +17,7 @@ class Level {
     this.player = options.player;
     this.mapKeys = options.mapKeys;
     this.screen = Object.keys(this.mapKeys)[0];
-    // this.screen = 5;
+    // this.screen = 4;
     this.lastScreen = Object.keys(this.mapKeys)[Object.keys(this.mapKeys).length - 1];
     this.renderMap = options.renderMap || this.mapKeys[this.screen].renderMap;
     this.physicalMap = options.physicalMap || this.mapKeys[this.screen].physicalMap;
@@ -196,6 +196,7 @@ class Level {
     let enemy = Math.floor(Math.random() * tierAmount);
 
     this.enemies[key] = this.spawnTier[this.spawnTierGroup][enemy]();
+    this.enemyCount++;
 
     this.spawnTierGroup = (this.spawnTierGroup === 4) ? 1 : this.spawnTierGroup + 1;
   }
@@ -213,7 +214,6 @@ class Level {
 
 
   loadLevel(num) {
-    // if (this.screen + num === 0) return;
     this.screen = num;
     this.renderMap = this.mapKeys[this.screen].renderMap;
     this.physicalMap = this.mapKeys[this.screen].physicalMap;
@@ -275,7 +275,8 @@ class Level {
           0,  0,  0,  3,  1,  2,  0,  0,  0,  3,  1,  2,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,        ],
+          1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1, 
+        ],
         physicalMap: [
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -301,21 +302,6 @@ class Level {
         },
         spawnTier: {
           1: {
-              // 0: () => {
-              //   return new Spider(Spider.spider2([600, 0], [20, 359]));
-              // },
-              // 1: () => {
-              //   return new Spider(Spider.spider2([420, 0], [20, 179]));
-              // },
-              // 2: () => {
-              //   return new Spider(Spider.spider2([240, 0], [20, 359]));
-              // },
-              // 3: () => {
-              //   return new Spider(Spider.spider2([780, 0], [20, 479]));
-              // },
-              // 4: () => {
-              //   return new Spider(Spider.spider2([60, 0], [20, 479]));
-              // },
               0: () => {
                 return new Spider(Spider.spider1([600, 0], [20, 359]));
               },
@@ -362,15 +348,10 @@ class Level {
         4: {
               0: () => {
                 let y = Math.floor(Math.random() * 600);
-                let x = (y % 2 === 0) ? 1 : 890;
-                return new Vinehead(Vinehead.vine3([x, y], this.player));
-              },
-              1: () => {
-                let y = Math.floor(Math.random() * 600);
                 let x = y % 2 === 0 ? 1 : 890;
                 return new Vinehead(Vinehead.vine1([x, y], this.player));
               },
-              2: () => {
+              1: () => {
                 let y = Math.floor(Math.random() * 600);
                 let x = y % 2 === 0 ? 1 : 890;
                 return new Vinehead(Vinehead.vine2([x, y], this.player));
@@ -394,16 +375,6 @@ class Level {
     return {
       1: {
         renderMap: [
-        //   9,  0,  0,  0, 42, 41, 39,  0,  0,  0,  0,  0,  0,  0,  0,
-        //   0,  0,  0,  0,  0,  0,  0,  0, 38, 39,  0,  0,  0,  0,  0,
-        //   0, 42, 41, 39,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 42,
-        //   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-        //   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-        //   2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-        //  28,  0,  0,  0,  0, 22, 23, 23, 63,  0,  0,  0,  0,  0,  0,
-        //   1,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0, 29, 29, 29, 29,
-        //   9,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  3, 27, 27, 27,
-        //   1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1
         ],
         physicalMap: [
           0,  0,  0, 18,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -421,7 +392,6 @@ class Level {
           return {
             1: new Pterahawk(Pterahawk.pter4([800, 30], [300, 950], "left")),
             2: new Pterahawk(Pterahawk.pter2([800, 120], [300, 950], "right"))
-            // 1: new Jellyfish(Jellyfish.jell1([300, 300]))
           };
  
         },
@@ -435,21 +405,15 @@ class Level {
           return {
             // 1: new Item(Item.shield([400, 200], false))
           };
+        },
+        nextScreen: (player, canvas) => {
+          
         }
         
       },
       2: {
         renderMap: [
-          // 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          // 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          // 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          // 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          // 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          // 0,  0,  0,  0,  0,  0, 29, 29, 29,  0,  0,  0,  0,  0,  0,
-          // 0,  0,  0,  0, 53, 54,  1,  1,  2,  0,  0,  0,  0,  0,  0,
-          // 0,  0,  0, 57, 58,  9, 16, 16, 16,  0,  0, 29, 29, 29, 29,
-          // 0, 53, 54,  5,  5,  0,  0,  0,  0,  0,  0,  3,  1,  1,  1,
-          // 1,  5,  5,  5, 11,  0,  0,  0,  0,  0,  0,  5,  5,  5,  5
+
         ],
         physicalMap: [
         //0       2       4       6       8      10      12
@@ -495,16 +459,7 @@ class Level {
       3: {
         renderMap: [
         //0       2       4       6       8      10      12
-          0, 18,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0, 18,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0, 18,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0, 18,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0, 18,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-         16, 32,  0,  0,  0, 16,  0,  0,  0, 16,  0,  3,  1,  1,  1,
-          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4, 50,  5,  5,
-         29, 29, 29, 30,  0,  0,  0,  0,  0,  0,  0,  4,  5,  5,  5,
-          0,  0, 40,  0,  0,  0,  0,  0,  0,  0,  0, 55,  5, 40,  5,
-          0,  5,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  5,  5,  5
+
         ],
 
         physicalMap: [
@@ -522,15 +477,10 @@ class Level {
         ],
         enemies: () => {
           return {
-            // 1: new Helicopter(Helicopter.hel1([100, 25])),
-            // 3: new Flower(Flower.flow2([250, 140])),
-
             3: new Jellyfish(Jellyfish.jell2([500, 550])),
             4: new Jellyfish(Jellyfish.jell1([700, 50])),
             5: new Vinehead(Vinehead.vine1([500, 100], this.player)),
             6: new Vinehead(Vinehead.vine3([800, 20], this.player)),
-
-            // 4: new Flower(Flower.flow2([450, 140])),
           }
         },
         levelLayers: {
@@ -550,10 +500,10 @@ class Level {
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
          36,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0,  2,  7,  0,  0,  0, 37, 39,  2, 58,  2,  2,  2, 38, 36,
-          0,  2,  5, 15, 15, 39,  0,  0,  0, 58,  0,  0,  0,  0,  0,
-          0,  0,  0,  0,  0,  5,  0,  0,  0, 58,  0,  0,  0,  0,  0,
-          3,  3,  3,  3,  0, 40,  0,  0,  0, 58,  0,  0,  0,  0,  0,
-          0,  0,  0,  5,  5,  0,  0,  0,  0, 58,  0,  0,  0,  0,  0,
+          0,  2,  5, 15, 15, 39,  0,  0,  0, 59,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  5,  0,  0,  0, 59,  0,  0,  0,  0,  0,
+          3,  3,  3,  3,  0, 40,  0,  0,  0, 59,  0,  0,  0,  0,  0,
+          0,  0,  0,  5,  5,  0,  0,  0,  0, 59,  0,  0,  0,  0,  0,
           0,  0,  0,  5,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
          33, 33, 33, 33, 33, 33,  6,  2,  2,  2,  2,  2, 34,  0,  0
         ],
@@ -565,8 +515,6 @@ class Level {
             6: new Vinehead(Vinehead.vine3([850, 500], this.player)),
             7: new Vinehead(Vinehead.vine1([800, -20], this.player)),
           }
-          // 4: new Flower(Flower.flow2([530, 190])),
-
         },
         levelLayers: {
           background: "./assets/Level1/lvl4_back.png",
@@ -579,44 +527,6 @@ class Level {
           }
         }
       },
-      // 44: {
-      //   renderMap: [
-      //     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-      //     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-      //     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  3,
-      //     0,  0,  0,  0,  0,  3,  1,  1,  1,  2,  0,  0,  0,  3,  5,
-      //     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4, 28,
-      //     1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  3,  1,  1,  1,
-      //     9,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 16, 16, 16, 16,
-      //     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-      //     0,  0,  0,  0,  0,  3,  1,  1,  1,  2,  0,  0,  0,  0,  0,
-      //     0,  0,  0,  0,  0,  5,  5,  5,  5,  5,  0,  1,  1,  1,  1
-      //   ],
-      //   physicalMap: [
-      //     0,  0, 38, 39,  0,  0,  0, 42, 41, 39,  0,  0,  0,  0,  0,
-      //     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-      //    38, 39,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  2,
-      //     0,  0,  0,  0,  0,  3,  1,  1,  1,  8,  0,  0,  0,  2,  0,
-      //     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-      //     1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  3,  1,  1,  1,
-      //     9,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  7,  7,  7,  7,
-      //     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-      //     0,  0,  0,  0,  0,  3,  1,  1,  1,  2,  0,  0,  0,  0,  0,
-      //     0,  0,  0,  0,  0,  9,  0,  0,  0, 10,  0,  1,  1,  1,  1
-      //   ],
-      //   enemies: () => {
-      //     return {
-      //       1: new Helicopter(Helicopter.hel2([500, 0])),
-      //       // // 3: new Flower(Flower.flow2([290, 190])),
-      //       4: new Vinehead(Vinehead.vine3([500, 100], this.player)),
-      //       5: new Vinehead(Vinehead.vine3([300, 450], this.player)),
-      //       6: new Vinehead(Vinehead.vine3([850, 500], this.player)),
-      //       7: new Vinehead(Vinehead.vine1([800, -20], this.player)),
-      // //     }
-      // //     // 4: new Flower(Flower.flow2([530, 190])),
-
-      //   }
-      // },
       5: {
         renderMap: [
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
