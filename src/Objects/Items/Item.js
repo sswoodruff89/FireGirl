@@ -73,6 +73,12 @@ class Item extends GameObject{
             if (player.health > 200) player.health = 200;
           }
           return;
+        case "Blue Health":
+          if (player.health < 200) {
+            player.health += 60;
+            if (player.health > 200) player.health = 200;
+          }
+          return;
         default:
           return;
       }
@@ -86,7 +92,7 @@ class Item extends GameObject{
 
     ctx.drawImage(
       this.item,
-      (frameCount % this.frameNum) * this.frameWidth + this.frameStartX,
+      (Math.floor(frameCount / 4) % this.frameNum) * this.frameWidth + this.frameStartX,
       this.frameStartY,
       this.frameWidth,
       this.frameHeight,
@@ -117,7 +123,7 @@ class Item extends GameObject{
 
   static health(pos, disappear) {
     return {
-      name: "Health",
+      name: "Blue Health",
       pos: pos,
       width: 46.5,
       height: 50.5,
@@ -125,9 +131,26 @@ class Item extends GameObject{
 
       frameStartX: 0,
       frameStartY: 125,
-      frameWidth: 93,
+      frameWidth: 95,
       frameHeight: 101,
-      frameNum: 1,
+      frameNum: 2,
+      soundSrc: Sound.healItem(),
+      disappear: disappear
+    }
+  }
+  static blueHealth(pos, disappear) {
+    return {
+      name: "Health",
+      pos: pos,
+      width: 46.5,
+      height: 50.5,
+      velY: (disappear) ? 0.4 : 0,
+
+      frameStartX: 0,
+      frameStartY: 232,
+      frameWidth: 95,
+      frameHeight: 101,
+      frameNum: 2,
       soundSrc: Sound.healItem(),
       disappear: disappear
     }

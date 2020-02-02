@@ -284,6 +284,7 @@ class Level {
     return {
       "survivalMode": {
         renderMap: [
+        //0       2       4       6       8      10      12
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0, 29, 29, 29,  0,  0,  0,  0,  0,  0,
@@ -385,9 +386,9 @@ class Level {
         },
         theme: "./assets/Sound/dk3_boss_boogie.mp3",
         levelLayers: {
-          background: "./assets/Level1/lv1_back.png",
+          background: "./assets/Level1/sMode_back.png",
           // mid: "./assets/Level1/lv1_mid.png",
-          // front: "./assets/Level1/lv1_front.png"
+          front: "./assets/Level1/sMode_front.png"
         },
         items: () => {
           return {}
@@ -440,7 +441,7 @@ class Level {
         },
         items: () => {
           return {
-            // 1: new Item(Item.shield([400, 200], false))
+            // 1: new Item(Item.blueHealth([400, 200], false))
           };
         },
         nextScreen: (player, canvas, loadLevel, cleared) => {

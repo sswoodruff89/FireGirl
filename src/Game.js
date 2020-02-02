@@ -316,7 +316,11 @@ class Game {
   }
 
   spawnItems(pos) {
-    this.level.items[100] = new Item(Item.health(pos, true));
+    if (this.player.damageBoost) {
+      this.level.items[100] = new Item(Item.blueHealth(pos, true));
+    } else {
+      this.level.items[100] = new Item(Item.health(pos, true));
+    }
   }
 
   renderItems() {
@@ -463,7 +467,7 @@ class Game {
     
     if (!this.gameOver) {
       this.level.renderBackground(this.ctx, this.canvas);
-      if (this.level.screen > 5 || this.level.screen === "survivalMode") this.level.drawLevel(this.ctx);
+      if (this.level.screen > 5) this.level.drawLevel(this.ctx);
       this.player.drawSprite(this.frameCount);
       // this.player.drawPlayer(this.frameCount);
       this.playerUpdate();
@@ -472,13 +476,11 @@ class Game {
       }
       this.survivalMode(this.level, this.highScore);
 
-      // this.enemies[1].drawEnemy(this.ctx, this.frameCount);
       this.renderEnemies();
-      // this.enemies[1].callAttack(this.frameCount);
       this.renderItems();
       this.renderEnemyProjectiles();
       this.renderFireballs();
-      if (this.level.screen !== 6 && this.level.screen !== 8) {
+      if (this.level.screen !== 6) {
         this.level.renderFront(this.ctx, this.canvas);
       }
       
