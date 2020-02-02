@@ -407,7 +407,9 @@ class Level {
           };
         },
         nextScreen: (player, canvas) => {
-          
+          if (player.x + player.width / 2 >= canvas.width) {
+            return 2;
+          }
         }
         
       },
@@ -454,6 +456,13 @@ class Level {
         },
         items: () => {
           return {}
+        },
+        nextScreen: (player, canvas) => {
+          if (player.x + player.width / 2 >= canvas.width) {
+            return 3;
+          } else if (player.x + player.width / 2 < 0) {
+            return 1;
+          }
         }
       },
       3: {
@@ -490,6 +499,22 @@ class Level {
         },
         items: () => {
           return {}
+        },
+        nextScreen: (player, canvas) => {
+          if (player.x + player.width / 2 >= canvas.width) {
+            return 4;
+          } else if (player.x + player.width / 2 < 0) {
+            return 2;
+          } else if (
+            player.x + player.width / 2 < 180 &&
+            player.x + player.width / 2 > 120 &&
+            player.y + player.height / 2 < 0 &&
+            player.oldY + player.height / 2 > 0
+          ) {
+            return 12;
+          } else {
+            return false;
+          }
         }
       },
       4: {
@@ -524,6 +549,22 @@ class Level {
         items: () => {
           return {
             1: new Item(Item.shield([80, 460], false))
+          }
+        },
+        nextScreen: (player, canvas) => {
+          if (player.x + player.width / 2 >= canvas.width) {
+            return 5;
+          } else if (player.x + player.width / 2 < 0) {
+            return 3;
+          } else if (
+            player.x + player.width / 2 < 180 &&
+            player.x + player.width / 2 > 120 &&
+            player.y + player.height / 2 < 0 &&
+            player.oldY + player.height / 2 > 0
+          ) {
+            return 12;
+          } else {
+            return false;
           }
         }
       },
@@ -571,6 +612,22 @@ class Level {
         },
         items: () => {
           return {}
+        },
+        nextScreen: (player, canvas) => {
+          if (player.x + player.width / 2 >= canvas.width) {
+            return 6;
+          } else if (player.x + player.width / 2 < 0) {
+            return 4;
+          } else if (
+            player.x + player.width / 2 < 180 &&
+            player.x + player.width / 2 > 120 &&
+            player.y + player.height / 2 < 0 &&
+            player.oldY + player.height / 2 > 0
+          ) {
+            return 12;
+          } else {
+            return false;
+          }
         }
       },
       6: {

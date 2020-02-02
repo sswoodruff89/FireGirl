@@ -609,8 +609,6 @@ class Collision {
   } 
 
   collideProjectile(obj1, obj2) {
-    // if (!obj1 || !obj2) return false;
-    // if (obj2.dying || obj2.dead) return false;
     let hitBox = obj2.hitBox();
  
 
