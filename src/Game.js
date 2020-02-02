@@ -38,7 +38,9 @@ class Game {
     this.collider = new Collision(this.tileSize);
     this.HUD = new GameHUD();
     this.frameCount = 0;
-    this.enemies = this.level.enemies;
+    this.enemies = {
+      [this.level.screen]: this.level.enemies
+    }
     this.gameOver = false;
     this.embers = new Image();
     this.embers.src = "./assets/embers.jpg";
@@ -126,8 +128,8 @@ class Game {
 
 
   enemiesCleared() {
-    if (parseInt(this.level.screen) === 8) return;
-    if (Object.keys(this.enemies).length === 0) {
+    if (this.level.screen === "survivalMode") return;
+    if (Object.keys(this.enemies[this.level.screen]).length === 0) {
       this.cleared = true;
       return true;
     } else {
@@ -279,7 +281,7 @@ class Game {
 
     }
 
-    this.collider.collidePlayer(this.player, this.canvas, this.cleared);
+    // this.collider.collidePlayer(this.player, this.canvas, this.cleared);
     this.playerPlatformCheck();
   }
 
@@ -287,24 +289,25 @@ class Game {
     this.enemyCount = Object.keys(this.level.enemies).length;
 
     if (!this.cleared) {
-      for (let key in this.enemies) {
+      for (let key in this.enemies[this.level.screen]) {
+        let enemy = this.enemies[this.level.screen][key];
         // if (this.enemies[key].dying && !this.enemies[key].dead) continue;
-        this.projectilePlatformCheck(this.enemies[key]);
+        this.projectilePlatformCheck(enemy);
 
-        if (!this.enemies[key].dead) {
-          this.enemies[key].drawEnemy(this.ctx, this.frameCount);
-          this.collider.collideEnemy(this.player, this.enemies[key]);
-          this.enemies[key].move(this.canvas, this.player, this.ctx);
+        if (!enemy.dead) {
+          enemy.drawEnemy(this.ctx, this.frameCount);
+          this.collider.collideEnemy(this.player, enemy);
+          enemy.move(this.canvas, this.player, this.ctx);
 
         } else {
-          this.player.damageMeter += (this.enemies[key].points / 2);
-          this.highScore += this.enemies[key].points;
+          this.player.setDamageMeter(enemy.points / 2);
+          this.highScore += enemy.points;
           this.killCount++;
           if (this.killCount % 22 === 0) {
-            this.spawnItems([this.enemies[key].x, this.enemies[key].y]);
+            this.spawnItems([enemy.x, enemy.y]);
           }
 
-          delete this.enemies[key];
+          delete this.enemies[this.level.screen][key];
           this.enemyCount -= 1;
         }
       }
@@ -335,8 +338,11 @@ class Game {
         let fireball = this.player.fireballs[key];
         
         if (this.enemyCount !== 0) {
-          for (let key in this.enemies) {
-            this.collider.collideEnemy(fireball, this.enemies[key]);
+          for (let key in this.enemies[this.level.screen]) {
+            this.collider.collideEnemy(
+              fireball,
+              this.enemies[this.level.screen][key]
+            );
           }
         }
         
@@ -351,7 +357,7 @@ class Game {
 
   renderEnemyProjectiles() {
     ///Check if any enemies
-    Object.values(this.enemies).forEach((enemy) => {
+    Object.values(this.enemies[this.level.screen]).forEach((enemy) => {
       if (Object.keys(enemy.projectiles).length !== 0) {
         for (let key in enemy.projectiles) {
           this.collider.collideProjectile(this.player, enemy.projectiles[key]);
@@ -385,44 +391,30 @@ class Game {
 
   }
 
-  // loadLevel() {
-  //   if (((this.player.x + (this.player.width / 2)) >= this.canvas.width)) {
-  //     if (this.level.screen === parseInt(this.level.lastScreen)) {
-  //       this.won = true;
-  //       return;
-  //     } else {
-  //       this.level.loadLevel(parseInt(this.level.screen) + 1);
-  //       this.cleared = false;
-  //       this.enemies = this.level.enemies;
-  //       this.enemyCount = Object.keys(this.enemies);
-  //       this.player.x = 0 - this.player.width / 3;
-  //     }
-  //   } else if ((this.player.x + (this.player.width / 2)) <= 0) {
-  //     this.level.loadLevel(-1);
-  //     this.player.x = this.canvas.width - this.player.width;
-  //   }
-  // }
+
   loadLevel() {
     if (((this.player.x + (this.player.width / 2)) >= this.canvas.width)) {
       if (this.level.screen === parseInt(this.level.lastScreen)) {
         this.won = true;
         return;
-      } else {
-        this.level.loadLevel(parseInt(this.level.screen) + 1);
-        this.cleared = false;
-        this.enemies = this.level.enemies;
-        this.enemyCount = Object.keys(this.enemies);
-        this.player.x = 0 - this.player.width / 3;
       }
-    } else if ((this.player.x + (this.player.width / 2)) <= 0) {
-      this.level.loadLevel(-1);
-      this.player.x = this.canvas.width - this.player.width;
+    }
+    // if (!this.cleared) return;
+    if (this.level.nextScreen(this.player, this.canvas, this.level.loadLevel, this.cleared)) {
+      this.cleared = false;
+      if (!this.enemies[this.level.screen]) {
+        this.enemies[this.level.screen] = this.level.enemies;
+      }
+      this.enemyCount = Object.keys(this.enemies);
+    // this.level.loadLevel(-1);
+    // this.player.x = this.canvas.width - this.player.width;
+
     }
   }
 
   survivalMode() {
-    if (this.level.screen !== "8") return;
-
+    if (this.level.screen !== "survivalMode") return;
+      debugger
     if (this.level.rushLevel === 0) {
       this.level.rushLevel++;
       this.level.enemyRushInterval(6000, 6);
@@ -471,7 +463,7 @@ class Game {
     
     if (!this.gameOver) {
       this.level.renderBackground(this.ctx, this.canvas);
-      if (this.level.screen > 5) this.level.drawLevel(this.ctx);
+      if (this.level.screen > 5 || this.level.screen === "survivalMode") this.level.drawLevel(this.ctx);
       this.player.drawSprite(this.frameCount);
       // this.player.drawPlayer(this.frameCount);
       this.playerUpdate();
@@ -486,7 +478,7 @@ class Game {
       this.renderItems();
       this.renderEnemyProjectiles();
       this.renderFireballs();
-      if (this.level.screen < 6) {
+      if (this.level.screen !== 6 && this.level.screen !== 8) {
         this.level.renderFront(this.ctx, this.canvas);
       }
       

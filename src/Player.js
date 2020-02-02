@@ -442,7 +442,7 @@ class Player {
         );
         this.ctx.scale(-1, 1);
       }
-    } else if (!this.onGround && this.velY > 1) {
+    } else if (!this.onGround && this.velY > 8) {
       if (this.direction === "right") {
         this.ctx.drawImage(
           this.spriteMap,
@@ -469,6 +469,8 @@ class Player {
         );
         this.ctx.scale(-1, 1);
       }
+    } else if (!this.onGround && (this.velY >= 0 && this.velY <= 8)){
+       this.drawRunning(frameCount);
     }
   }
 

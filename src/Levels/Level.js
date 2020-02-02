@@ -8,6 +8,7 @@ import Spider from "../Objects/Enemies/Spider";
 import Vinehead from "../Objects/Enemies/Vinehead";
 import Jellyfish from "../Objects/Enemies/Jellyfish";
 import BossVinehead from "../Objects/Enemies/BossVinehead";
+import EasterEgg from "../Objects/Enemies/EasterEgg";
 import Item from "../Objects/Items/Item";
 
 
@@ -17,10 +18,11 @@ class Level {
     this.player = options.player;
     this.mapKeys = options.mapKeys;
     this.screen = Object.keys(this.mapKeys)[0];
-    // this.screen = 4;
+    // this.screen = 6;
     this.lastScreen = Object.keys(this.mapKeys)[Object.keys(this.mapKeys).length - 1];
     this.renderMap = options.renderMap || this.mapKeys[this.screen].renderMap;
     this.physicalMap = options.physicalMap || this.mapKeys[this.screen].physicalMap;
+    this.nextScreen = this.mapKeys[this.screen].nextScreen;
     this.cols = 15;
     this.rows = 10;
     this.tileSize = options.tileSize;
@@ -154,21 +156,14 @@ class Level {
   }
 
   enemiesInterval() {
-    if (parseInt(this.screen) < 6 || parseInt(this.screen) === 8) return;
-
-    // if (parseInt(this.screen) === 8) {
-    //   this.enemyRush();
-    //   this.spawnInterval = setInterval(() => {
-    //     this.enemyRush();
-    //   }, 12000);
-    // } else {
-      
-      this.spawnInterval = setInterval(() => {
-        if (!this.enemies[1]) {
-          clearInterval(this.spawnInterval);
-        }
-        this.spawnEnemies();
-      }, 7000);
+    if (parseInt(this.lastScreen) !== this.screen) return;
+    
+    this.spawnInterval = setInterval(() => {
+      if (!this.enemies[1]) {
+        clearInterval(this.spawnInterval);
+      }
+      this.spawnEnemies();
+    }, 7000);
     // }
   }
 
@@ -202,7 +197,7 @@ class Level {
   }
 
   enemyRushInterval(int = 12000, enemyCount = 6) {
-    if (this.screen !== "8") return;
+    if (this.screen !== "survivalMode") return;
 
     clearInterval(this.rushInterval);
     
@@ -219,6 +214,7 @@ class Level {
     this.physicalMap = this.mapKeys[this.screen].physicalMap;
     this.enemies = this.mapKeys[this.screen].enemies();
     this.items = this.mapKeys[this.screen].items();
+    this.nextScreen = this.mapKeys[this.screen].nextScreen;
 
     if (this.mapKeys[this.screen].levelLayers) {
 
@@ -286,7 +282,7 @@ class Level {
 
   static level2() {
     return {
-      8: {
+      "survivalMode": {
         renderMap: [
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -343,15 +339,21 @@ class Level {
                 return new Pterahawk(Pterahawk.pter4([0, 125], [-50, 950], "right"));
               },
               2: () => {
-                return new Pterahawk(Pterahawk.pter2([800, 100], [-50, 950], "left"));
+                return new Pterahawk(Pterahawk.pter4([800, 300], [-50, 950], "left"));
               },
               3: () => {
-                return new Pterahawk(Pterahawk.pter2([0, 100], [-50, 950], "right"));
+                return new Pterahawk(Pterahawk.pter4([0, 300], [-50, 950], "right"));
               },
               4: () => {
-                return new Pterahawk(Pterahawk.pter1([800, 80], [-50, 950], "left"));
+                return new Pterahawk(Pterahawk.pter2([800, 100], [-50, 950], "left"));
               },
               5: () => {
+                return new Pterahawk(Pterahawk.pter2([0, 100], [-50, 950], "right"));
+              },
+              6: () => {
+                return new Pterahawk(Pterahawk.pter1([800, 80], [-50, 950], "left"));
+              },
+              7: () => {
                 return new Pterahawk(Pterahawk.pter1([0, 80], [-50, 950], "right"));
               },
            },
@@ -389,13 +391,26 @@ class Level {
         },
         items: () => {
           return {}
+        },
+        nextScreen: (player, canvas, loadLevel) => {
+          if (player.x + player.width / 2 > canvas.width) {
+            player.x = canvas.width - player.width / 2;
+            player.velX = 0;
+            return true;
+          } else if (player.x + player.width / 2 < 0) {
+            player.x = 0.01 - player.width / 2;
+            player.velX = 0;
+            return true;
+          } else {
+            return false;
+          }
         }
       }
     };
   }
   static level1() {
     return {
-      1: {
+      0: {
         renderMap: [
         ],
         physicalMap: [
@@ -407,7 +422,7 @@ class Level {
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0, 23,  2,  2,  2, 24,  0,  0,  0,
           1,  2, 34,  0,  0,  0,  0, 17,  0,  0,  0, 18,  0,  0,  0,
-          0,  0,  0, 34,  0,  0,  0, 17,  0,  0,  0, 18,  0,  0,  0,
+          0,  0,  1, 34,  0,  0,  0, 17,  0,  0,  0, 18,  0,  0,  0,
           1,  1,  1,  1,  2,  2,  1,  1,  1,  1,  1,  1,  1,  1,  1
         ],
         enemies: () => {
@@ -428,10 +443,21 @@ class Level {
             // 1: new Item(Item.shield([400, 200], false))
           };
         },
-        nextScreen: (player, canvas) => {
+        nextScreen: (player, canvas, loadLevel, cleared) => {
+          // debugger
           if (player.x + player.width / 2 > canvas.width) {
-            this.loadLevel(2);
-            player.x = 0 - player.width / 2;
+            if (!cleared) {
+              player.x = canvas.width - player.width / 2;
+              player.velX = 0;
+            } else {
+              loadLevel(2);
+              player.x = 0 - player.width / 2;
+              player.y = player.y;
+              return true;
+            }
+          } else if (player.x + player.width / 2 < 0) {
+            loadLevel(1);
+            player.x = canvas.width - player.width / 2;
             player.y = player.y;
             return true;
           } else if (player.y > canvas.height) {
@@ -440,7 +466,60 @@ class Level {
             return false;
           } else {
             return false;
-          }git s
+          }
+        }
+        
+      },
+      1: {
+        renderMap: [
+        ],
+        physicalMap: [
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 37, 39,  2,  2,
+          0,  0,  0,  0,  0,  0,  0,  0,  0, 37, 39,  0,  0,  0,  0,
+          2,  2,  2,  2,  2,  2,  2,  2,  2,  0,  0,  0,  0,  0,  0
+        ],
+        enemies: () => {
+          return {
+            1: new EasterEgg(EasterEgg.egg1([150, 50])),
+          };
+ 
+        },
+        // theme: "./assets/Sound/ff9_stirring_forest.mp3",
+        levelLayers: {
+          background: "./assets/Level1/lvl0_back.png",
+          // mid: "./assets/Level1/lv1_mid.png",
+          front:  "./assets/Level1/lvl0_front.png"
+        },
+        items: () => {
+          return {
+            // 1: new Item(Item.shield([400, 200], false))
+          };
+        },
+        nextScreen: (player, canvas, loadLevel, cleared) => {
+          // debugger
+          if (player.x + player.width / 2 > canvas.width) {
+            loadLevel(0);
+            player.x = 0 - player.width / 2;
+            player.y = player.y;
+            return true;
+          } else if (player.x + player.width / 2 < 0) {
+            player.x = 0.01 - player.width / 2;
+            player.velX = 0;
+            return true;
+          } else if (player.y > canvas.height) {
+            player.y = 0;
+            player.setHit(50);
+            return false;
+          } else {
+            return false;
+          }
         }
         
       },
@@ -488,14 +567,19 @@ class Level {
         items: () => {
           return {}
         },
-        nextScreen: (player, canvas) => {
+        nextScreen: (player, canvas, loadLevel, cleared) => {
           if (player.x + player.width / 2 >= canvas.width) {
-            this.loadLevel(3);
-            player.x = 0 - player.width / 2;
-            player.y = player.y;
-            return true;
+            if (!cleared) {
+              player.x = canvas.width - player.width / 2;
+              player.velX = 0;
+            } else {
+              loadLevel(3);
+              player.x = 0 - player.width / 2;
+              player.y = player.y;
+              return true;
+            }
           } else if (player.x + player.width / 2 < 0) {
-            this.loadLevel(1);
+            loadLevel(0);
             player.x = canvas.width - player.width / 2;
             player.y = player.y;
             return true;
@@ -516,10 +600,10 @@ class Level {
 
         physicalMap: [
         //0       2       4       6       8      10      12
-          0, 18, 58,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0, 18, 58,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0, 18, 58,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0, 18, 58,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 37, 15,
+          0, 18, 59,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0, 18, 59,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0, 18, 59,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0, 18, 59,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 37, 15,
           0, 18,  0,  0,  0,  0, 47, 34,  0,  0,  0, 37, 39,  0,  0,
          16,  8,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  1,  1,  1,
           0,  0,  0,  0,  0,  0, 33, 33, 33,  0,  0, 44, 16, 42,  3,
@@ -543,14 +627,19 @@ class Level {
         items: () => {
           return {}
         },
-        nextScreen: (player, canvas) => {
+        nextScreen: (player, canvas, loadLevel, cleared) => {
           if (player.x + player.width / 2 >= canvas.width) {
-            this.loadLevel(4);
-            player.x = 0 - player.width / 2;
-            player.y = player.y;
-            return true;
+            if (!cleared) {
+              player.x = canvas.width - player.width / 2;
+              player.velX = 0;
+            } else {
+              loadLevel(4);
+              player.x = 0 - player.width / 2;
+              player.y = player.y;
+              return true;
+            }
           } else if (player.x + player.width / 2 < 0) {
-            this.loadLevel(2);
+            loadLevel(2);
             player.x = canvas.width - player.width / 2;
             player.y = player.y;
             return true;
@@ -558,10 +647,10 @@ class Level {
             player.x + player.width / 2 < 180 &&
             player.x + player.width / 2 > 120 &&
             player.y + player.height / 2 < 0 &&
-            player.oldY + player.height / 2 > 0 &&
             player.climbing
           ) {
-            this.loadLevel(12);
+            
+            loadLevel(12);
             player.x = player.x;
             player.y = canvas.height - player.height / 2;
             player.climbing = true;
@@ -609,28 +698,21 @@ class Level {
             1: new Item(Item.shield([80, 460], false))
           }
         },
-        nextScreen: (player, canvas) => {
+        nextScreen: (player, canvas, loadLevel, cleared) => {
           if (player.x + player.width / 2 >= canvas.width) {
-            this.loadLevel(5);
-            player.x = 0 - player.width / 2;
-            player.y = player.y;
-            return true;
+            if (!cleared) {
+              player.x = canvas.width - player.width / 2;
+              player.velX = 0;
+            } else {
+              loadLevel(5);
+              player.x = 0 - player.width / 2;
+              player.y = player.y;
+              return true;
+            }
           } else if (player.x + player.width / 2 < 0) {
-            this.loadLevel(3);
+            loadLevel(3);
             player.x = canvas.width - player.width / 2;
             player.y = player.y;
-            return true;
-          } else if (
-            player.x + player.width / 2 < 180 &&
-            player.x + player.width / 2 > 120 &&
-            player.y + player.height / 2 < 0 &&
-            player.oldY + player.height / 2 > 0 &&
-            player.climbing
-          ) {
-            this.loadLevel(12);
-            player.x = player.x;
-            player.y = canvas.height - player.height / 2;
-            player.climbing = true;
             return true;
           } else if (player.y > canvas.height) {
             player.y = 0;
@@ -686,16 +768,33 @@ class Level {
         items: () => {
           return {}
         },
-        nextScreen: (player, canvas) => {
+        nextScreen: (player, canvas, loadLevel, cleared) => {
           if (player.x + player.width / 2 >= canvas.width) {
-            this.loadLevel(6);
-            player.x = 0 - player.width / 2;
-            player.y = player.y;
-            return true;
+            if (!cleared) {
+              player.x = canvas.width - player.width / 2;
+              player.velX = 0;
+            } else {
+            loadLevel(6);
+              player.x = 0 - player.width / 2;
+              player.y = player.y;
+              return true;
+            }
           } else if (player.x + player.width / 2 < 0) {
-            this.loadLevel(4);
+            loadLevel(4);
             player.x = canvas.width - player.width / 2;
             player.y = player.y;
+            return true;
+          } else if (
+            player.x + player.width / 2 < 180 &&
+            player.x + player.width / 2 > 120 &&
+            player.y + player.height / 2 < 0 &&
+            player.oldY + player.height / 2 > 0 &&
+            player.climbing
+          ) {
+            loadLevel(12);
+            player.x = player.x;
+            player.y = canvas.height - player.height / 2;
+            player.climbing = true;
             return true;
           } else if (player.y > canvas.height) {
             player.y = 0;
@@ -744,9 +843,21 @@ class Level {
         },
         items: () => {
           return {}
+        },
+        nextScreen: (player, canvas, loadLevel, cleared) => {
+          if (player.x + player.width / 2 >= canvas.width) {
+            if (!cleared) {
+              player.x = canvas.width - player.width / 2;
+              player.velX = 0;
+              return false;
+            }
+          } else if (player.x + player.width / 2 < 0) {
+            player.x = 0 - player.width / 2;
+            return false;
+          }
         }
-      },
-    };
+     }
+    }
   }
   // static level2() {
   //   return {
