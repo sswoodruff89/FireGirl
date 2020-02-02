@@ -270,33 +270,7 @@ class Game {
     this.player.setOldPos();
 
     if (!this.player.idle) {
-      // if (this.player.velX > 7 || this.player.velX < -7) {
-      //   if (this.player.keydown)
-      //   this.player.velX += (this.player.velX > 0) ? -1 : 1;
-      // } else {
-      //   this.player.dash = false;
-      // }
-
-      // if (this.player.runningKeyDown && this.player.dashing) {
-      //   if (this.player.velX > 7 || this.player.velX < -7) {
-      //     this.player.velX += (this.player.velX > 0) ? -1 : 1;
-      //   }
-
-      // } else if (this.player.onGround && this.player.dashing && !this.player.runningKeyDown) {
-      //   this.player.velX += (this.player.velX > 0) ? -1 : (this.player.velX < 0) ? 1 : 0;
-      // }
-      // if (this.player.direction === "right") {
-      //   if ((this.player.onGround && !this.player.keydown && this.player.velX > 0)) {
-      //     this.player.velX -= 1;
-      //     // this.player.velX < 1 ? (this.player.velX = 0) : (this.player.velX /= CONSTANTS.FRICTION);
-      //   }
-      // } else if (this.player.direction === "left") {
-      //   if ((this.player.onGround && !this.player.keydown && this.player.velX > 0)) {
-      //     this.player.velX += 1;
-      //   }
-      // }
       this.player.x += this.player.velX;
-      // this.player.isDashing();
     }
     if (this.player.climbing) {
         this.player.isClimbing();
@@ -411,6 +385,23 @@ class Game {
 
   }
 
+  // loadLevel() {
+  //   if (((this.player.x + (this.player.width / 2)) >= this.canvas.width)) {
+  //     if (this.level.screen === parseInt(this.level.lastScreen)) {
+  //       this.won = true;
+  //       return;
+  //     } else {
+  //       this.level.loadLevel(parseInt(this.level.screen) + 1);
+  //       this.cleared = false;
+  //       this.enemies = this.level.enemies;
+  //       this.enemyCount = Object.keys(this.enemies);
+  //       this.player.x = 0 - this.player.width / 3;
+  //     }
+  //   } else if ((this.player.x + (this.player.width / 2)) <= 0) {
+  //     this.level.loadLevel(-1);
+  //     this.player.x = this.canvas.width - this.player.width;
+  //   }
+  // }
   loadLevel() {
     if (((this.player.x + (this.player.width / 2)) >= this.canvas.width)) {
       if (this.level.screen === parseInt(this.level.lastScreen)) {

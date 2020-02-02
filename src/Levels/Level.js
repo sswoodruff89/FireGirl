@@ -235,6 +235,28 @@ class Level {
     this.enemiesInterval();
 
   }
+  // loadLevel(num) {
+  //   this.screen = num;
+  //   this.renderMap = this.mapKeys[this.screen].renderMap;
+  //   this.physicalMap = this.mapKeys[this.screen].physicalMap;
+  //   this.enemies = this.mapKeys[this.screen].enemies();
+  //   this.items = this.mapKeys[this.screen].items();
+
+  //   if (this.mapKeys[this.screen].levelLayers) {
+
+  //     this.levelLayers = this.loadImages(this.mapKeys[this.screen].levelLayers);
+  //   }
+    
+  //   if (this.mapKeys[this.screen].theme) {
+  //     let muted = this.theme.music.muted;
+  //     this.theme.pause();
+  //     this.theme = new Music({ src: this.mapKeys[this.screen].theme });
+  //     this.theme.play();
+  //     this.theme.music.muted = muted;
+  //   }
+  //   this.enemiesInterval();
+
+  // }
 
   drawLevel(ctx) {
 
@@ -407,9 +429,18 @@ class Level {
           };
         },
         nextScreen: (player, canvas) => {
-          if (player.x + player.width / 2 >= canvas.width) {
-            return 2;
-          }
+          if (player.x + player.width / 2 > canvas.width) {
+            this.loadLevel(2);
+            player.x = 0 - player.width / 2;
+            player.y = player.y;
+            return true;
+          } else if (player.y > canvas.height) {
+            player.y = 0;
+            player.setHit(50);
+            return false;
+          } else {
+            return false;
+          }git s
         }
         
       },
@@ -459,9 +490,21 @@ class Level {
         },
         nextScreen: (player, canvas) => {
           if (player.x + player.width / 2 >= canvas.width) {
-            return 3;
+            this.loadLevel(3);
+            player.x = 0 - player.width / 2;
+            player.y = player.y;
+            return true;
           } else if (player.x + player.width / 2 < 0) {
-            return 1;
+            this.loadLevel(1);
+            player.x = canvas.width - player.width / 2;
+            player.y = player.y;
+            return true;
+          } else if (player.y > canvas.height) {
+            player.y = 0;
+            player.setHit(50);
+            return false;
+          } else {
+            return false;
           }
         }
       },
@@ -502,16 +545,31 @@ class Level {
         },
         nextScreen: (player, canvas) => {
           if (player.x + player.width / 2 >= canvas.width) {
-            return 4;
+            this.loadLevel(4);
+            player.x = 0 - player.width / 2;
+            player.y = player.y;
+            return true;
           } else if (player.x + player.width / 2 < 0) {
-            return 2;
+            this.loadLevel(2);
+            player.x = canvas.width - player.width / 2;
+            player.y = player.y;
+            return true;
           } else if (
             player.x + player.width / 2 < 180 &&
             player.x + player.width / 2 > 120 &&
             player.y + player.height / 2 < 0 &&
-            player.oldY + player.height / 2 > 0
+            player.oldY + player.height / 2 > 0 &&
+            player.climbing
           ) {
-            return 12;
+            this.loadLevel(12);
+            player.x = player.x;
+            player.y = canvas.height - player.height / 2;
+            player.climbing = true;
+            return true;
+          } else if (player.y > canvas.height) {
+            player.y = 0;
+            player.setHit(50);
+            return false;
           } else {
             return false;
           }
@@ -553,16 +611,31 @@ class Level {
         },
         nextScreen: (player, canvas) => {
           if (player.x + player.width / 2 >= canvas.width) {
-            return 5;
+            this.loadLevel(5);
+            player.x = 0 - player.width / 2;
+            player.y = player.y;
+            return true;
           } else if (player.x + player.width / 2 < 0) {
-            return 3;
+            this.loadLevel(3);
+            player.x = canvas.width - player.width / 2;
+            player.y = player.y;
+            return true;
           } else if (
             player.x + player.width / 2 < 180 &&
             player.x + player.width / 2 > 120 &&
             player.y + player.height / 2 < 0 &&
-            player.oldY + player.height / 2 > 0
+            player.oldY + player.height / 2 > 0 &&
+            player.climbing
           ) {
-            return 12;
+            this.loadLevel(12);
+            player.x = player.x;
+            player.y = canvas.height - player.height / 2;
+            player.climbing = true;
+            return true;
+          } else if (player.y > canvas.height) {
+            player.y = 0;
+            player.setHit(50);
+            return false;
           } else {
             return false;
           }
@@ -615,16 +688,19 @@ class Level {
         },
         nextScreen: (player, canvas) => {
           if (player.x + player.width / 2 >= canvas.width) {
-            return 6;
+            this.loadLevel(6);
+            player.x = 0 - player.width / 2;
+            player.y = player.y;
+            return true;
           } else if (player.x + player.width / 2 < 0) {
-            return 4;
-          } else if (
-            player.x + player.width / 2 < 180 &&
-            player.x + player.width / 2 > 120 &&
-            player.y + player.height / 2 < 0 &&
-            player.oldY + player.height / 2 > 0
-          ) {
-            return 12;
+            this.loadLevel(4);
+            player.x = canvas.width - player.width / 2;
+            player.y = player.y;
+            return true;
+          } else if (player.y > canvas.height) {
+            player.y = 0;
+            player.setHit(50);
+            return false;
           } else {
             return false;
           }
