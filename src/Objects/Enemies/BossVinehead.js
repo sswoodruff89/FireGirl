@@ -50,12 +50,12 @@ class BossVinehead extends Enemy {
     ];
     this.vines2 = [
       // new Vine(Vine.vines2(this, [800, 90])),
-      new Vine(Vine.vines2(this, [820, 145])),
-      new Vine(Vine.vines2(this, [800, 175])),
-      new Vine(Vine.vines2(this, [820, 220])),
-      new Vine(Vine.vines2(this, [800, 270])),
-      new Vine(Vine.vines2(this, [800, 375])),
-      new Vine(Vine.vines2(this, [820, 325])),
+      // new Vine(Vine.vines2(this, [820, 145])),
+      // new Vine(Vine.vines2(this, [800, 175])),
+      // new Vine(Vine.vines2(this, [820, 220])),
+      // new Vine(Vine.vines2(this, [800, 270])),
+      // new Vine(Vine.vines2(this, [800, 375])),
+      // new Vine(Vine.vines2(this, [820, 325])),
       new Vine(Vine.vines2(this, [200, 0])),
       new Vine(Vine.vines2(this, [250, 20])),
       new Vine(Vine.vines2(this, [270, 510])),

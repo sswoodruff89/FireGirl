@@ -799,7 +799,7 @@ class Player {
 
   setDamageMeter(damage) {
     if (!this.damageBoost) {
-      this.damageMeter += damage;
+      this.damageMeter += damage / 2;
 
 
       if (this.damageMeter >= 100) {
@@ -821,15 +821,15 @@ class Player {
     }, 100);
   }
 
-  setShield() {
+  setShield(int = 10000) {
     this.shield = true;
-    this.setShieldTimeOut();
+    this.setShieldTimeOut(int);
   }
 
-  setShieldTimeOut() {
+  setShieldTimeOut(int = 10000) {
     this.shieldTimeOut = setTimeout(() => {
       this.shield = false;
-    }, 10000);
+    }, int);
   }
 
   setDying() {

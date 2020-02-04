@@ -26,7 +26,7 @@ class Enemy extends GameObject {
     this.health = options.health;
     this.damage = options.damage;
     this.isHit = false;
-
+    this.trickShot = false;
 
     this.setHit = this.setHit.bind(this);
     this.setDying = this.setDying.bind(this);

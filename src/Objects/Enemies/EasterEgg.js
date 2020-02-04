@@ -33,7 +33,7 @@ class EasterEgg extends GameObject {
     this.loadImage = this.loadImage.bind(this);
     this.drawEnemy = this.drawEnemy.bind(this);
   }
-
+  
   loadImage(image) {
     let pic = new Image();
     pic.src = image;

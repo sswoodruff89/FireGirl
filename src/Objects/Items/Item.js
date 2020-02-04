@@ -67,6 +67,9 @@ class Item extends GameObject{
         case "Shield":
           player.setShield();
           return;
+        case "Hylian Shield":
+          player.setShield(60000);
+          return;
         case "Health":
           if (player.health < 200) {
             player.health += 30;
@@ -78,6 +81,9 @@ class Item extends GameObject{
             player.health += 60;
             if (player.health > 200) player.health = 200;
           }
+          return;
+        case "Blue Crystal":
+          player.setDamageMeter(80);
           return;
         default:
           return;
@@ -121,6 +127,24 @@ class Item extends GameObject{
     };
   }
 
+  static hylianShield(pos, disappear) {
+    return {
+      name: "Hylian Shield",
+      pos: pos,
+      width: 39,
+      height: 51,
+
+      frameStartX: 100,
+      frameStartY: 0,
+      frameWidth: 110,
+      frameHeight: 123,
+      frameNum: 1,
+      soundSrc: Sound.superShield(),
+
+      disappear: disappear
+    };
+  }
+
   static health(pos, disappear) {
     return {
       name: "Blue Health",
@@ -152,6 +176,24 @@ class Item extends GameObject{
       frameHeight: 101,
       frameNum: 2,
       soundSrc: Sound.healItem(),
+      disappear: disappear
+    }
+  }
+
+  static blueCrystal(pos, disappear) {
+    return {
+      name: "Blue Crystal",
+      pos: pos,
+      width: 27.5,
+      height: 50.5,
+      velY: (disappear) ? 0.4 : 0,
+
+      frameStartX: 0,
+      frameStartY: 335,
+      frameWidth: 45,
+      frameHeight: 118,
+      frameNum: 4,
+      soundSrc: Sound.crystal(),
       disappear: disappear
     }
   }

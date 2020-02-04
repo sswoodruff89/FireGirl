@@ -653,6 +653,7 @@ class Collision {
         
         if (obj2.health <= 0 && obj1.dir === "down") {
           obj2.points *= 2
+          obj2.trickShot = true;
         }
         
         setTimeout(() => {

@@ -47,6 +47,7 @@ class Game {
 
     this.highScore = 0;
     this.killCount = 0;
+    this.trickShotCount = 0;
     this.pause = false;
 
     this.getTopLeftPos = this.getTopLeftPos.bind(this);
@@ -303,6 +304,13 @@ class Game {
           this.player.setDamageMeter(enemy.points / 2);
           this.highScore += enemy.points;
           this.killCount++;
+
+          if (enemy.trickShot) {
+            this.trickShotCount++;
+            if (this.trickShotCount % 10 === 0) {
+              this.level.items[101] = new Item(Item.blueCrystal([enemy.x, enemy.y], true));
+            }
+          }
           if (this.killCount % 22 === 0) {
             this.spawnItems([enemy.x, enemy.y]);
           }
@@ -418,7 +426,6 @@ class Game {
 
   survivalMode() {
     if (this.level.screen !== "survivalMode") return;
-      debugger
     if (this.level.rushLevel === 0) {
       this.level.rushLevel++;
       this.level.enemyRushInterval(6000, 6);

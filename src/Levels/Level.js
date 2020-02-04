@@ -17,8 +17,8 @@ class Level {
     this.ctx = options.ctx;
     this.player = options.player;
     this.mapKeys = options.mapKeys;
-    // this.screen = Object.keys(this.mapKeys)[0];
-    this.screen = 12; 
+    this.screen = Object.keys(this.mapKeys)[0];
+    // this.screen = 5; 
     this.lastScreen = Object.keys(this.mapKeys)[Object.keys(this.mapKeys).length - 1];
     this.renderMap = options.renderMap || this.mapKeys[this.screen].renderMap;
     this.physicalMap = options.physicalMap || this.mapKeys[this.screen].physicalMap;
@@ -423,7 +423,6 @@ class Level {
           };
         },
         nextScreen: (player, canvas, loadLevel, cleared) => {
-          // debugger
           if (player.x + player.width / 2 > canvas.width) {
             if (!cleared) {
               player.x = canvas.width - player.width / 2;
@@ -481,7 +480,6 @@ class Level {
           };
         },
         nextScreen: (player, canvas, loadLevel, cleared) => {
-          // debugger
           if (player.x + player.width / 2 > canvas.width) {
             loadLevel(0);
             player.x = 0 - player.width / 2;
@@ -603,7 +601,10 @@ class Level {
           front: "./assets/Level1/lvl3_front.png"
         },
         items: () => {
-          return {}
+          return {
+            1: new Item(Item.health([360, 130], false))
+
+          }
         },
         nextScreen: (player, canvas, loadLevel, cleared) => {
           if (player.x + player.width / 2 >= canvas.width) {
@@ -703,16 +704,16 @@ class Level {
       },
       5: {
         renderMap: [
-          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-         29, 29, 29, 29, 29, 29, 29,  0, 29, 29, 29, 29, 29, 29, 29,
-          1,  1,  1,  1,  1,  1,  2,  0,  3,  1,  1,  1,  1,  1,  1,
-          5,  9,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 13,  5,  5,
-         28,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4, 28,
-          1,  1,  2,  0,  0,  0,  0,  0,  0,  0,  0,  3,  1,  1,  1,
-         16, 16, 16,  0,  0,  0,  0,  0,  0,  0,  0,  5,  5,  5,  5,
-          0,  0,  0,  0,  0, 29, 29, 29, 29, 29,  3,  1,  1,  1,  1,
-          0,  0,  0,  0,  0,  3,  1,  1,  1,  2,  5,  5,  5,  5,  5,
-          1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1
+        //   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        //  29, 29, 29, 29, 29, 29, 29,  0, 29, 29, 29, 29, 29, 29, 29,
+        //   1,  1,  1,  1,  1,  1,  2,  0,  3,  1,  1,  1,  1,  1,  1,
+        //   5,  9,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 13,  5,  5,
+        //  28,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4, 28,
+        //   1,  1,  2,  0,  0,  0,  0,  0,  0,  0,  0,  3,  1,  1,  1,
+        //  16, 16, 16,  0,  0,  0,  0,  0,  0,  0,  0,  5,  5,  5,  5,
+        //   0,  0,  0,  0,  0, 29, 29, 29, 29, 29,  3,  1,  1,  1,  1,
+        //   0,  0,  0,  0,  0,  3,  1,  1,  1,  2,  5,  5,  5,  5,  5,
+        //   1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1
         ],
         physicalMap: [
         //0       2       4       6       8      10      12
@@ -787,15 +788,15 @@ class Level {
         renderMap: [
         //0       2       4       6       8      10      12
           0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0,  0,  0,  0,
-          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0, 65,  0,  0,
-          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0, 65,  0,  0,
-          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0, 65,  0,  0,
-          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0, 65,  0,  0,
-          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0, 65,  0,  0,
-          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0, 65,  0,  0,
-          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0, 65,  0,  0,
-         66, 66, 71, 66, 66, 66,  0, 65,  0,  0,  0,  0, 65,  0,  0,
-          0,  0, 65,  0,  0,  0,  0,  0,  0,  0,  0,  0, 65,  0,  0
+          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0,  0,  0,  0,
+         66, 66, 71, 66, 66, 66,  0, 65,  0,  0,  0,  0,  0,  0,  0,
+          0,  0, 65,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
         ],
 
         physicalMap: [
@@ -868,7 +869,7 @@ class Level {
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 66, 66, 66,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-         66, 66, 66, 66, 66, 66, 66, 71, 66, 66, 66, 66, 66, 66, 66,
+         66, 66, 66, 66, 66, 66, 66, 71, 66, 66, 66, 66,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0,  0,  0,  0
@@ -882,7 +883,7 @@ class Level {
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  2,  2,  2,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          2,  2,  2,  2,  2,  2,  2, 58,  2,  2,  2,  2,  2,  2,  2,
+          2,  2,  2,  2,  2,  2,  2, 58,  2,  2,  2,  2,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0, 59,  0,  0,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0, 59,  0,  0,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0, 59,  0,  0,  0,  0,  0,  0,  0
@@ -971,7 +972,10 @@ class Level {
           // front: "./assets/Level1/lvl3_front.png"
         },
         items: () => {
-          return {}
+          return {
+            1: new Item(Item.hylianShield([500, 10], false)),
+            2: new Item(Item.blueCrystal([450, 10], false))
+          }
         },
         nextScreen: (player, canvas, loadLevel, cleared) => {
           if (player.x + player.width / 2 >= canvas.width) {
@@ -980,13 +984,14 @@ class Level {
 
             return true;
           } else if (player.x + player.width / 2 < 0) {
-            player.x = 0 - player.width / 2;
-            player.velX = 0;
+            loadLevel(7);
+            player.x = canvas.width - player.width / 2;
             return true;
           } else if (player.y + player.height / 2 > canvas.height) {
             loadLevel(4);
             player.x = player.x;
             player.y = 0 - player.height / 2;
+            player.velY = 0;
             // player.setHit(50);
             return true;
           } else {

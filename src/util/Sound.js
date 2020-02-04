@@ -61,6 +61,22 @@ class Sound {
             idName: "shieldItem"
         }
     }
+
+    static superShield() {
+        return {
+            src: "./assets/Sound/hylian.mp3",
+            idName: "superShield",
+            volume: .5
+        }
+    }
+
+    static crystal() {
+        return {
+            src: "./assets/Sound/crystal.mp3",
+            idName: "crystal",
+            volume: .8
+        }
+    }
 }
 
 
