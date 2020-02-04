@@ -1,8 +1,9 @@
+import Sound from "../../util/Sound";
 
 
 class Vine {
     constructor(options) {
-        this.boss = options.boss;
+        this.boss = options.boss || {};
         this.vine = this.loadImage();
         this.attacking = false;
         this.charging = false;
@@ -24,6 +25,8 @@ class Vine {
         this.drawVines = this.drawVines.bind(this);
         this.playerCheck = this.playerCheck.bind(this);
         this.move = this.move.bind(this);
+
+        this.impactSound = new Sound(Sound.whoosh());
 
     }
 
@@ -51,6 +54,8 @@ class Vine {
     charge() {
         this.charging = true;
         this.velX = -20;
+        this.impactSound.play();
+
     }
 
 
@@ -67,9 +72,9 @@ class Vine {
             ctx.drawImage(
                 this.vine,
                 2,
-                state * 95,
+                state * 94,
                 width,
-                95,
+                94,
                 this.x, this.y,
                 width, 60
             );
@@ -78,9 +83,9 @@ class Vine {
             ctx.drawImage(
                 this.vine,
                 2,
-                state * 95,
+                state * 94,
                 width,
-                95,
+                94,
                 -this.x - width, this.y,
                 width, 60
             );
@@ -132,7 +137,21 @@ class Vine {
             boss: boss,
             pos: pos,
             velY: (round <= 5) ? -1 : 1,
-            boundsY: [pos[1] - 75, pos[1] + 75],
+            // boundsY: [0, 580],
+            // boundsY: [pos[1] - 75, pos[1] + 75],
+            boundsY: [pos[1] - 100, pos[1] + 100],
+            frameCountOffset: Math.floor(Math.random() * 7)
+        }
+    }
+    static vines2(boss, pos) {
+        let round = Math.floor(Math.random() * 10);
+        return {
+            boss: boss,
+            pos: pos,
+            velY: (round <= 5) ? -.3 : .3,
+            // boundsY: [0, 580],
+            // boundsY: [pos[1] - 75, pos[1] + 75],
+            boundsY: [pos[1] - 10, pos[1] + 10],
             frameCountOffset: Math.floor(Math.random() * 7)
         }
     }

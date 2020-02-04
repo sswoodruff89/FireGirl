@@ -17,8 +17,8 @@ class Level {
     this.ctx = options.ctx;
     this.player = options.player;
     this.mapKeys = options.mapKeys;
-    this.screen = Object.keys(this.mapKeys)[0];
-    // this.screen = 6;
+    // this.screen = Object.keys(this.mapKeys)[0];
+    this.screen = 12; 
     this.lastScreen = Object.keys(this.mapKeys)[Object.keys(this.mapKeys).length - 1];
     this.renderMap = options.renderMap || this.mapKeys[this.screen].renderMap;
     this.physicalMap = options.physicalMap || this.mapKeys[this.screen].physicalMap;
@@ -231,28 +231,6 @@ class Level {
     this.enemiesInterval();
 
   }
-  // loadLevel(num) {
-  //   this.screen = num;
-  //   this.renderMap = this.mapKeys[this.screen].renderMap;
-  //   this.physicalMap = this.mapKeys[this.screen].physicalMap;
-  //   this.enemies = this.mapKeys[this.screen].enemies();
-  //   this.items = this.mapKeys[this.screen].items();
-
-  //   if (this.mapKeys[this.screen].levelLayers) {
-
-  //     this.levelLayers = this.loadImages(this.mapKeys[this.screen].levelLayers);
-  //   }
-    
-  //   if (this.mapKeys[this.screen].theme) {
-  //     let muted = this.theme.music.muted;
-  //     this.theme.pause();
-  //     this.theme = new Music({ src: this.mapKeys[this.screen].theme });
-  //     this.theme.play();
-  //     this.theme.music.muted = muted;
-  //   }
-  //   this.enemiesInterval();
-
-  // }
 
   drawLevel(ctx) {
 
@@ -469,7 +447,6 @@ class Level {
             return false;
           }
         }
-        
       },
       1: {
         renderMap: [
@@ -651,7 +628,7 @@ class Level {
             player.climbing
           ) {
             
-            loadLevel(12);
+            loadLevel(6);
             player.x = player.x;
             player.y = canvas.height - player.height / 2;
             player.climbing = true;
@@ -775,7 +752,7 @@ class Level {
               player.x = canvas.width - player.width / 2;
               player.velX = 0;
             } else {
-            loadLevel(6);
+            loadLevel(12);
               player.x = 0 - player.width / 2;
               player.y = player.y;
               return true;
@@ -792,7 +769,7 @@ class Level {
             player.oldY + player.height / 2 > 0 &&
             player.climbing
           ) {
-            loadLevel(12);
+            loadLevel(0);
             player.x = player.x;
             player.y = canvas.height - player.height / 2;
             player.climbing = true;
@@ -808,6 +785,217 @@ class Level {
       },
       6: {
         renderMap: [
+        //0       2       4       6       8      10      12
+          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0, 65,  0,  0,
+          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0, 65,  0,  0,
+          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0, 65,  0,  0,
+          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0, 65,  0,  0,
+          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0, 65,  0,  0,
+          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0, 65,  0,  0,
+          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0, 65,  0,  0,
+         66, 66, 71, 66, 66, 66,  0, 65,  0,  0,  0,  0, 65,  0,  0,
+          0,  0, 65,  0,  0,  0,  0,  0,  0,  0,  0,  0, 65,  0,  0
+        ],
+
+        physicalMap: [
+        //0       2       4       6       8      10      12
+          5,  0,  0,  0,  0,  0,  0, 59,  0,  0,  0,  0,  0,  0,  0,
+          5,  0,  0,  0,  0,  0,  0, 59,  0,  0,  0,  0,  0,  0,  0,
+          5,  0,  0,  0,  0,  0,  0, 59,  0,  0,  0,  0,  0,  0,  0,
+          5,  0,  0,  0,  0,  0,  0, 59,  0,  0,  0,  0,  0,  0,  0,
+          5,  0,  0,  0,  0,  0,  0, 59,  0,  0,  0,  0, 58,  0,  0,
+          5,  8,  0,  0,  0,  0,  0, 59,  0,  0,  0,  0, 59,  0,  0,
+          5,  0,  0,  0,  0,  0,  0, 59,  0,  0,  0,  0, 59,  0,  0,
+          5,  0,  0,  0,  0,  0,  0, 59,  0,  0,  0,  0, 59,  0,  0,
+          5,  2, 58,  2,  2,  2,  0, 59,  0,  0,  0,  0, 59,  0,  0,
+          5,  0, 59,  0,  0,  0,  0,  0,  0,  0,  0,  0, 59,  0,  0
+        ],
+        enemies: () => {
+          return {
+            // 3: new Jellyfish(Jellyfish.jell2([500, 550])),
+            // 4: new Jellyfish(Jellyfish.jell1([700, 50])),
+            // 5: new Vinehead(Vinehead.vine1([500, 100], this.player)),
+            // 6: new Vinehead(Vinehead.vine3([800, 20], this.player)),
+          }
+        },
+        levelLayers: {
+          background: "./assets/Level1/lv1_back.png",
+          // mid: "./assets/Level1/lvl3_mid.png",
+          // front: "./assets/Level1/lvl3_front.png"
+        },
+        items: () => {
+          return {}
+        },
+        nextScreen: (player, canvas, loadLevel, cleared) => {
+          if (player.x + player.width / 2 >= canvas.width) {
+            player.x = canvas.width - player.width / 2;
+            player.velX = 0;
+            return true;
+          } else if (player.x + player.width / 2 < 0) {
+            player.x = 0 - player.width / 2;
+            player.velX = 0;
+            return true;
+          } else if (
+            player.x + player.width / 2 > 400 &&
+            player.x + player.width / 2 < 480 &&
+            player.y + player.height / 2 < 0 &&
+            player.climbing
+          ) {
+            
+            loadLevel(7);
+            player.x = player.x;
+            player.y = canvas.height - player.height / 2;
+            player.climbing = true;
+            return true;
+          } else if (player.y + player.height / 2 > canvas.height) {
+            loadLevel(3);
+            player.x = player.x;
+            player.y = 0 - player.height / 2;
+            // player.setHit(50);
+            return true;
+          } else {
+            return false;
+          }
+        }
+      },
+      7: {
+        renderMap: [
+        //0       2       4       6       8      10      12
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         66, 66, 66,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 66, 66, 66,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+         66, 66, 66, 66, 66, 66, 66, 71, 66, 66, 66, 66, 66, 66, 66,
+          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0, 65,  0,  0,  0,  0,  0,  0,  0
+        ],
+
+        physicalMap: [
+        //0       2       4       6       8      10      12
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          2,  2,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  2,  2,  2,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          2,  2,  2,  2,  2,  2,  2, 58,  2,  2,  2,  2,  2,  2,  2,
+          0,  0,  0,  0,  0,  0,  0, 59,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0, 59,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0, 59,  0,  0,  0,  0,  0,  0,  0
+        ],
+        enemies: () => {
+          return {
+            // 3: new Jellyfish(Jellyfish.jell2([500, 550])),
+            // 4: new Jellyfish(Jellyfish.jell1([700, 50])),
+            // 5: new Vinehead(Vinehead.vine1([500, 100], this.player)),
+            // 6: new Vinehead(Vinehead.vine3([800, 20], this.player)),
+          }
+        },
+        levelLayers: {
+          background: "./assets/Level1/lv1_back.png",
+          // mid: "./assets/Level1/lvl3_mid.png",
+          // front: "./assets/Level1/lvl3_front.png"
+        },
+        items: () => {
+          return {}
+        },
+        nextScreen: (player, canvas, loadLevel, cleared) => {
+          if (player.x + player.width / 2 >= canvas.width) {
+            if (!cleared) {
+              player.x = canvas.width - player.width / 2;
+              player.velX = 0;
+            } else {
+              loadLevel(9);
+              player.x = 0 - player.width / 2;
+              player.y = player.y;
+              return true;
+            }
+          } else if (player.x + player.width / 2 < 0) {
+            player.x = 0 - player.width / 2;
+            player.velX = 0;
+            return true;
+          } else if (player.y + player.height / 2 > canvas.height) {
+            loadLevel(6);
+            player.x = player.x;
+            player.y = 0 - player.height / 2;
+            // player.setHit(50);
+            return true;
+          } else {
+            return false;
+          }
+        }
+      },
+      9: {
+        renderMap: [
+        //0       2       4       6       8      10      12
+          0,  0,  0,  0,  0, 67,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0, 75, 66, 66, 66, 66,  0,  0,  0, 69, 66,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 69, 66, 77,  0,
+         66, 67,  0,  0,  0,  0,  0,  0,  0,  0, 69, 77,  0,  0,  0,
+          0, 75, 67,  0,  0, 69,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0, 75, 66, 66, 77,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0, 68,  0,  0,  0, 69, 66, 67,  0,  0,  0,  0,  0,
+          0,  0,  0, 68,  0,  0, 69, 77,  0, 75,  4,  0,  0,  0,  0,
+          0,  0,  0, 68,  0, 69, 77,  0,  0,  0,  4,  0,  0,  0,  0,
+          0,  0,  0, 68,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+        ],
+
+        physicalMap: [
+        //0       2       4       6       8      10      12
+          0,  0,  0,  0,  0, 34,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  2,  2,  2,  2,  0,  0,  0, 35,  2,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 35,  2,  2,  0,
+          2, 34,  0,  0,  0,  0,  0,  0,  0,  0, 35,  2,  0,  0,  0,
+          0,  2, 34,  0,  0, 35,  0,  0,  0,  0,  2,  0,  0,  0,  0,
+          0,  0,  2,  2,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0, 35,  2, 34,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0, 35,  0,  0,  2,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0, 35,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+        ],
+        enemies: () => {
+          return {
+            // 3: new Jellyfish(Jellyfish.jell2([500, 550])),
+            // 4: new Jellyfish(Jellyfish.jell1([700, 50])),
+            // 5: new Vinehead(Vinehead.vine1([500, 100], this.player)),
+            // 6: new Vinehead(Vinehead.vine3([800, 20], this.player)),
+          }
+        },
+        levelLayers: {
+          background: "./assets/Level1/lv1_back.png",
+          // mid: "./assets/Level1/lvl3_mid.png",
+          // front: "./assets/Level1/lvl3_front.png"
+        },
+        items: () => {
+          return {}
+        },
+        nextScreen: (player, canvas, loadLevel, cleared) => {
+          if (player.x + player.width / 2 >= canvas.width) {
+            player.x = canvas.width - player.width / 2;
+            player.velX = 0;
+
+            return true;
+          } else if (player.x + player.width / 2 < 0) {
+            player.x = 0 - player.width / 2;
+            player.velX = 0;
+            return true;
+          } else if (player.y + player.height / 2 > canvas.height) {
+            loadLevel(4);
+            player.x = player.x;
+            player.y = 0 - player.height / 2;
+            // player.setHit(50);
+            return true;
+          } else {
+            return false;
+          }
+        }
+      },
+      12: {
+        renderMap: [
           0,  0,  0,  0,  0,  0,  0, 13,  5,  5,  5, 49,  5,  5,  5,
           0,  0,  0,  0,  0,  0,  0,  0, 16, 16, 16, 16, 16, 16, 16,
           2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -820,27 +1008,27 @@ class Level {
           1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1
         ],
         physicalMap: [
+          0,  0,  0,  0,  0, 40,  3,  3,  3,  3,  3,  3,  3,  3,  3,
+          2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
           0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          2,  2,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-          1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
+          2,  2,  2,  2,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 35,  2,
+          0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 37, 39,  0,  0,
           1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1
         ],
         enemies: () => {
           return {
-            1: new BossVinehead(BossVinehead.boss1([650, 100], this.player))
+            1: new BossVinehead(BossVinehead.boss1([650, 130], this.player))
           }
         },
         theme: "./assets/Sound/dk3_boss_boogie.mp3",
         levelLayers: {
-          background: "./assets/Level1/lv1_back.png",
+          background: "./assets/Level1/lvl12_back.png",
           // mid: "./assets/Level1/lv1_mid.png",
-          // front: "./assets/Level1/lv1_front.png"
+          front: "./assets/Level1/lvl12_front.png"
         },
         items: () => {
           return {}
@@ -858,6 +1046,7 @@ class Level {
           }
         }
      }
+     
     }
   }
   // static level2() {
@@ -882,14 +1071,14 @@ class Level {
   //         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
   //         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
   //         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-  //         0,  0,  0,  0,  0,  2,  2,  2,  2,  0,  0,  0,  0,  0,  0,
   //         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-  //         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  4,  0,  1,  1,
-  //         1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1
+  //         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+  //         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+  //         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
   //       ],
   //       enemies: {
   //         1: new Helicopter(Helicopter.hel1([100, 100])),
-  //         2: new Helicopter(Helicopter.hel1([570, 50], "left")),
+  //         0: new Helicopter(Helicopter.hel1([570, 50], "left")),
   //         3: new Flower(Flower.flow1([600, 500])),
   //         4: new Flower(Flower.flow1([400, 320])),
   //         5: new Flower(Flower.flow1([240, 500])),

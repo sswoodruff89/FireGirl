@@ -40,12 +40,25 @@ class BossVinehead extends Enemy {
     this.points = 50;
 
     this.vines = [
-      new Vine(Vine.vines1(this, [600, 60])),
-      new Vine(Vine.vines1(this, [600, 150])),
-      new Vine(Vine.vines1(this, [600, 500])),
-      new Vine(Vine.vines1(this, [700, 100])),
-      new Vine(Vine.vines1(this, [600, 300])),
-      new Vine(Vine.vines1(this, [700, 400])),
+      new Vine(Vine.vines1(this, [600, 165])),
+      new Vine(Vine.vines1(this, [650, 220])),
+      new Vine(Vine.vines1(this, [700, 435])),
+      new Vine(Vine.vines1(this, [700, 275])),
+      new Vine(Vine.vines1(this, [750, 325])),
+      new Vine(Vine.vines1(this, [650, 380])),
+      // new Vine(Vine.vines1(this, [600, 500])),
+    ];
+    this.vines2 = [
+      // new Vine(Vine.vines2(this, [800, 90])),
+      new Vine(Vine.vines2(this, [820, 145])),
+      new Vine(Vine.vines2(this, [800, 175])),
+      new Vine(Vine.vines2(this, [820, 220])),
+      new Vine(Vine.vines2(this, [800, 270])),
+      new Vine(Vine.vines2(this, [800, 375])),
+      new Vine(Vine.vines2(this, [820, 325])),
+      new Vine(Vine.vines2(this, [200, 0])),
+      new Vine(Vine.vines2(this, [250, 20])),
+      new Vine(Vine.vines2(this, [270, 510])),
     ]
 
     this.drawEnemy = this.drawEnemy.bind(this);
@@ -82,11 +95,7 @@ class BossVinehead extends Enemy {
     }, 10000);
   }
 
-  spawnEnemies() {
-    // if (this.enemies.length < 8) {
-    //   this.enemiesnew Vinehead(Vinehead.vine3([500, 100], this.player));
-    // }
-  }
+
 
   attack() {
     this.attacking = true;
@@ -111,6 +120,12 @@ class BossVinehead extends Enemy {
 
   renderVines(ctx, player) {
     this.vines.forEach((vine, i) => {
+      vine.move(ctx, this.frameCount, player);
+    });
+  }
+
+  renderVines2(ctx, player) {
+    this.vines2.forEach((vine, i) => {
       vine.move(ctx, this.frameCount, player);
     });
   }
@@ -236,7 +251,8 @@ class BossVinehead extends Enemy {
       }, 7000);
     }
 
-    this.renderVines(ctx, player)
+    this.renderVines2(ctx, player);
+    this.renderVines(ctx, player);
 
   }
 

@@ -341,12 +341,12 @@ class Collision {
       },
       35: (obj, x, y, colVal, tileSize) => {
         //45 deg right
-          if (this.collidePlatBottom(obj, y + tileSize)) {
-            return;
+          // if (this.collidePlatBottom(obj, y + tileSize)) {
+          //   return;
 
-          } else {
+          // } else {
             this.collideSlopeFortyFiveRight(obj, x, y + tileSize);
-          }
+          // }
         // this.collideSlopeFortyFiveRight(obj, x, y + tileSize);
       },
       36: (obj, x, y, colVal, tileSize) => {
@@ -528,13 +528,13 @@ class Collision {
         if (!obj.crouch) {
           this.collidePlatTop(obj, y);
         } else {
-            this.climbable(obj, x + (tileSize * .49), x + (tileSize * .51), y, tileSize);
+            this.climbable(obj, x + (tileSize * .35), x + (tileSize * .7), y, tileSize);
 
         }
       },
       59: (obj, x, y, colVal, tileSize) => {
         // climb
-            this.climbable(obj, x + (tileSize / 3), x + (tileSize * .66), y, tileSize);
+            this.climbable(obj, x + (tileSize * .35), x + (tileSize * .7), y, tileSize);
 
         // if (obj.x + obj.width > x + (tileSize / 4) && obj.x < x + (tileSize * (3/4))) {
         //     this.climbable(obj, x, y, tileSize);

@@ -934,6 +934,7 @@ class Player {
 
   jump() {
     if (this.jumpCount === 2) {
+      this.climbing = false;
       this.onGround = false;
       this.velY = 0 - 15;
       this.jumpCount = 1;

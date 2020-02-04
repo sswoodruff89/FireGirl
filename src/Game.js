@@ -467,11 +467,11 @@ class Game {
     
     if (!this.gameOver) {
       this.level.renderBackground(this.ctx, this.canvas);
-      if (this.level.screen > 5) this.level.drawLevel(this.ctx);
+      if (this.level.screen > 5 && this.level.screen !== 12) this.level.drawLevel(this.ctx);
       this.player.drawSprite(this.frameCount);
       // this.player.drawPlayer(this.frameCount);
       this.playerUpdate();
-      if (this.level.screen < 6) {
+      if (this.level.screen < 6 || this.level.screen == 12) {
         this.level.renderMid(this.ctx, this.canvas);
       }
       this.survivalMode(this.level, this.highScore);

@@ -140,7 +140,7 @@ class Item extends GameObject{
   }
   static blueHealth(pos, disappear) {
     return {
-      name: "Health",
+      name: "Blue Health",
       pos: pos,
       width: 46.5,
       height: 50.5,

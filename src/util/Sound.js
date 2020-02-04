@@ -7,7 +7,7 @@ class Sound {
         this.sound.setAttribute("controls", "none");
         this.sound.setAttribute("muted", "false");
 
-        this.sound.volume = 0.2;
+        this.sound.volume = options.volume || 0.2;
 
         this.sound.style.display = "none";
 
@@ -38,6 +38,14 @@ class Sound {
         return {
             src: "./assets/Sound/shock.mp3",
             idName: "shock"
+        }
+    }
+
+    static whoosh() {
+        return {
+            src: "./assets/Sound/swoosh2.mp3",
+            idName: "whoosh",
+            volume: .8
         }
     }
 
