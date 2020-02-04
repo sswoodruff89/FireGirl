@@ -12,12 +12,14 @@ class GameView {
     this.game = null;
     this.splash = new Image();
     this.splash.src = "./assets/firegirl.jpg";
+    this.tipsScreen = new Image();
+    this.tipsScreen.src = "./assets/tipsScreen.png";
     this.logo = new Image();
     this.logo.src = "./assets/firegirl_logo_dark.png";
     this.scoreFormOpen = false;
+    this.tips = false;
 
     this.renderGame = this.renderGame.bind(this);
-    this.loadImage = this.loadImage.bind(this);
     this.newGame = this.newGame.bind(this);
     this.newEnemyRush = this.newEnemyRush.bind(this);
     this.renderScoreSubmission = this.renderScoreSubmission.bind(this);
@@ -37,6 +39,9 @@ class GameView {
             this.newEnemyRush();
           };
           break;
+        case "t": 
+          this.tips = !this.tips;
+          break;
         case "m": 
           this.game.level.theme.mute();
           break;
@@ -47,11 +52,7 @@ class GameView {
     // this.renderScoreSubmission();
   }
 
-  loadImage() {
-    let tileMap = new Image();
-    tileMap.src = "./assets/tileGen.png";
-    return tileMap;
-  }
+
 
   newGame() {
     if (!this.game || this.game.gameOver) {
@@ -130,37 +131,60 @@ class GameView {
   renderGame() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     if (!this.game) {
-      this.ctx.drawImage(
-          this.splash,
+      if (this.tips) {
+        this.ctx.drawImage(
+          this.tipsScreen,
           0,
           0,
-          920,
-          644,
+          830,
+          554,
           0, 0,
           this.canvas.width, this.canvas.height
-      );
+        );
 
+        this.ctx.font = "1.8em Arial";
+        this.ctx.fillStyle = "pink";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText("Press T to Go Back", this.canvas.width / 2, this.canvas.height * (8 / 9));
+      } else {
 
-      this.ctx.drawImage(
-        this.logo,
-        0,
-        0,
-        636,
-        171,
-        this.canvas.width / 6,
-        this.canvas.height / 5,
-        636,
-        171
-      );
-      this.ctx.font = "1.8em Arial";
-      this.ctx.fillStyle = "pink";
-      this.ctx.textAlign = "center";
-      this.ctx.fillText("Press Enter to Play Level 1", this.canvas.width / 2, this.canvas.height * (2/3));
+        this.ctx.drawImage(
+            this.splash,
+            0,
+            0,
+            920,
+            644,
+            0, 0,
+            this.canvas.width, this.canvas.height
+            );
+      
+            this.ctx.drawImage(
+              this.logo,
+              0,
+              0,
+              636,
+              171,
+              this.canvas.width / 6,
+              this.canvas.height / 5,
+              636,
+              171
+            );
+            this.ctx.font = "1.8em Arial";
+            this.ctx.fillStyle = "pink";
+            this.ctx.textAlign = "center";
+            this.ctx.fillText("Press Enter to Play Level 1", this.canvas.width / 2, this.canvas.height * (2/3));
+      
+            this.ctx.font = "1.8em Arial";
+            this.ctx.fillStyle = "pink";
+            this.ctx.textAlign = "center";
+            this.ctx.fillText("Press S to Play Survival Mode", this.canvas.width / 2, this.canvas.height * (7/9));
 
-      this.ctx.font = "1.8em Arial";
-      this.ctx.fillStyle = "pink";
-      this.ctx.textAlign = "center";
-      this.ctx.fillText("Press S to Play Survival Mode", this.canvas.width / 2, this.canvas.height * (7/9));
+            this.ctx.font = "1.8em Arial";
+            this.ctx.fillStyle = "pink";
+            this.ctx.textAlign = "center";
+            this.ctx.fillText("Press T for Tips", this.canvas.width / 2, this.canvas.height * (8/9));
+      }
+
     }
 
     if (this.game) {

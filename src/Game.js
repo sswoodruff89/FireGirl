@@ -1,6 +1,5 @@
 import Player from "./Player";
 import Level from "./Levels/Level";
-import Tile from "./Objects/Platforms/Tile";
 import Collision from "./util/Collision";
 import Controller from "./util/Controller";
 import Enemy from "./Objects/Enemies/Enemy";
@@ -44,6 +43,10 @@ class Game {
     this.gameOver = false;
     this.embers = new Image();
     this.embers.src = "./assets/embers.jpg";
+
+    this.tipsScreen = new Image();
+    this.tipsScreen.src = "./assets/tipsScreen.png";
+
 
     this.highScore = 0;
     this.killCount = 0;
@@ -385,11 +388,15 @@ class Game {
   }
 
   renderPause() {
-    this.ctx.beginPath();
-    this.ctx.rect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.fillStyle = "rgb(0, 0, 0)";
-    this.ctx.fill();
-    this.ctx.closePath();
+    this.ctx.drawImage(
+      this.tipsScreen,
+      0,
+      0,
+      830,
+      554,
+      0, 0,
+      this.canvas.width, this.canvas.height
+    );
 
 
     this.ctx.font = "1.8em Arial";
@@ -398,7 +405,7 @@ class Game {
     this.ctx.fillText(
       "Paused",
       this.canvas.width / 2,
-      this.canvas.height / 2
+      40
     );
 
   }

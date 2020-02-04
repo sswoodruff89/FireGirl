@@ -1,4 +1,3 @@
-import Tile from "../Objects/Platforms/Tile";
 import Music from "../util/Music";
 import Enemy from "../Objects/Enemies/Enemy";
 import Helicopter from "../Objects/Enemies/Helicopter";
