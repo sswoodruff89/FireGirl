@@ -3,12 +3,13 @@ class Music {
         this.music = document.createElement("audio");
         this.name = options.name || "";
         this.artist = options.artist || "";
+        this.loop = options.loop || true;
         this.music.src = options.src;
         this.music.volume = options.volume || 1;
         this.music.id = "theme";
         this.music.setAttribute("preload", "auto");
         this.music.setAttribute("controls", "none");
-        this.music.setAttribute("loop", "true");
+        this.music.setAttribute("loop", `${this.loop}`);
         this.music.setAttribute("muted", "false");
         this.music.style.display = "none";
 

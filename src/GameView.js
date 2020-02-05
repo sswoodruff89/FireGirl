@@ -49,23 +49,21 @@ class GameView {
         case "c":
           if (this.game.gameOver && !this.game.won) {
             this.continueGame();
-            // let startScreen = this.game.level.screen;
-            // this.game = null;
-            // this.newGame(startScreen);
-            // this.game.player.x = 0;
-            // this.game.player.y = 0;
           }
           break;
         default:
           return;
       }
     });
-    // this.renderScoreSubmission();
   }
 
 
 
   newGame(screen = null) {
+    if (this.game) {
+      this.game.level.theme.pause();
+      this.game.level.theme = null;
+    }
     if (!this.game || this.game.gameOver) {
       this.game = new Game(this.canvas, this.ctx, 1, screen);
       this.game.HUD = new GameHUD();
@@ -94,6 +92,10 @@ class GameView {
   }
 
   newEnemyRush() {
+    if (this.game) {
+      this.game.level.theme.pause();
+      this.game.level.theme = null;
+    }
     if (!this.game || this.game.gameOver) {
       this.game = new Game(this.canvas, this.ctx, "survivalMode");
 

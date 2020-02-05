@@ -17,7 +17,7 @@ class Level {
     this.player = options.player;
     this.mapKeys = options.mapKeys;
     this.screen = Object.keys(this.mapKeys)[0];
-    // this.screen = 5; 
+    // this.screen = 12; 
     this.lastScreen = Object.keys(this.mapKeys)[Object.keys(this.mapKeys).length - 1];
     this.renderMap = options.renderMap || this.mapKeys[this.screen].renderMap;
     this.physicalMap = options.physicalMap || this.mapKeys[this.screen].physicalMap;
@@ -56,6 +56,7 @@ class Level {
     this.spawnEnemies = this.spawnEnemies.bind(this);
     this.enemyRush = this.enemyRush.bind(this);
 
+    this.lastScreenCleared = false;
     this.loadImages = this.loadImages.bind(this);
     this.renderBackground = this.renderBackground.bind(this);
     this.renderMid = this.renderMid.bind(this);
@@ -92,6 +93,27 @@ class Level {
   }
 
   renderBackground(ctx, canvas) {
+    if (parseInt(this.screen) === parseInt(this.lastScreen) && !this.enemies[1] && !this.lastScreenCleared) {
+      this.lastScreenCleared = true;
+      clearInterval(this.spawnInterval);
+
+      Object.values(this.enemies).forEach((ene) => {
+        ene.health = 0;
+      });
+      this.theme.pause();
+      this.theme = null;
+      setTimeout(() => {
+        this.theme = new Music({
+          src: "./assets/Sound/ff9_victory.mp3",
+            name: "Victory Fanfare",
+              artist: "Nobuo Uematsu",
+                volume: .2,
+                loop: false
+        });
+        this.theme.play();
+      }, 700)
+
+    }
 
       ctx.drawImage(
         this.levelLayers.background,
@@ -160,6 +182,7 @@ class Level {
       
       if (!this.enemies[1]) {
         clearInterval(this.spawnInterval);
+
         this.enemies = {};
       }
       this.spawnEnemies(this.enemies[1]);
@@ -433,7 +456,7 @@ class Level {
           src: "./assets/Sound/ff9_stirring_forest.mp3",
           name: "Stirring the Forest",
           artist: "Nobuo Uematsu",
-          volume: .7
+          volume: .6
         },
         levelLayers: {
           background: "./assets/Level1/lv1_back.png",

@@ -1,7 +1,7 @@
 import Enemy from "./Enemy";
 
 import GameObject from "../GameObject";
-import Projectile from "../Projectiles/Projectile";
+import Impact from "../Projectiles/Impact";
 import Player from "../../Player";
 import Vinehead from "./Vinehead";
 import Vine from '../Projectiles/Vine';
@@ -31,7 +31,7 @@ class BossVinehead extends Enemy {
     this.frameHeight = options.frameHeight || 87;
     this.active = true;
     this.opening = false;
-    this.projectiles = {};
+    this.impact = [];
     this.playerCheckTimeout = "";
     this.damage = 50;
     this.attacking = false;
@@ -39,6 +39,8 @@ class BossVinehead extends Enemy {
     this.frameCount = 0;
 
     this.points = 50;
+
+    this.impactIdx = 0;
 
     this.vines = [
       new Vine(Vine.vines1(this, [680, 165])),
@@ -56,9 +58,8 @@ class BossVinehead extends Enemy {
     ]
 
     this.drawEnemy = this.drawEnemy.bind(this);
-    this.shootProj = this.shootProj.bind(this);
-    // this.setPlayerCheckInterval = this.setPlayerCheckInterval.bind();
-    // this.checkPlayerPos = this.checkPlayerPos.bind(this);
+
+    
     this.callAttack = this.callAttack.bind(this);
     this.charge = this.charge.bind(this);
     this.startFrameCount = this.startFrameCount.bind(this);
@@ -66,6 +67,9 @@ class BossVinehead extends Enemy {
     this.renderVines = this.renderVines.bind(this);
     this.attackVines = this.attackVines.bind(this);
     this.startAttack = this.startAttack.bind(this);
+
+    this.renderExplosion = this.renderExplosion.bind(this);
+
     this.startFrameCount();
     this.startAttack();
   }
@@ -140,7 +144,11 @@ class BossVinehead extends Enemy {
   drawEnemy(ctx, frameCount) {
     this.setDying();
     
-    if ((this.isHit || this.dying) && frameCount % 3 === 0) return;
+    if ((this.isHit || this.dying) && frameCount % 3 === 0) {
+      this.renderExplosion(ctx, frameCount);
+
+      return;
+    }
     let sprite = (this.health < 500 && frameCount % 2 === 0) ? this.lowHealth : this.enemy;
 
     let y = ((this.attacking && 
@@ -171,43 +179,37 @@ class BossVinehead extends Enemy {
       ctx.scale(-1, 1);
 
     }
-
-  }
-
-  shootProj() {
-
-    if (Object.keys(this.projectiles).length === 3) return;
-
-    let key;
-    for (let i = 1; i <= 3; i++) {
-      if (!this.projectiles[i]) {
-        key = i;
-        break;
-      }
-    }
-
-    if (this.dir === "left") {
-
-      this.projectiles[key] = new Projectile(
-        Projectile.helibullet(
-          [this.leftSide() + 30,
-          this.bottomSide() - 23],
-          -9, 7, "left")
-      );
-    } else {
-      this.projectiles[key] = new Projectile(
-        Projectile.helibullet(
-          [this.rightSide() - 40,
-          this.bottomSide() - 23],
-          9, 7, "right")
-      );
-
+    if (this.dying) {
+      // this.renderExplosion(ctx);
+      this.renderExplosion(ctx , frameCount);
     }
   }
+
+
+
+
+
+  renderExplosion(ctx, frameCount) {
+    if (this.impact.length === 0) return;
+    this.impact[0].drawImpact(ctx, frameCount);
+    if (this.impact[0].done) {
+      let x = (Math.random() * this.width) + this.x + (this.width / 10);
+      let y = (Math.random() * this.height) + this.y - (this.height/2);
+      this.impact[0] = new Impact(Impact.explosion([x, y]));
+    }
+  }
+
 
   setDying() {
     if (this.health <= 0) {
       this.dying = true;
+      // this.setDyingInterval();
+      let x = (Math.random() * this.width) + this.x - 10;
+      let y = (Math.random() * this.height) + this.y - 40;
+      this.impact.push(
+        new Impact(Impact.explosion([x, y]))
+      );
+      // this.setExplosions();
       this.vines.forEach((vine) => {
         clearTimeout(vine.chargeTimeout);
         clearTimeout(vine.vineTimeout);
@@ -220,7 +222,8 @@ class BossVinehead extends Enemy {
       setTimeout(() => {
         this.dead = true;
         clearInterval(this.startFrameCount);
-      }, 3000);
+        clearInterval(this.dyingInterval);
+      }, 5000);
     }
   }
 
@@ -249,7 +252,7 @@ class BossVinehead extends Enemy {
       }, 7000);
     }
 
-    this.renderVines2(ctx, player);
+    // this.renderVines2(ctx, player);
     this.renderVines(ctx, player);
 
   }

@@ -439,8 +439,6 @@ class Game {
         this.enemies[this.level.screen] = this.level.enemies;
       }
       this.enemyCount = Object.keys(this.enemies);
-    // this.level.loadLevel(-1);
-    // this.player.x = this.canvas.width - this.player.width;
 
     }
   }
@@ -578,7 +576,7 @@ class Game {
         );
 
       } else if (this.won) {
-        this.level.theme.pause();
+        // this.level.theme.pause();
 
         this.ctx.drawImage(
           this.embers,
