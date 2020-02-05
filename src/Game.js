@@ -7,6 +7,7 @@ import Helicopter from "./Objects/Enemies/Helicopter";
 import Flower from "./Objects/Enemies/Flower";
 import Item from "./Objects/Items/Item";
 import GameHUD from "./GameHUD";
+import EasterEgg from "./Objects/Enemies/EasterEgg";
 
 const CONSTANTS = {
   GRAVITY: 0.8,
@@ -16,7 +17,7 @@ const CONSTANTS = {
 
 
 class Game {
-  constructor(canvas, ctx, lvl = 1) {
+  constructor(canvas, ctx, lvl = 1, screen) {
     this.canvas = canvas;
     this.ctx = ctx;
     this.lvl = lvl;
@@ -24,13 +25,14 @@ class Game {
       1: Level.level1(),
       "survivalMode": Level.level2()
     }
-    this.player = new Player(this.ctx, this.canvas);
+    this.player = new Player(this.ctx, this.canvas, [20, 210]);
     this.controller = new Controller(this.player, this);
     this.tileSize = canvas.width / 15;
     this.level = new Level({ 
       ctx: ctx,
       mapKeys: this.levelCall[lvl],
       player: this.player,
+      screen: screen,
       tileSize: this.tileSize
     });
 
@@ -317,6 +319,9 @@ class Game {
           if (this.killCount % 22 === 0) {
             this.spawnItems([enemy.x, enemy.y]);
           }
+          if (enemy instanceof EasterEgg) {
+            this.level.items[9000] = new Item(Item.hylianShield([enemy.x + enemy.width / 2, enemy.y + enemy.height / 2], true));
+          }
 
           delete this.enemies[this.level.screen][key];
           this.enemyCount -= 1;
@@ -504,6 +509,10 @@ class Game {
       this.controller = null;
       clearInterval(this.frameInterval);
       clearInterval(this.level.spawnInterval);
+      Object.values(this.level.enemies).forEach((en) => {
+        en.dead = true;
+      })
+      
       if (!this.won) {
         this.level.theme.pause();
         this.highScore = Math.floor(this.highScore + this.player.health);
@@ -530,14 +539,25 @@ class Game {
         this.ctx.fillText(
           `YOUR SCORE IS ${this.highScore}`,
           this.canvas.width / 2,
-          450
+          400
         );
 
-        this.ctx.font = "50px Arial";
+        if (this.level.screen !== "survivalMode") {
+          this.ctx.font = "40px Arial";
+          this.ctx.fillStyle = "pink";
+          this.ctx.textAlign = "center";
+          this.ctx.fillText(
+            "Press C to Continue",
+            this.canvas.width / 2,
+            480
+          );
+
+        }
+        this.ctx.font = "40px Arial";
         this.ctx.fillStyle = "pink";
         this.ctx.textAlign = "center";
         this.ctx.fillText(
-          "Press Enter to Play Again",
+          "Press Enter to Start Over",
           this.canvas.width / 2,
           550
         );
@@ -554,16 +574,21 @@ class Game {
           0, 0,
           900, 600
         );
-        this.ctx.font = "80px Arial";
-        this.ctx.fillStyle = "pink";
-        this.ctx.textAlign = "center";
-        this.ctx.fillText("CONGRATS!", this.canvas.width / 2, 160);
+        // this.ctx.font = "80px Arial";
+        // this.ctx.fillStyle = "pink";
+        // this.ctx.textAlign = "center";
+        // this.ctx.fillText("CONGRATS!", this.canvas.width / 2, 160);
 
 
         this.ctx.font = "80px Arial";
         this.ctx.fillStyle = "pink";
         this.ctx.textAlign = "center";
-        this.ctx.fillText("YOU BEAT LEVEL 1", this.canvas.width / 2, this.canvas.height / 2);
+        this.ctx.fillText("YOU BEAT LEVEL 1!", this.canvas.width / 2, 160);
+
+        this.ctx.font = "60px Arial";
+        this.ctx.fillStyle = "pink";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText("THANK YOU FOR PLAYING!", this.canvas.width / 2, this.canvas.height / 2);
 
         this.ctx.font = "80px Arial";
         this.ctx.fillStyle = "pink";

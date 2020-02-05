@@ -133,6 +133,7 @@ class Item extends GameObject{
       pos: pos,
       width: 39,
       height: 51,
+      velY: (disappear) ? 0.4 : 0,
 
       frameStartX: 100,
       frameStartY: 0,

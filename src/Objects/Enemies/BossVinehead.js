@@ -20,6 +20,7 @@ class BossVinehead extends Enemy {
     this.velY = 0;
     this.image = options.image || "./assets/vinehead.png";
     this.enemy = this.loadImage(this.image);
+    this.lowHealth = this.loadImage("./assets/vinehead_red.png")
     this.vineNum = 5;
 
     // this.vines = this.loadImage("../assets/vine.png");
@@ -40,22 +41,15 @@ class BossVinehead extends Enemy {
     this.points = 50;
 
     this.vines = [
-      new Vine(Vine.vines1(this, [600, 165])),
-      new Vine(Vine.vines1(this, [650, 220])),
-      new Vine(Vine.vines1(this, [700, 435])),
-      new Vine(Vine.vines1(this, [700, 275])),
-      new Vine(Vine.vines1(this, [750, 325])),
-      new Vine(Vine.vines1(this, [650, 380])),
+      new Vine(Vine.vines1(this, [680, 165])),
+      new Vine(Vine.vines1(this, [710, 220])),
+      new Vine(Vine.vines1(this, [680, 435])),
+      new Vine(Vine.vines1(this, [740, 275])),
+      new Vine(Vine.vines1(this, [740, 325])),
+      new Vine(Vine.vines1(this, [710, 380])),
       // new Vine(Vine.vines1(this, [600, 500])),
     ];
     this.vines2 = [
-      // new Vine(Vine.vines2(this, [800, 90])),
-      // new Vine(Vine.vines2(this, [820, 145])),
-      // new Vine(Vine.vines2(this, [800, 175])),
-      // new Vine(Vine.vines2(this, [820, 220])),
-      // new Vine(Vine.vines2(this, [800, 270])),
-      // new Vine(Vine.vines2(this, [800, 375])),
-      // new Vine(Vine.vines2(this, [820, 325])),
       new Vine(Vine.vines2(this, [200, 0])),
       new Vine(Vine.vines2(this, [250, 20])),
       new Vine(Vine.vines2(this, [270, 510])),
@@ -106,7 +100,7 @@ class BossVinehead extends Enemy {
 
   charge() {
     this.charging = true;
-    this.velX = -10;
+    this.velX = (this.health > 500) ? -10 : -20;
   }
 
 
@@ -131,7 +125,10 @@ class BossVinehead extends Enemy {
   }
 
   attackVines() {
-
+    if (this.dead) {
+      clearInterval(this.vineInterval);
+      return;
+    }
     this.vines.forEach((vine, i) => {
       vine.attack((1500) + i * 300);
     })
@@ -144,6 +141,7 @@ class BossVinehead extends Enemy {
     this.setDying();
     
     if ((this.isHit || this.dying) && frameCount % 3 === 0) return;
+    let sprite = (this.health < 500 && frameCount % 2 === 0) ? this.lowHealth : this.enemy;
 
     let y = ((this.attacking && 
       (this.frameCount % 3 === 0 || this.frameCount % 3 === 1)) ||
@@ -151,7 +149,7 @@ class BossVinehead extends Enemy {
     if (this.dir === "right") {
       let count = Math.floor(frameCount / 2.5) % this.frameNum;
       ctx.drawImage(
-        this.enemy,
+        sprite,
         (Math.floor(this.frameCount / 1.5) % this.frameNum) * this.frameWidth,
         y,
         this.frameWidth,
@@ -162,13 +160,13 @@ class BossVinehead extends Enemy {
     } else {
       ctx.scale(-1, 1);
       ctx.drawImage(
-        this.enemy,
+        sprite,
         (this.frameCount % this.frameNum) * this.frameWidth + this.frameStartX,
         y,
         this.frameWidth,
         this.frameHeight,
-        -this.x - this.width, this.y,
-        this.width, this.height
+        -this.x - this.width, this.y - 30,
+        this.width, this.height + 30
       );
       ctx.scale(-1, 1);
 
@@ -266,9 +264,9 @@ class BossVinehead extends Enemy {
       image: "./assets/vinehead.png",
       frameNum: 8,
       pos: pos,
-      width: 260,
-      height: 370,
-      health: 1200,
+      width: 245,
+      height: 340,
+      health: 1800,
       velX: 0,
       dir: "left",
       player: player

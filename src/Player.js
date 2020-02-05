@@ -10,12 +10,12 @@ const CONSTANTS = {
 };
 
 class Player {
-  constructor(ctx, canvas) {
+  constructor(ctx, canvas, pos) {
     this.ctx = ctx;
     this.canvas = canvas;
     this.character = new Character({
       name: "Seisa",
-      pos: [20, 210],
+      pos: pos,
       ctx: this.ctx,
       canvas: this.canvas,
       // width: 30,

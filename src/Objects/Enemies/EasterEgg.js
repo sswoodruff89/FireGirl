@@ -1,6 +1,7 @@
 import Enemy from "./Enemy";
 
 import GameObject from "../GameObject";
+import Item from "../Items/Item";
 
 
 const CONSTANTS = {

@@ -156,22 +156,36 @@ class Level {
 
   enemiesInterval() {
     if (parseInt(this.lastScreen) !== this.screen) return;
-    
     this.spawnInterval = setInterval(() => {
+      
       if (!this.enemies[1]) {
         clearInterval(this.spawnInterval);
+        this.enemies = {};
       }
-      this.spawnEnemies();
-    }, 7000);
+      this.spawnEnemies(this.enemies[1]);
+    }, 4000);
     // }
   }
 
-  spawnEnemies() {
-    if (Object.keys(this.enemies).length >= 8) return;
+  spawnEnemies(enemy = {}) {
+    if (Object.keys(this.enemies).length >= 4) return;
     this.enemyCount++;
     let key = this.enemyCount;
     let y = Math.random() * 600;
-    this.enemies[key] = new Vinehead(Vinehead.vine2([890, y], this.player, "left"));
+    let obj = {
+      1: new Vinehead(Vinehead.vine3([890, y], this.player, "left")),
+      2: new Vinehead(Vinehead.vine1([890, y], this.player, "left")),
+      3: new Vinehead(Vinehead.vine2([890, y], this.player, "left"))
+    }
+    let num;
+    if (enemy.health < (280)) {
+      num = 3
+    } else if (enemy.health < (1200)) {
+      num = 2;
+    } else {
+      num = 1;
+    }
+    this.enemies[key] = obj[num];
   }
 
   enemyRush() {
@@ -744,7 +758,10 @@ class Level {
           front: "./assets/Level1/lvl5_front.png"
         },
         items: () => {
-          return {}
+          return {
+            1: new Item(Item.blueCrystal([525, 100], false))
+
+          }
         },
         nextScreen: (player, canvas, loadLevel, cleared) => {
           if (player.x + player.width / 2 >= canvas.width) {
@@ -1025,7 +1042,7 @@ class Level {
         ],
         enemies: () => {
           return {
-            1: new BossVinehead(BossVinehead.boss1([650, 130], this.player))
+            1: new BossVinehead(BossVinehead.boss1([650, 160], this.player))
           }
         },
         theme: "./assets/Sound/dk3_boss_boogie.mp3",

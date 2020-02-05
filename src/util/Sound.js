@@ -3,6 +3,7 @@ class Sound {
         this.sound = document.createElement("audio");
         this.sound.src = options.src;
         this.sound.id = options.idName;
+        this.sound.classList.add(options.idName);
         this.sound.setAttribute("preload", "auto");
         this.sound.setAttribute("controls", "none");
         this.sound.setAttribute("muted", "false");
@@ -10,6 +11,8 @@ class Sound {
         this.sound.volume = options.volume || 0.2;
 
         this.sound.style.display = "none";
+        this.body = document.getElementById("gamebody");
+        this.body.appendChild(this.sound);
 
         this.play = this.play.bind(this);
         this.pause = this.pause.bind(this);
@@ -17,6 +20,7 @@ class Sound {
     };
 
     play() {
+        
         this.sound.play();
     }
 

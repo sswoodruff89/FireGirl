@@ -14,6 +14,9 @@ class Vine {
         this.y = options.pos[1];
         this.startX = this.x;
 
+        this.redVine = new Image();
+        this.redVine.src = "./assets/vine_red.png"
+
         this.boundsY = options.boundsY;
         this.damage = options.damage || 10;
         this.frameCountOffset = options.frameCountOffset;
@@ -67,6 +70,7 @@ class Vine {
                 ((Math.floor(frameCount / 2.5) + this.frameCountOffset) % this.frameNum)
         let width = (this.attacking) ? 1000 : 400
 
+        // let sprite = (this.boss.health < 500) ? this.redVine : this.vine;
         // let count = Math.floor(frameCount / 2.5) + this.frameCountOffset % this.frameNum;
         if (this.boss.dir === "left") {
             ctx.drawImage(

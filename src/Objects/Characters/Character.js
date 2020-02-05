@@ -24,21 +24,6 @@ class Character extends GameObject {
     // this.tileMap.onLoad = this.drawLevel(ctx);
   }
   
-  // loadImage2() {
-  //   let spriteMap = new Image();
-  //   spriteMap.src = "./assets/SeisaSpriteSheet.png";
-  //   return spriteMap;
-  //   // this.tileMap.onLoad = this.drawLevel(ctx);
-  // }
-
-  // drawModel() {
-  //   this.ctx.beginPath();
-  //   this.ctx.rect(20, 40, 40, 70);
-  //   this.ctx.fillStyle = "#FF000";
-  //   this.ctx.fill();
-  //   this.ctx.closePath();
-
-  // }
 
   
 }

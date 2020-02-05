@@ -73,6 +73,7 @@ class Pterahawk extends Enemy {
   }
 
   shootProj() {
+    
     if (Object.keys(this.projectiles).length === 3) return;
 
     let key;

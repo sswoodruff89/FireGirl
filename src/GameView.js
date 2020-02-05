@@ -23,6 +23,7 @@ class GameView {
     this.newGame = this.newGame.bind(this);
     this.newEnemyRush = this.newEnemyRush.bind(this);
     this.renderScoreSubmission = this.renderScoreSubmission.bind(this);
+    this.continueGame = this.continueGame.bind(this);
 
     window.addEventListener("keydown", (event) => {
       // event.preventDefault();
@@ -45,6 +46,16 @@ class GameView {
         case "m": 
           this.game.level.theme.mute();
           break;
+        case "c":
+          if (this.game.gameOver && !this.game.won) {
+            this.continueGame();
+            // let startScreen = this.game.level.screen;
+            // this.game = null;
+            // this.newGame(startScreen);
+            // this.game.player.x = 0;
+            // this.game.player.y = 0;
+          }
+          break;
         default:
           return;
       }
@@ -54,9 +65,29 @@ class GameView {
 
 
 
-  newGame() {
+  newGame(screen = null) {
     if (!this.game || this.game.gameOver) {
-      this.game = new Game(this.canvas, this.ctx);
+      this.game = new Game(this.canvas, this.ctx, 1, screen);
+      this.game.HUD = new GameHUD();
+      this.game.level.theme.play();
+    }
+  }
+
+  continueGame() {
+    if (this.game.gameOver) {
+      let startScreen = this.game.level.screen;
+ 
+      this.game = null;
+      this.game = new Game(this.canvas, this.ctx, 1);
+      this.game.level.loadLevel(startScreen);
+      this.game.enemies[startScreen] = this.game.level.enemies;
+  
+
+      this.game.player.x = 0;
+      this.game.player.y = 0;
+      this.game.player.setHit(0);
+      this.game.player.damageMeter = 50;
+
       this.game.HUD = new GameHUD();
       this.game.level.theme.play();
     }
