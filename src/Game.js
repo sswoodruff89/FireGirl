@@ -449,28 +449,34 @@ class Game {
     if (this.level.screen !== "survivalMode") return;
     if (this.level.rushLevel === 0) {
       this.level.rushLevel++;
-      this.level.enemyRushInterval(6000, 6);
-    } else if (this.highScore > 30 && this.level.rushLevel === 1) {
+      this.level.enemyRushInterval(5000, 5);
+    } else if (this.highScore > 25 && this.level.rushLevel === 1) {
       this.level.rushLevel++;
-      this.level.enemyRushInterval(5000, 7);
-    } else if (this.highScore > 60 && this.level.rushLevel === 2) {
+      this.level.enemyRushInterval(4500, 6);
+    } else if (this.highScore > 50 && this.level.rushLevel === 2) {
       this.level.rushLevel++;
-      this.level.enemyRushInterval(4500, 7);
-    } else if (this.highScore > 100 && this.level.rushLevel === 3) {
+      this.level.enemyRushInterval(4000, 6);
+    } else if (this.highScore > 80 && this.level.rushLevel === 3) {
       this.level.rushLevel++;
-      this.level.enemyRushInterval(4000, 8);
-    } else if (this.highScore > 140 && this.level.rushLevel === 4) {
+      this.level.enemyRushInterval(4000, 7);
+    } else if (this.highScore > 120 && this.level.rushLevel === 4) {
       this.level.rushLevel++;
-      this.level.enemyRushInterval(3500, 8);
-    } else if (this.highScore > 180 && this.level.rushLevel === 5) {
+      this.level.enemyRushInterval(3500, 7);
+    } else if (this.highScore > 160 && this.level.rushLevel === 5) {
       this.level.rushLevel++;
-      this.level.enemyRushInterval(3000, 8);
-    } else if (this.highScore > 220 && this.level.rushLevel === 6) {
+      this.level.enemyRushInterval(3000, 7);
+    } else if (this.highScore > 200 && this.level.rushLevel === 6) {
       this.level.rushLevel++;
-      this.level.enemyRushInterval(2500, 9);
-    } else if (this.highScore > 260 && this.level.rushLevel === 7) {
+      this.level.enemyRushInterval(2500, 8);
+    } else if (this.highScore > 250 && this.level.rushLevel === 7) {
       this.level.rushLevel++;
-      this.level.enemyRushInterval(2000, 9);
+      this.level.enemyRushInterval(2000, 8);
+    } else if (this.highScore > 300 && this.level.rushLevel === 8) {
+      this.level.rushLevel++;
+      this.level.enemyRushInterval(1500, 9);
+    } else if (this.highScore > 350 && this.level.rushLevel === 9) {
+      this.level.rushLevel++;
+      this.level.enemyRushInterval(1000, 9);
     }
   }
 
