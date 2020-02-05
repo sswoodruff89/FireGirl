@@ -413,6 +413,15 @@ class Game {
       40
     );
 
+    this.ctx.font = "1.3em Arial";
+    this.ctx.fillStyle = "pink";
+    this.ctx.textAlign = "center";
+    this.ctx.fillText(
+      `Music: ${this.level.theme.name} by ${this.level.theme.artist}`,
+      this.canvas.width / 2,
+      570
+    );
+
   }
 
 

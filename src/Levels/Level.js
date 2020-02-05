@@ -29,7 +29,7 @@ class Level {
     this.mapTileSize = this.tileMap.width / this.rows;
     this.enemies = this.mapKeys[this.screen].enemies();
     this.enemyCount = 1;
-    this.theme = new Music({src: this.mapKeys[this.screen].theme});
+    this.theme = new Music(this.mapKeys[this.screen].theme);
     this.levelLayers = this.loadImages(this.mapKeys[this.screen].levelLayers);
     this.items = this.mapKeys[this.screen].items();
         
@@ -375,7 +375,12 @@ class Level {
            },
            
         },
-        theme: "./assets/Sound/dk3_boss_boogie.mp3",
+        theme: {
+          src: "./assets/Sound/dk3_boss_boogie.mp3",
+          name: "Boss Boogie",
+          artist: "Eveline Fischer and David Wise",
+          volume: .5
+        },
         levelLayers: {
           background: "./assets/Level1/sMode_back.png",
           // mid: "./assets/Level1/lv1_mid.png",
@@ -424,7 +429,12 @@ class Level {
           };
  
         },
-        theme: "./assets/Sound/ff9_stirring_forest.mp3",
+        theme: {
+          src: "./assets/Sound/ff9_stirring_forest.mp3",
+          name: "Stirring the Forest",
+          artist: "Nobuo Uematsu",
+          volume: .7
+        },
         levelLayers: {
           background: "./assets/Level1/lv1_back.png",
           mid: "./assets/Level1/lv1_mid.png",
@@ -1045,7 +1055,12 @@ class Level {
             1: new BossVinehead(BossVinehead.boss1([650, 160], this.player))
           }
         },
-        theme: "./assets/Sound/dk3_boss_boogie.mp3",
+        theme: {
+          src: "./assets/Sound/dk3_boss_boogie.mp3",
+          name: "Boss Boogie",
+          artist: "Eveline Fischer and David Wise",
+          volume: .5
+        },
         levelLayers: {
           background: "./assets/Level1/lvl12_back.png",
           // mid: "./assets/Level1/lv1_mid.png",

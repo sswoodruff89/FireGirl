@@ -1,7 +1,10 @@
 class Music {
     constructor(options){
         this.music = document.createElement("audio");
+        this.name = options.name || "";
+        this.artist = options.artist || "";
         this.music.src = options.src;
+        this.music.volume = options.volume || 1;
         this.music.id = "theme";
         this.music.setAttribute("preload", "auto");
         this.music.setAttribute("controls", "none");
