@@ -237,7 +237,7 @@ class Level {
     if (this.mapKeys[this.screen].theme) {
       let muted = this.theme.music.muted;
       this.theme.pause();
-      this.theme = new Music({ src: this.mapKeys[this.screen].theme });
+      this.theme = new Music(this.mapKeys[this.screen].theme);
       this.theme.play();
       this.theme.music.muted = muted;
     }
@@ -1014,7 +1014,7 @@ class Level {
             player.x = canvas.width - player.width / 2;
             return true;
           } else if (player.y + player.height / 2 > canvas.height) {
-            loadLevel(4);
+            loadLevel(5);
             player.x = player.x;
             player.y = 0 - player.height / 2;
             player.velY = 0;

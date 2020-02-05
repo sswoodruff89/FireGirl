@@ -312,7 +312,7 @@ class Game {
 
           if (enemy.trickShot) {
             this.trickShotCount++;
-            if (this.trickShotCount % 10 === 0) {
+            if (this.trickShotCount % 6 === 0) {
               this.level.items[101] = new Item(Item.blueCrystal([enemy.x, enemy.y], true));
             }
           }
