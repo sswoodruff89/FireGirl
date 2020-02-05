@@ -141,7 +141,6 @@ class Item extends GameObject{
       frameHeight: 123,
       frameNum: 1,
       soundSrc: Sound.superShield(),
-
       disappear: disappear
     };
   }
@@ -188,6 +187,7 @@ class Item extends GameObject{
       width: 27.5,
       height: 50.5,
       velY: (disappear) ? 0.4 : 0,
+      volume: .8,
 
       frameStartX: 0,
       frameStartY: 335,

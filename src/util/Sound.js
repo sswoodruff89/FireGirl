@@ -70,7 +70,7 @@ class Sound {
         return {
             src: "./assets/Sound/hylian.mp3",
             idName: "superShield",
-            volume: .5
+            volume: .2
         }
     }
 
