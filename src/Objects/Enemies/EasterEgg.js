@@ -93,14 +93,7 @@ class EasterEgg extends GameObject {
     }
   }
 
-  ////////CPU
-  // callAttack() {
-  //   this.attackInterval = setInterval(() => {
 
-  //     this.shootProj();
-
-  //   }, 500);
-  // }
 
   move(canvas) {
     this.oldX = this.x;
@@ -121,7 +114,7 @@ class EasterEgg extends GameObject {
       pos: pos,
       width: 400,
       height: 300,
-      health: 500,
+      health: 100,
       velX: 0,
       dir: dir
     };

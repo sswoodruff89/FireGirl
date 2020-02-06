@@ -1,6 +1,5 @@
 class Controller {
   constructor(player, game) {
-    // this.gameview = gameview;
     this.player = player;
     this.game = game
 
@@ -183,6 +182,9 @@ class Controller {
           // this.game.level.theme.play();
         }
         break;
+      case "HUD": 
+        this.game.showHUD = !this.game.showHUD;
+        break;
       default:
         return;
     }
@@ -221,7 +223,8 @@ Controller.KEYS = {
   "Shift": 'jump',
   "z": 'fire',
   "/": 'fire',
-  "Enter": 'enter'
+  "Enter": 'enter',
+  "h": 'HUD'
 };
 
 

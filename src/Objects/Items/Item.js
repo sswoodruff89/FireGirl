@@ -68,7 +68,7 @@ class Item extends GameObject{
           player.setShield();
           return;
         case "Hylian Shield":
-          player.setShield(60000);
+          player.setShield(60000, true);
           return;
         case "Health":
           if (player.health < 200) {

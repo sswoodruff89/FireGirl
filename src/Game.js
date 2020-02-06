@@ -42,6 +42,8 @@ class Game {
     this.enemies = {
       [this.level.screen]: this.level.enemies
     }
+
+    this.showHUD = true;
     this.gameOver = false;
     this.embers = new Image();
     this.embers.src = "./assets/embers.jpg";
@@ -419,7 +421,7 @@ class Game {
     this.ctx.fillText(
       `Music: ${this.level.theme.name} by ${this.level.theme.artist}`,
       this.canvas.width / 2,
-      570
+      580
     );
 
   }
@@ -516,8 +518,10 @@ class Game {
         this.level.renderFront(this.ctx, this.canvas);
       }
       
-      this.HUD.drawHUD(this.canvas, this.ctx, this.player, this.frameCount, this.highScore);
-
+      if (this.showHUD) {
+        this.HUD.drawHUD(this.canvas, this.ctx, this.player, this.frameCount, this.highScore);
+      }
+      
     } else if (this.gameOver) {
       this.controller = null;
       clearInterval(this.frameInterval);

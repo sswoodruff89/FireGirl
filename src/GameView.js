@@ -178,7 +178,7 @@ class GameView {
         this.ctx.font = "1.8em Arial";
         this.ctx.fillStyle = "pink";
         this.ctx.textAlign = "center";
-        this.ctx.fillText("Press T to Go Back", this.canvas.width / 2, this.canvas.height * (8 / 9));
+        this.ctx.fillText("Press T to Go Back", this.canvas.width / 2, 40);
       } else {
 
         this.ctx.drawImage(

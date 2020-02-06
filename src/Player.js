@@ -31,6 +31,7 @@ class Player {
     this.damageBoost = false;
 
     this.shield = false;
+    this.superShield = false;
 
     this.spriteMap = this.character.loadImage();
     this.fireballs = {};
@@ -63,6 +64,8 @@ class Player {
     this.downKey = false;
     this.aura = this.loadImage("./assets/aura.png");
     this.shieldImg = this.loadImage("./assets/shield_aura.png");
+    // this.superShieldImg = this.loadImage("./assets/shield_aura3.png");
+    this.superShieldImg = this.loadImage("./assets/shield_aura2.png");
 
     this.upPressed = false;
     this.attackAnimTimeout = "";
@@ -572,11 +575,12 @@ class Player {
         // this.width - 5, this.height
       );
     }
-    if (this.shield) {
+    if (this.shield || this.superShield) {
+      let shieldAura = (this.superShield) ? this.superShieldImg : this.shieldImg;
       let count = Math.floor(frameCount / 3) % 11;
       this.ctx.drawImage(
-        this.shieldImg,
-        (count) * 145.75 + (count * 46.5) + 23,
+        shieldAura,
+        (count) * 145.75 + (count * 46.5) + 22,
         // (count) * 145.75 + 46.5,
         0,
         145.75,
@@ -786,7 +790,7 @@ class Player {
   }
     
   setHit(damage = 10) {
-    if (this.shield) return;
+    if (this.shield || this.superShield) return;
     if (!this.isHit) {
       this.isHit = true;
       this.hitCooldown = setTimeout(() => {
@@ -821,8 +825,13 @@ class Player {
     }, 100);
   }
 
-  setShield(int = 10000) {
-    this.shield = true;
+  setShield(int = 10000, superShield) {
+    if (superShield) {
+      this.superShield = true;
+    } else {
+
+      this.shield = true;
+    }
     this.setShieldTimeOut(int);
   }
 
