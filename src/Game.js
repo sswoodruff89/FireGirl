@@ -43,6 +43,10 @@ class Game {
       [this.level.screen]: this.level.enemies
     }
 
+    this.items = {
+      [this.level.screen]: this.level.items
+    }
+
     this.showHUD = true;
     this.gameOver = false;
     this.embers = new Image();
@@ -315,14 +319,14 @@ class Game {
           if (enemy.trickShot) {
             this.trickShotCount++;
             if (this.trickShotCount % 6 === 0) {
-              this.level.items[101] = new Item(Item.blueCrystal([enemy.x, enemy.y], true));
+              this.items[this.level.screen][101] = new Item(Item.blueCrystal([enemy.x, enemy.y], true));
             }
           }
           if (this.killCount % 22 === 0) {
             this.spawnItems([enemy.x, enemy.y]);
           }
           if (enemy instanceof EasterEgg) {
-            this.level.items[9000] = new Item(Item.hylianShield([enemy.x + enemy.width / 2, enemy.y + enemy.height / 2], true));
+            this.items[this.level.screen][9000] = new Item(Item.hylianShield([enemy.x + enemy.width / 2, enemy.y + enemy.height / 2], true));
           }
 
           delete this.enemies[this.level.screen][key];
@@ -335,23 +339,24 @@ class Game {
 
   spawnItems(pos) {
     if (this.player.damageBoost) {
-      this.level.items[100] = new Item(Item.blueHealth(pos, true));
+      this.items[this.level.screen][100] = new Item(Item.blueHealth(pos, true));
     } else {
-      this.level.items[100] = new Item(Item.health(pos, true));
+      this.items[this.level.screen][100] = new Item(Item.health(pos, true));
     }
   }
 
   renderItems() {
-      if (Object.keys(this.level.items).length === 0) return;
-
-      for (let key in this.level.items) {
-        this.level.items[key].checkCollected(this.player);
-        if (!this.level.items[key].collected) {
-          this.level.items[key].drawItem(this.ctx, this.frameCount);
-        } else {
-          delete this.level.items[key];
-        }
+    if (!this.items[this.level.screen] || Object.values(this.items[this.level.screen]).length === 0) return;
+    
+    let items = this.items[this.level.screen];
+    for (let key in items) {
+      items[key].checkCollected(this.player);
+      if (!items[key].collected) {
+        items[key].drawItem(this.ctx, this.frameCount);
+      } else {
+        delete items[key];
       }
+    }
   }
 
   renderFireballs() {
@@ -439,6 +444,9 @@ class Game {
       this.cleared = false;
       if (!this.enemies[this.level.screen]) {
         this.enemies[this.level.screen] = this.level.enemies;
+      }
+      if (!this.items[this.level.screen]) {
+        this.items[this.level.screen] = this.level.items;
       }
       this.enemyCount = Object.keys(this.enemies);
 
