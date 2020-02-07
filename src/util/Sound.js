@@ -11,8 +11,8 @@ class Sound {
         this.sound.volume = options.volume || 0.2;
 
         this.sound.style.display = "none";
-        this.body = document.getElementById("gamebody");
-        this.body.appendChild(this.sound);
+        // this.body = document.getElementById("gamebody");
+        // this.body.appendChild(this.sound);
 
         this.play = this.play.bind(this);
         this.pause = this.pause.bind(this);

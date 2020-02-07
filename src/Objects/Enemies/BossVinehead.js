@@ -222,7 +222,7 @@ class BossVinehead extends Enemy {
       setTimeout(() => {
         this.dead = true;
         clearInterval(this.startFrameCount);
-        clearInterval(this.dyingInterval);
+        // clearInterval(this.dyingInterval);
       }, 5000);
     }
   }

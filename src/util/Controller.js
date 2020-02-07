@@ -43,8 +43,7 @@ class Controller {
         this.player.upPressed = this.keysPressed.up;
 
         if (this.player.canClimb) {
-          console.log(this.player.canClimb);
-          console.log(this.player.idle);
+
           this.player.crouch = false;
           this.player.climbing = true;
           this.player.velY = -7;
@@ -57,7 +56,6 @@ class Controller {
         this.player.downKey = true;
 
         if (this.player.canClimb) {
-          console.log(this.player.canClimb);
           this.player.climbing = true;
           this.player.velY = 7;
           return;
@@ -192,7 +190,6 @@ class Controller {
 
     this.player.idle = true;
     // this.keysPressed = {};
-    // console.log(Controller.KEYS[event.keyCode])
 
   }
 }

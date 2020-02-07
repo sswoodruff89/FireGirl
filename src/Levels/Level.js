@@ -406,7 +406,7 @@ class Level {
           src: "./assets/Sound/dk3_boss_boogie.mp3",
           name: "Boss Boogie",
           artist: "Eveline Fischer and David Wise",
-          volume: .5
+          volume: .3
         },
         levelLayers: {
           background: "./assets/Level1/sMode_back.png",

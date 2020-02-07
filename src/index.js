@@ -20,7 +20,6 @@ window.addEventListener("DOMContentLoaded", () => {
   //   .limitToLast(10);
 ///sort not working
 
-  console.log(leaderboard);
   const scores = document.getElementById("leaderboard");
   while (scores.firstChild) {
     scores.removeChild(scores.firstChild);
