@@ -100,6 +100,8 @@ class Level {
       Object.values(this.enemies).forEach((ene) => {
         ene.health = 0;
       });
+      let muted = this.theme.music.muted;
+
       this.theme.pause();
       this.theme = null;
       setTimeout(() => {
@@ -111,6 +113,8 @@ class Level {
                 loop: false
         });
         this.theme.play();
+        this.theme.music.muted = muted;
+
       }, 700)
 
     }
