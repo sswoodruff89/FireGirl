@@ -144,7 +144,7 @@ class GameView {
 
       let name = e.currentTarget.childNodes[2].value;
       let score = this.game.highScore;
-      if (name.length > 10) {
+      if (name.length > 10 || name.length === 0) {
         e.currentTarget.insertBefore(error, e.currentTarget.childNodes[3]);
         return;
       } else {
