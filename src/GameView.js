@@ -106,12 +106,12 @@ class GameView {
 
   renderScoreSubmission() {
     let leaderboard = document.getElementById("leaderboard");
-
     if (
-      leaderboard.length === 10 &&
+      leaderboard.childElementCount === 10 &&
       this.game.highScore < leaderboard.lastChild.getAttribute("data-score")
-    )
+    ) {
       return;
+    }
     
     let canvasContainer = document.getElementById("canvas-container");
 
@@ -225,6 +225,7 @@ class GameView {
       this.game.runGame();
 
       if (this.game.gameOver && this.game.lvl === "survivalMode" && !this.scoreFormOpen) {
+        
         this.scoreFormOpen = true;
         setTimeout(() => {
           this.renderScoreSubmission();
