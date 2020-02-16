@@ -86,6 +86,26 @@ h1.title {
   box-sizing: border-box;
   flex-direction: column;
 
+  @media (max-width: 1300px) {
+    position: absolute;
+    max-width: 250px;
+    width: 30%;
+    height: fit-content;
+  }
+}
+
+.instructions {
+  @media (max-width: 1300px) {
+    left: 20%;
+    bottom: -130%;
+
+  }
+}
+.leaderboard-container {
+  @media (max-width: 1300px) {
+    right: 20%;
+    bottom: -113%;
+  }
 }
 
 .controls {
