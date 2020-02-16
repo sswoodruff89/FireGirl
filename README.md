@@ -374,9 +374,24 @@ static level1() {
         }
       },
 ```
-In this example, if the player collides with the right edge of the screen and all enemies are defeated, the loadLevel() function (passed in as a callback) will load the next screen, reassigning the corresponding variables with the next screen's content. Colliding with the left will load a different screen, typically the previous one, though this allows the possibility for future non-linear level design. Other screen-loading scenarios include climbing up to the top of the screen or falling from a higher screen to the one below.
+In this example, if the player collides with the right edge of the screen and all enemies are defeated, the loadLevel() function (passed in as a callback) will load the next screen, reassigning the corresponding variables with the next screen's content. Colliding with the left will load a different screen, typically the previous one, though this allows the possibility for future non-linear level design. Other screen-loading scenarios include climbing up to the top of the screen or falling from a higher screen to the one below. Previously-visited screens and their content are cached inside the instance of the Game, allowing faster loads as well as preventing the respawning of defeated enemies.
 
 ** The render map object is used for early screen development using a tile map array approach, much like the collision map, except that each value corresponds to a position on an image. If there are no levelLayers, a function is called that iterates through the render map and paints each tile on the canvas in order. This allowed for swift level design in the early stages of the demo, as designing the back, mid, and foreground on photoshop was a time-consuming process.
+
+
+### Screen Loading
+<h1 align="center">
+  <img src="https://media.giphy.com/media/XeXz7wCUNmnRm9hz0Z/giphy.gif" width="600" height="auto" align="center"/>
+</h1>
+
+### Enemy AI
+
+While a handful of enemies run on static mobility (only left and right, or up and down), I implemented a handful of enemies that move based on the position of the player. This required passing the player object into each enemy as they are rendered, 
+allow them to consistently track them down. For example, "Jellyfish" enemies will follow the player but hover over them instead of hitting them directly, allowing them to drop electrical bombs on top of the player or cutting them off. Another enemy, the "Vineheads" creep towards the player, and if the player's position is within their line of sight, the enemy charges. This made them a difficult enemy to defeat, especially when there are many, and this led me to making a boss based on a version of them. 
+
+<h1 align="center">
+  <img src="https://media.giphy.com/media/ie7w1zALg0oq8lTyVO/giphy.gif" width="600" height="auto" align="center"/>
+</h1>
 
 ## MVP
 ### 1. Moveable character with attacks (1/2 Day)
