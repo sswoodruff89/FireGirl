@@ -378,85 +378,21 @@ In this example, if the player collides with the right edge of the screen and al
 
 ** The render map object is used for early screen development using a tile map array approach, much like the collision map, except that each value corresponds to a position on an image. If there are no levelLayers, a function is called that iterates through the render map and paints each tile on the canvas in order. This allowed for swift level design in the early stages of the demo, as designing the back, mid, and foreground on photoshop was a time-consuming process.
 
+### Enemy AI
 
-### Screen Loading
 <h1 align="center">
   <img src="https://media.giphy.com/media/XeXz7wCUNmnRm9hz0Z/giphy.gif" width="600" height="auto" align="center"/>
 </h1>
 
-### Enemy AI
-
 While a handful of enemies run on static mobility (only left and right, or up and down), I implemented a handful of enemies that move based on the position of the player. This required passing the player object into each enemy as they are rendered, 
 allow them to consistently track them down. For example, "Jellyfish" enemies will follow the player but hover over them instead of hitting them directly, allowing them to drop electrical bombs on top of the player or cutting them off. Another enemy, the "Vineheads" creep towards the player, and if the player's position is within their line of sight, the enemy charges. This made them a difficult enemy to defeat, especially when there are many, and this led me to making a boss based on a version of them. 
 
+### Survival Mode
+
 <h1 align="center">
-  <img src="https://media.giphy.com/media/ie7w1zALg0oq8lTyVO/giphy.gif" width="600" height="auto" align="center"/>
+  <img src="https://media.giphy.com/media/eKJG9ufVsZmqalZtE9/giphy.gif" width="600" height="auto" align="center"/>
 </h1>
 
-## MVP
-### 1. Moveable character with attacks (1/2 Day)
-* Have character and movingObject class (subclass of Object)
-* Player should be able to move left/right and jump on key press
-* Max velocity for moving and falling set
-* Have projectile attack
+In addition to the Level 1 demo, I created a survival mode where the player faces off an endless spawn of enemies. Each enemy has a points value (which is doubled if the player kills them with an overhead shot), and the higher the points, the faster enemies spawn and the higher the count of enemies allowed on screen. I implemented Google Firebase to log high scores, which is updated live. So if your playing and someone else gets a high score, the leaderboard will load it during your playthrough.
 
 
-### 2. Several level/ level sections (1 Day)
-* Render a handful of levels
-    * Either have a scrolling level or break it up into static sections that render a new section when player reaches the end
-* Platforms should have collision checks with player (in a collision util file or class)
-    * can't jump through or fall through ground
-
-### 3. Render enemies (1 Day)
-* Create at least two enemies with different behaviors (subclass of Object)
-* Have at least one attack each
-* Uses collision algorithm to determine when enemy is hit or player is hit
-
-### 4. Render animated sprites (1 Day [interspersed with other tasks] )
-* Create animation util file or class
-* Running and jump sprite for player
-* Attack sprites for player and enemies
-
-### Bonus
-* Create a boss battle
-* Have another character with different abilities
-* Have collectables that upgrade powers
-
-
-## File Structure
-* /dist
-* /src
-  * /assets
-      * /sprites
-      * /levels
-  * Game.js
-  * GameView.js
-  * /Objects (hold Object class and subclasses)
-    * Object.js
-    * /Platforms (hold Platform class and instances)
-      * Platform.js
-    * /Characters (hold Character class and instances)
-      * Character.js
-    * /Enemies (hold Enemy class and instances)
-      * Enemy.js
-    * /Projectiles (hold Projectile class and instances)
-      * Projectile.js
-  * /Levels (hold Level class and level instances)
-    * Level.js
-  * /util
-    * Animation.js
-    * Collision.js
-  * Player.js
-  * index.js
-* Index.html
-* /node_modules
-* package.json
-* .gitignore
-* webpack.config.js
-* Index.html
-
-
-## Technology
-* CanvasHTML
-* EaselJS
-* VanillaDOM
