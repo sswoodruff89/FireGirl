@@ -576,18 +576,10 @@ class Level {
           return {
             1: new Pterahawk(Pterahawk.pter2([10, 35], [0, 700])),
             2: new Pterahawk(Pterahawk.pter4([200, 10], [0, 700])),
-            // 2: new Pterahawk(Pterahawk.hel2([570, 0], [0, 700], "left")),
             3: new Pterahawk(Pterahawk.pter4([10, 140], [0, 335], "left")),
-            // 1: new Helicopter(Helicopter.hel2([10, 10], [0, 700])),
-            // // 2: new Helicopter(Helicopter.hel2([570, 0], [0, 700], "left")),
-            // 3: new Helicopter(Helicopter.hel2([10, 140], [0, 335], "left")),
             4: new Spider(Spider.spider1([700, 0], [0, 380])),
             5: new Spider(Spider.spider2([600, 0], [20, 440])),
             6: new Spider(Spider.spider3([150, 0], [20, 250]))
-
-            // 3: new Flower(Flower.flow2([120, 200])),
-            // 4: new Flower(Flower.flow1([400, 320])),
-            // 5: new Flower(Flower.flow1([240, 500])),
           }
         },
         items: () => {
@@ -653,7 +645,6 @@ class Level {
         items: () => {
           return {
             1: new Item(Item.health([360, 130], false))
-
           }
         },
         nextScreen: (player, canvas, loadLevel, cleared) => {
