@@ -37,14 +37,6 @@ class Impact extends GameObject {
             this.done = true;
         }, 350)
     }
-
-
-    // startFrameCount() {
-    //     this.impactInterval = setInterval(() => {
-    //         this.frameCount++;
-    //     }, 1000 / 30);
-    //     // }, 5000)
-    // }
    
 
     loadImage(image) {

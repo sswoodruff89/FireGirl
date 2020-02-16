@@ -23,7 +23,6 @@ class BossVinehead extends Enemy {
     this.lowHealth = this.loadImage("./assets/vinehead_red.png")
     this.vineNum = 5;
 
-    // this.vines = this.loadImage("../assets/vine.png");
     this.frameNum = options.frameNum || 8;
     this.frameStartX = 0;
     this.frameStartY = 0;
@@ -49,8 +48,8 @@ class BossVinehead extends Enemy {
       new Vine(Vine.vines1(this, [740, 275])),
       new Vine(Vine.vines1(this, [740, 325])),
       new Vine(Vine.vines1(this, [710, 380])),
-      // new Vine(Vine.vines1(this, [600, 500])),
     ];
+
     this.vines2 = [
       new Vine(Vine.vines2(this, [200, 0])),
       new Vine(Vine.vines2(this, [250, 20])),
@@ -93,8 +92,6 @@ class BossVinehead extends Enemy {
     }, 10000);
   }
 
-
-
   attack() {
     this.attacking = true;
     this.chargeTimeout = setTimeout(() => {
@@ -106,7 +103,6 @@ class BossVinehead extends Enemy {
     this.charging = true;
     this.velX = (this.health > 500) ? -10 : -20;
   }
-
 
   shuffleVines(vines) {
     for (let i = vines.length - 1; i > 0; i--) {
@@ -146,9 +142,9 @@ class BossVinehead extends Enemy {
     
     if ((this.isHit || this.dying) && frameCount % 3 === 0) {
       this.renderExplosion(ctx, frameCount);
-
       return;
     }
+
     let sprite = (this.health < 500 && frameCount % 2 === 0) ? this.lowHealth : this.enemy;
 
     let y = ((this.attacking && 
@@ -177,15 +173,12 @@ class BossVinehead extends Enemy {
         this.width, this.height + 30
       );
       ctx.scale(-1, 1);
-
     }
+
     if (this.dying) {
-      // this.renderExplosion(ctx);
       this.renderExplosion(ctx , frameCount);
     }
   }
-
-
 
 
 
@@ -203,17 +196,18 @@ class BossVinehead extends Enemy {
   setDying() {
     if (this.health <= 0) {
       this.dying = true;
-      // this.setDyingInterval();
       let x = (Math.random() * this.width) + this.x - 10;
       let y = (Math.random() * this.height) + this.y - 40;
+
       this.impact.push(
         new Impact(Impact.explosion([x, y]))
       );
-      // this.setExplosions();
+
       this.vines.forEach((vine) => {
         clearTimeout(vine.chargeTimeout);
         clearTimeout(vine.vineTimeout);
       })
+
       this.damage = 0;
       this.velX = 0;
       this.velY = 0;
@@ -222,12 +216,9 @@ class BossVinehead extends Enemy {
       setTimeout(() => {
         this.dead = true;
         clearInterval(this.startFrameCount);
-        // clearInterval(this.dyingInterval);
       }, 5000);
     }
   }
-
-  ////////CPU
 
   
   backUp() {
@@ -238,9 +229,9 @@ class BossVinehead extends Enemy {
   move(canvas, player, ctx) {
     this.oldX = this.x;
     this.x += this.velX;
+
     if (this.x < 160) {
       this.x = 160;
-      // this.attacking = false;
       this.backUp();
     } else if (this.x > 650) {
       this.velX = 0;
@@ -252,9 +243,7 @@ class BossVinehead extends Enemy {
       }, 7000);
     }
 
-    // this.renderVines2(ctx, player);
     this.renderVines(ctx, player);
-
   }
 
   //////

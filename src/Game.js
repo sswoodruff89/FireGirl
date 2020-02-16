@@ -75,7 +75,6 @@ class Game {
     this.startFrameCount = this.startFrameCount.bind(this);
     this.runGame = this.runGame.bind(this);
     this.isGameOver = this.isGameOver.bind(this);
-    this.win = this.win.bind(this);
     this.enemiesCleared = this.enemiesCleared.bind(this);
     this.loadLevel = this.loadLevel.bind(this);
     this.resizeGame = this.resizeGame.bind(this);
@@ -208,8 +207,8 @@ class Game {
     }
     if (floorCount === 2) {
       this.player.onGround = false;
-      // if (this.player.jumpCount === 2) this.player.jumpCount -=;
     }
+
     this.collider.collidePlatform(
       this.player,
       right * this.tileSize,
@@ -293,7 +292,6 @@ class Game {
 
     }
 
-    // this.collider.collidePlayer(this.player, this.canvas, this.cleared);
     this.playerPlatformCheck();
   }
 
@@ -303,7 +301,6 @@ class Game {
     if (!this.cleared) {
       for (let key in this.enemies[this.level.screen]) {
         let enemy = this.enemies[this.level.screen][key];
-        // if (this.enemies[key].dying && !this.enemies[key].dead) continue;
         this.projectilePlatformCheck(enemy);
 
         if (!enemy.dead) {
@@ -439,7 +436,7 @@ class Game {
         return;
       }
     }
-    // if (!this.cleared) return;
+
     if (this.level.nextScreen(this.player, this.canvas, this.level.loadLevel, this.cleared)) {
       this.cleared = false;
       if (!this.enemies[this.level.screen]) {
@@ -449,7 +446,6 @@ class Game {
         this.items[this.level.screen] = this.level.items;
       }
       this.enemyCount = Object.keys(this.enemies);
-
     }
   }
 
@@ -493,11 +489,6 @@ class Game {
     this.gameOver = (this.player.dead || this.won) ? true : false;
   }
 
-  //refactor
-  win() {
-    // this.won = (this.level.screen === 6 && Object.keys(this.enemies).length === 0) ? true : false;
-  }
-  
 
   runGame() {
     if (this.pause) {
@@ -511,8 +502,8 @@ class Game {
       this.level.renderBackground(this.ctx, this.canvas);
       if (this.level.screen > 5 && this.level.screen !== 12) this.level.drawLevel(this.ctx);
       this.player.drawSprite(this.frameCount);
-      // this.player.drawPlayer(this.frameCount);
       this.playerUpdate();
+
       if (this.level.screen < 6 || this.level.screen == 12) {
         this.level.renderMid(this.ctx, this.canvas);
       }
@@ -588,8 +579,6 @@ class Game {
         );
 
       } else if (this.won) {
-        // this.level.theme.pause();
-
         this.ctx.drawImage(
           this.embers,
           0,
@@ -599,10 +588,6 @@ class Game {
           0, 0,
           900, 600
         );
-        // this.ctx.font = "80px Arial";
-        // this.ctx.fillStyle = "pink";
-        // this.ctx.textAlign = "center";
-        // this.ctx.fillText("CONGRATS!", this.canvas.width / 2, 160);
 
 
         this.ctx.font = "80px Arial";

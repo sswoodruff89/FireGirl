@@ -1,9 +1,5 @@
 import Enemy from "./Enemy";
 
-import GameObject from "../GameObject";
-import Projectile from "../Projectiles/Projectile";
-import Player from "../../Player";
-
 const CONSTANTS = {
   GRAVITY: 0.8,
   FRICTION: 2.5,
@@ -60,16 +56,13 @@ class Spider extends Enemy {
     if ((this.isHit || this.dying) && frameCount % 3 === 0) return;
 
       let count = Math.floor(frameCount / 3) % this.frameNum;
-      // let x = (count > 0) ? 20 : this.frameStartX;
 
 
       ctx.scale(1, -1);
 
       ctx.drawImage(
         this.enemy,
-        // (Math.floor(frameCount / 2) % this.frameNum) * this.frameWidth + this.frameStartX,
         (count % this.frameNum) * this.frameWidth,
-        // (0) * this.frameWidth + this.frameStartX,
         this.frameStartY,
         this.frameWidth,
         this.frameHeight,
@@ -104,12 +97,10 @@ class Spider extends Enemy {
     if (this.bounds) {
       if ((this.y + (this.height)) < this.bounds[0] || this.y + (this.height) > this.bounds[1]) {
         this.velY *= -1;
-        // this.dir = (this.dir === "right") ? "left" : "right";
       }
     } else {
       if ((this.y + (this.height)) < 0 || this.y + (this.height) > canvas.height) {
         this.velY *= -1;
-        // this.dir = (this.dir === "right") ? "left" : "right";
       }
 
     }

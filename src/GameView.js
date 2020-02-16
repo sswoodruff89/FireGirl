@@ -26,7 +26,7 @@ class GameView {
     this.continueGame = this.continueGame.bind(this);
 
     window.addEventListener("keydown", (event) => {
-      // event.preventDefault();
+
       if (this.scoreFormOpen) return;
 
       switch (event.key) {
@@ -155,7 +155,6 @@ class GameView {
         this.game = null;
         this.scoreFormOpen = false;
         scoreForm.remove();
-
       }
     })
   }
@@ -180,7 +179,6 @@ class GameView {
         this.ctx.textAlign = "center";
         this.ctx.fillText("Press T to Go Back", this.canvas.width / 2, 40);
       } else {
-
         this.ctx.drawImage(
             this.splash,
             0,
@@ -191,37 +189,37 @@ class GameView {
             this.canvas.width, this.canvas.height
             );
       
-            this.ctx.drawImage(
-              this.logo,
-              0,
-              0,
-              636,
-              171,
-              this.canvas.width / 6,
-              this.canvas.height / 5,
-              636,
-              171
-            );
-            this.ctx.font = "1.8em Arial";
-            this.ctx.fillStyle = "pink";
-            this.ctx.textAlign = "center";
-            this.ctx.fillText("Press Enter to Play Level 1", this.canvas.width / 2, this.canvas.height * (2/3));
-      
-            this.ctx.font = "1.8em Arial";
-            this.ctx.fillStyle = "pink";
-            this.ctx.textAlign = "center";
-            this.ctx.fillText("Press S to Play Survival Mode", this.canvas.width / 2, this.canvas.height * (7/9));
+        this.ctx.drawImage(
+          this.logo,
+          0,
+          0,
+          636,
+          171,
+          this.canvas.width / 6,
+          this.canvas.height / 5,
+          636,
+          171
+        );
 
-            this.ctx.font = "1.8em Arial";
-            this.ctx.fillStyle = "pink";
-            this.ctx.textAlign = "center";
-            this.ctx.fillText("Press T for Tips", this.canvas.width / 2, this.canvas.height * (8/9));
+        this.ctx.font = "1.8em Arial";
+        this.ctx.fillStyle = "pink";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText("Press Enter to Play Level 1", this.canvas.width / 2, this.canvas.height * (2/3));
+  
+        this.ctx.font = "1.8em Arial";
+        this.ctx.fillStyle = "pink";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText("Press S to Play Survival Mode", this.canvas.width / 2, this.canvas.height * (7/9));
+
+        this.ctx.font = "1.8em Arial";
+        this.ctx.fillStyle = "pink";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText("Press T for Tips", this.canvas.width / 2, this.canvas.height * (8/9));
       }
 
     }
 
     if (this.game) {
-
       this.game.runGame();
 
       if (this.game.gameOver && this.game.lvl === "survivalMode" && !this.scoreFormOpen) {
@@ -231,15 +229,10 @@ class GameView {
           this.renderScoreSubmission();
         }, 1000);
       }
-      
     }
 
     window.requestAnimationFrame(this.renderGame);
   }
-
-
-
-
 } 
 
 

@@ -34,7 +34,6 @@ class Vinehead extends Enemy {
 
     this.drawEnemy = this.drawEnemy.bind(this);
     this.shootProj = this.shootProj.bind(this);
-    // this.setPlayerCheckInterval = this.setPlayerCheckInterval.bind();
     this.checkPlayerPos = this.checkPlayerPos.bind(this);
     this.callAttack = this.callAttack.bind(this);
 
@@ -55,13 +54,11 @@ class Vinehead extends Enemy {
     }
 
     if (x > this.x && this.dir === "left") {
-      // clearTimeout(this.playerCheckTimeout);
       this.playerCheckTimeout = setTimeout(() => {
         this.velX = 1;
         this.dir = "right";
       }, 1000);
     } else if (x < this.x && this.dir === "right") {
-      // clearTimeout(this.playerCheckTimeout);
       this.playerCheckTimeout = setTimeout(() => {
         this.velX = -1;
         this.dir = "left";
@@ -84,8 +81,6 @@ class Vinehead extends Enemy {
     if ((this.isHit || this.dying) && frameCount % 3 === 0) return;
 
     if (this.dir === "right") {
-      let count = Math.floor(frameCount / 2.5) % this.frameNum;
-
 
       ctx.drawImage(
         this.enemy,
@@ -156,15 +151,6 @@ class Vinehead extends Enemy {
     }
   }
 
-  ////////CPU
-  // callAttack() {
-  //   this.attackInterval = setInterval(() => {
-
-  //     this.shootProj();
-
-  //   }, 500);
-  // }
-
   move(canvas, player) {
     this.oldY = this.y;
     this.oldX = this.x;
@@ -172,10 +158,6 @@ class Vinehead extends Enemy {
     this.y += this.velY;
     this.checkPlayerPos(player.x, player.y);
 
-    // if ((this.x + (this.width / 2)) < 0 || this.x + (this.width / 2) > canvas.width) {
-    //   this.velX *= -1;
-    //   this.dir = (this.dir === "right") ? "left" : "right";
-    // }
   }
 
   //////

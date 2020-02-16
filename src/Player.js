@@ -18,12 +18,8 @@ class Player {
       pos: pos,
       ctx: this.ctx,
       canvas: this.canvas,
-      // width: 30,
-      // width: 40,
       width: 42.5,
       height: 82
-      // height: 45
-      // height: 54
     });
 
     this.health = this.character.health;
@@ -41,7 +37,6 @@ class Player {
     this.y = this.character.y;
     this.idleWidth = 42.5;
     this.runWidth = 57;
-    this.attackWidth =
     this.oldX = this.x;
     this.oldY = this.y;
     this.width = this.character.width;
@@ -64,7 +59,6 @@ class Player {
     this.downKey = false;
     this.aura = this.loadImage("./assets/aura.png");
     this.shieldImg = this.loadImage("./assets/shield_aura.png");
-    // this.superShieldImg = this.loadImage("./assets/shield_aura3.png");
     this.superShieldImg = this.loadImage("./assets/shield_aura2.png");
 
     this.upPressed = false;
@@ -79,8 +73,6 @@ class Player {
 
     this.drawPlayer = this.drawPlayer.bind(this);
     this.jump = this.jump.bind(this);
-    // this.move = this.move.bind(this);
-
 
     this.shootFire = this.shootFire.bind(this);
     this.blueFire = this.blueFire.bind(this);
@@ -151,51 +143,40 @@ class Player {
 
 
   drawPlayer(frameCount) {
-// .74
-// .59
+
     this.setDying();
-    // this.isIdle();
+
     if (this.isHit && frameCount % 3 === 0 ) return;
     if (this.velX === 0) {
       if (this.direction === "right") {
         this.ctx.drawImage(
           this.spriteMap,
-          // this.spriteMap,
           0,
-          // this.spriteMap,
           529,
           89,
           175,
           this.x, this.y,
           this.width, this.height
-          // this.width - 5, this.height
         );
+
       } else {
         this.ctx.scale(-1, 1);
         this.ctx.drawImage(
-          // this.spriteMap,
-          // (Math.floor(frameCount / 2) % 10) * 147,
-          // 251,
-          // 147,
-          // 251,
           this.spriteMap,
           0,
           529,
           89,
           175,
           -this.x - this.width, this.y,
-          // -this.x - this.width - 5, this.y,
           this.width, this.height
-          // this.width - 5, this.height
         );
         this.ctx.scale(-1, 1);
       }
+
     } else if (this.velX > 0) {
       this.ctx.drawImage(
         this.spriteMap,
-        // this.spriteMap,
         (Math.floor(frameCount / 2) % 12) * 126.25 + 1,
-        // this.spriteMap,
         0,
         126.25,
         175,
@@ -206,9 +187,7 @@ class Player {
       this.ctx.scale(-1, 1);
       this.ctx.drawImage(
         this.spriteMap,
-        // this.spriteMap,
         (Math.floor(frameCount / 2) % 12) * 126.25 + 1,
-        // this.spriteMap,
         0,
         126.25,
         175,
@@ -225,9 +204,7 @@ class Player {
     if (this.direction === "right") {
       this.ctx.drawImage(
         this.spriteMap,
-        // this.spriteMap,
         (Math.floor(frameCount / 2) % 12) * 126.4 + 1,
-        // this.spriteMap,
         0,
         126.4,
         175,
@@ -235,12 +212,11 @@ class Player {
         this.width + 5, this.height
       );
     } else {
+
       this.ctx.scale(-1, 1);
       this.ctx.drawImage(
         this.spriteMap,
-        // this.spriteMap,
         (Math.floor(frameCount / 2) % 12) * 126.4 + 1,
-        // this.spriteMap,
         0,
         126.4,
         175,
@@ -248,7 +224,6 @@ class Player {
         this.width + 5, this.height
       );
       this.ctx.scale(-1, 1);
-
     } 
   }
   
@@ -266,7 +241,6 @@ class Player {
               172,
               this.x, this.y,
               this.width + 7, this.height
-              // this.width - 5, this.height
             );
           } else {
             this.ctx.scale(-1, 1);
@@ -277,12 +251,11 @@ class Player {
               123,
               172,
               -this.x - this.width, this.y,
-              // -this.x - this.width - 5, this.y,
               this.width + 7, this.height
-              // this.width - 5, this.height
             );
             this.ctx.scale(-1, 1);
           }
+
         } else if (this.velY < 0) {
           if (this.direction === "right") {
             this.ctx.drawImage(
@@ -293,7 +266,6 @@ class Player {
               172,
               this.x, this.y,
               this.width + 5, this.height
-              // this.width - 5, this.height
             );
           } else {
             this.ctx.scale(-1, 1);
@@ -304,12 +276,11 @@ class Player {
               108,
               172,
               -this.x - this.width, this.y,
-              // -this.x - this.width - 5, this.y,
               this.width + 5, this.height
-              // this.width - 5, this.height
             );
             this.ctx.scale(-1, 1);
           }
+
         } else if (this.velY > 0) {
           if (this.direction === "right") {
             this.ctx.drawImage(
@@ -320,8 +291,8 @@ class Player {
               175,
               this.x, this.y,
               this.width, this.height
-              // this.width - 5, this.height
             );
+
           } else {
             this.ctx.scale(-1, 1);
             this.ctx.drawImage(
@@ -331,14 +302,13 @@ class Player {
               108,
               175,
               -this.x - this.width, this.y,
-              // -this.x - this.width - 5, this.y,
               this.width, this.height
-              // this.width - 5, this.height
             );
             this.ctx.scale(-1, 1);
           }
         }
         break;
+
       case "running":
         if (this.direction === "right") {
           this.ctx.drawImage(
@@ -350,6 +320,7 @@ class Player {
             this.x, this.y,
             this.width + (this.width / 3), this.height
           );
+
         } else if (this.direction === "left") {
           this.ctx.scale(-1, 1);
           this.ctx.drawImage(
@@ -364,6 +335,7 @@ class Player {
           this.ctx.scale(-1, 1);
         };
         break;
+
       default: 
         if (this.direction === "right") {
           if (this.upPressed) {
@@ -376,6 +348,7 @@ class Player {
               this.x, this.y - (this.height / 10),
               this.width, this.height * 1.1
             );
+
           } else {
             this.ctx.drawImage(
               this.spriteMap,
@@ -387,6 +360,7 @@ class Player {
               this.width + (this.width / 2.5), this.height
             );
           }
+
         } else if (this.direction === "left") {
           this.ctx.scale(-1, 1);
           if (this.upPressed) {
@@ -399,6 +373,7 @@ class Player {
               -this.x - this.width, this.y - (this.height / 10),
               this.width, this.height * 1.1
             );
+
           } else {
             this.ctx.drawImage(
               this.spriteMap,
@@ -439,12 +414,11 @@ class Player {
           94,
           176,
           -this.x - this.width, this.y,
-          // -this.x - this.width - 5, this.y,
           this.width - (this.width / 8), this.height
-          // this.width - 5, this.height
         );
         this.ctx.scale(-1, 1);
       }
+
     } else if (!this.onGround && this.velY > 8) {
       if (this.direction === "right") {
         this.ctx.drawImage(
@@ -455,8 +429,8 @@ class Player {
           175,
           this.x, this.y,
           this.width, this.height
-          // this.width - 5, this.height
         );
+
       } else {
         this.ctx.scale(-1, 1);
         this.ctx.drawImage(
@@ -466,12 +440,11 @@ class Player {
           98,
           175,
           -this.x - this.width, this.y,
-          // -this.x - this.width - 5, this.y,
           this.width, this.height
-          // this.width - 5, this.height
         );
         this.ctx.scale(-1, 1);
       }
+
     } else if (!this.onGround && (this.velY >= 0 && this.velY <= 8)){
        this.drawRunning(frameCount);
     }
@@ -489,6 +462,7 @@ class Player {
           this.x, this.y,
           this.width + 7, this.height
         );
+
       } else {
         this.ctx.scale(-1, 1);
         this.ctx.drawImage(
@@ -502,8 +476,8 @@ class Player {
         );
         this.ctx.scale(-1, 1);
       }
-    } else {
 
+    } else {
       if (this.direction === "right") {
         this.ctx.drawImage(
           this.spriteMap,
@@ -513,8 +487,8 @@ class Player {
           175,
           this.x, this.y,
           this.width, this.height
-          // this.width - 5, this.height
         );
+
       } else {
         this.ctx.scale(-1, 1);
         this.ctx.drawImage(
@@ -524,9 +498,7 @@ class Player {
           89,
           175,
           -this.x - this.width, this.y,
-          // -this.x - this.width - 5, this.y,
           this.width, this.height
-          // this.width - 5, this.height
         );
         this.ctx.scale(-1, 1);
       }
@@ -535,7 +507,7 @@ class Player {
 
   drawSprite(frameCount) {
     this.setDying();
-    // this.isIdle();
+
     if (this.damageBoost) {
       this.ctx.drawImage(
         this.aura,
@@ -545,12 +517,10 @@ class Player {
         93,
         this.x - 28, this.y - 42,
         100, 130
-        // this.width - 5, this.height
       );
     }
 
     if (this.isHit && frameCount % 3 === 0) return;
-
 
 
     if (this.velY >= 0 && this.velY <= 1) {
@@ -572,7 +542,6 @@ class Player {
         93,
         this.x - 28, this.y - 42,
         100, 130
-        // this.width - 5, this.height
       );
     }
     if (this.shield || this.superShield) {
@@ -581,7 +550,6 @@ class Player {
       this.ctx.drawImage(
         shieldAura,
         (count) * 145.75 + (count * 46.5) + 22,
-        // (count) * 145.75 + 46.5,
         0,
         145.75,
         143,
@@ -589,7 +557,6 @@ class Player {
         this.y - 10,
         85,
         100
-        // this.width - 5, this.height
       );
     }
   }
@@ -627,8 +594,6 @@ class Player {
         this.fireballs[key] = new Projectile(
           Projectile.blueFireballVert(
             [this.rightSide() - this.width / 2, this.y + this.height],
-            // [this.rightSide() - (this.width / 2),
-            // this.bottomSide() + this.height],
             0,
             -30,
             vert
@@ -669,8 +634,6 @@ class Player {
           Projectile.blueFireballVert(
             [this.rightSide() - (this.width * .75),
               this.y + (this.height)],
-            // [this.rightSide() - (this.width / 2),
-            // this.bottomSide() + this.height],
             0, -30, vert)
         );
       } else if (vert === "down") {
@@ -698,7 +661,6 @@ class Player {
 
     }
     this.fireballs[key].launchSound.play();
-
   }
 
   fire(vert = null) {
@@ -728,8 +690,6 @@ class Player {
           Projectile.fireballVert(
             [this.rightSide() - (this.width / 2),
             this.y + (this.height)],
-            // [this.rightSide() - (this.width / 2),
-            // this.bottomSide() + this.height],
             0, -20, vert)
         );
       } else if (vert === "down") {
@@ -757,8 +717,6 @@ class Player {
           Projectile.fireballVert(
             [this.rightSide() - (this.width * .75),
               this.y + (this.height)],
-            // [this.rightSide() - (this.width / 2),
-            // this.bottomSide() + this.height],
             0, -20, vert)
         );
       } else if (vert === "down") {
@@ -804,7 +762,6 @@ class Player {
   setDamageMeter(damage) {
     if (!this.damageBoost) {
       this.damageMeter += damage / 2;
-
 
       if (this.damageMeter >= 100) {
         this.damageMeter = 100;
@@ -910,36 +867,6 @@ class Player {
       this.velY = 0;
     }
   }
-
-  // isDashing() {
-  //   if (this.dashing && this.runningKeyDown) {
-  //     if (this.velX > 7) {
-  //       this.velX -= .1;
-  //     } else if (this.velX < -7) {
-  //       this.velX += .1;
-  //     }
-        
-  //   } 
-  //   // else if (this.dashing && !this.runningKeyDown) {
-  //   //   if (this.velX > 0) {
-  //   //     this.velX -= .5;
-  //   //   } else if (this.velX < 0) {
-  //   //     this.velX += .5;
-  //   //   }
-  //   // }
-
-  // }
-
-  // dash() {
-  //   if (this.dashing) return;
-
-  //   this.dashing = true;
-  //   this.velX = (this.direction === "right") ? 15 : -15;
-  //   this.dashTimeout = setTimeout(() => {
-  //     this.dashing = false;
-  //   }, 1000)
-  // }
-
 
   jump() {
     if (this.jumpCount === 2) {

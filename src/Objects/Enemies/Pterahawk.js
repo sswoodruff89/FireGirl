@@ -1,8 +1,5 @@
 import Enemy from "./Enemy";
-
-import GameObject from "../GameObject";
 import Projectile from "../Projectiles/Projectile";
-import Player from "../../Player";
 
 const CONSTANTS = {
   GRAVITY: 0.8,
@@ -212,22 +209,6 @@ class Pterahawk extends Enemy {
     };
   }
 
-  static hel2(pos, bounds, dir = "right", multiplier = 0.5) {
-    return {
-      name: "Pterahawk",
-      image: "./assets/pterahawk.png",
-      frameNum: 3,
-      pos: pos,
-      width: 150,
-      height: 85,
-      health: 100,
-      velX: dir === "left" ? -3 : 3,
-      dir: dir,
-      damage: 10,
-      bounds: bounds,
-      multiplier: multiplier
-    };
-  }
 }
 
 export default Pterahawk;

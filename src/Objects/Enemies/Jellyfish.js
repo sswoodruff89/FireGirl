@@ -1,8 +1,5 @@
 import Enemy from "./Enemy";
-
-import GameObject from "../GameObject";
 import ElectricBall from "../Projectiles/ElectricBall";
-import Player from "../../Player";
 
 const CONSTANTS = {
     GRAVITY: 0.8,
@@ -33,7 +30,7 @@ class Jellyfish extends Enemy {
 
         this.drawEnemy = this.drawEnemy.bind(this);
         this.shootProj = this.shootProj.bind(this);
-        // this.setPlayerCheckInterval = this.setPlayerCheckInterval.bind();
+        this.setPlayerCheckInterval = this.setPlayerCheckInterval.bind();
         this.checkPlayerPos = this.checkPlayerPos.bind(this);
         this.setAttackInterval = this.setAttackInterval.bind(this);
 
@@ -48,27 +45,19 @@ class Jellyfish extends Enemy {
         }, 2000)
     }
 
-    checkPlayerPos(x, y, homing) {
+    checkPlayerPos(x, y) {
         if (y > this.y) {
             this.velY = 2;
         } else {
             this.velY = -2;
         }
 
-        // if ((y > this.y && y < this.y + this.height) && (x > this.x || x < this.x)) {
-        //     this.velX = (this.dir === "left") ? -5 : 5;
-        // } else {
-        //     this.velX = (this.dir === "left") ? -2 : 2;
-        // }
-
         if (x > this.x && this.dir === "left") {
-            // clearTimeout(this.playerCheckTimeout);
             this.playerCheckTimeout = setTimeout(() => {
                 this.velX = 2;
                 this.dir = "right";
             }, 1000);
         } else if (x < this.x && this.dir === "right") {
-            // clearTimeout(this.playerCheckTimeout);
             this.playerCheckTimeout = setTimeout(() => {
                 this.velX = -2;
                 this.dir = "left";
@@ -156,10 +145,6 @@ class Jellyfish extends Enemy {
         this.y += this.velY;
         this.checkPlayerPos(player.x, player.y - (player.height * 2));
 
-        // if ((this.x + (this.width / 2)) < 0 || this.x + (this.width / 2) > canvas.width) {
-        //   this.velX *= -1;
-        //   this.dir = (this.dir === "right") ? "left" : "right";
-        // }
     }
 
     //////

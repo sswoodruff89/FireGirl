@@ -143,18 +143,11 @@ class Enemy extends GameObject {
 
 
 
-
-  ////////CPU
   callAttack() {
     this.attackInterval = setInterval(() => {
       this.shootProj();
-
     }, 200);
   }
-
-
-
-
 
 
   move(canvas) {

@@ -4,55 +4,51 @@ class Controller {
     this.game = game
 
     this.keysPressed = {};
-
     this.keydown = this.keydown.bind(this);
     this.keyup = this.keyup.bind(this);
+    
     window.addEventListener("keydown", this.keydown);
     window.addEventListener("keyup", this.keyup);
   }
 
   keydown(event) {
     if (!this.game.gameOver) {
-      
       event.preventDefault();
     }
     this.player.idle = false;
     this.player.keydown = true;
     
     switch (Controller.KEYS[event.key]) {
-    // switch (Controller.KEYS[event.keyCode]) {
+
       case "left":
         this.keysPressed.left = true;
-        // this.player.runningKeyDown = true;
         this.player.crouch = false;
-
         this.player.direction = "left";
         this.player.velX = -7;
 
         break;
+
       case "right":
         this.keysPressed.right = true;
-        // this.player.runningKeyDown = true;
-
         this.player.crouch = false;
         this.player.direction = "right";
         this.player.velX = 7;
         break;
+
       case "up":
         this.keysPressed.up = true;
         this.player.upPressed = this.keysPressed.up;
 
         if (this.player.canClimb) {
-
           this.player.crouch = false;
           this.player.climbing = true;
           this.player.velY = -7;
         }
         break;
+
       case "down":
         this.keysPressed.down = true;
         ///For jump down attack///
-        // clearTimeout(this.player.downKeyTimeout);
         this.player.downKey = true;
 
         if (this.player.canClimb) {
@@ -65,18 +61,18 @@ class Controller {
           this.player.velY < 1 &&
           !this.player.crouch
         ) {
-          // this.player.setCrouch();
           this.player.crouch = true;
         }
         break;
+
       case "jump":
         this.keysPressed.jump = true;
         this.player.crouch = false;
         this.player.climbing = false;
         this.player.jump();
         break;
-      case "fire":
 
+      case "fire":
         this.keysPressed.fire = true;
         if (this.keysPressed.up) {
           this.player.shootFire("up");
@@ -84,23 +80,28 @@ class Controller {
           this.player.shootFire("down");
         } else {
           this.player.shootFire();
-
         }
         break;
+
       case "dash":
         this.keysPressed.dash = true;
-        // this.player.dash = true;
-        // if (this.keysPressed.left || this.keysPressed.right) {
-        //   this.player.dash();
-        // }
-        // if (this.player.direction === "right") {
-        //   this.player.velX = 14;
-        // } else {
-        //   this.player.velX = -14;
-        // }
-      case "space":
-        // this.gameview.Ticker.paused = (this.gameview.Ticker.paused) ? false: true;
         break;
+
+      case "space":
+        this.game.pause = !this.game.pause;
+        if (this.game.pause) {
+          clearInterval(this.game.frameInterval);
+          clearInterval(this.level.spawnInterval);
+        } else {
+          this.game.startFrameCount();
+          this.game.level.enemiesInterval();
+        }
+        break;
+
+      case "HUD":
+        this.game.showHUD = !this.game.showHUD;
+        break;
+
       default:
         return;
     }
@@ -108,43 +109,31 @@ class Controller {
   }
 
   keyup(event) {
-    // if (Controller.KEYS[event.keyCode] === "left" ||
-    //   Controller.KEYS[event.keyCode] === "right") {
-      // this.player.keydown = false;
-    //   // this.player.velX = 0;
-    //   // this.player.idle =ß true;
-    //   return;
-    // }
     event.preventDefault();
 
     switch (Controller.KEYS[event.key]) {
-    // switch (Controller.KEYS[event.keyCode]) {
 
       case "left":
         this.keysPressed.left = false;
-        // this.player.velX = 0;
         this.player.runningKeyDown = false;
-
         if (!this.keysPressed.left && !this.keysPressed.right) this.player.velX = 0;
-
         break;
+
       case "right":
         this.keysPressed.right = false;
-        // this.player.runningKeyDown = false;
-
-        // this.player.velX *= -1;
         if (!this.keysPressed.left && !this.keysPressed.right) this.player.velX = 0;
         break;
+
       case "up":
         this.keysPressed.up = false;
         this.player.upPressed = this.keysPressed.up;
         if (this.player.climbing) {
           this.player.velY = 0;
         }
+
         break;
       case "down":
         this.keysPressed.down = false;
-
         if (this.player.climbing) {
           this.player.velY = 0;
         }
@@ -154,43 +143,27 @@ class Controller {
           this.player.crouch
         ) {
           this.player.crouch = false;
-          // this.player.setCrouch();
           return;
         }
         break;
+
       case "jump":
         this.keysPressed.jump = false;
         this.jumpKey = false;
-
         break;
+
       case "fire":
         this.keysPressed.fire = false;
         break;
+
       case "dash":
         this.keysPressed.dash = false;
-      case "space":
-        this.game.pause = !this.game.pause;
-        if (this.game.pause) {
-          clearInterval(this.game.frameInterval);
-          clearInterval(this.level.spawnInterval);
-          // this.game.level.theme.pause();
-        } else {
-          this.game.startFrameCount();
-          this.game.level.enemiesInterval();
-          // this.game.level.theme.play();
-        }
         break;
-      case "HUD": 
-        this.game.showHUD = !this.game.showHUD;
-        break;
+
       default:
         return;
     }
-
-
     this.player.idle = true;
-    // this.keysPressed = {};
-
   }
 }
 

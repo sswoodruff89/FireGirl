@@ -1,7 +1,5 @@
 class GameHUD {
-  constructor(options) {
-    // this.health = options.health;
-    // this.name = name;
+  constructor() {
     this.fire = this.loadFire();
     this.blueFire = this.loadBlueFire();
     
@@ -168,7 +166,6 @@ class GameHUD {
 
   drawPoints(ctx, canvas, points) {
         ctx.font = "20px Arial";
-        // ctx.fillStyle = "rgb(46, 2, 2)";
         ctx.fillStyle = "white";
         ctx.textAlign = "left";
         ctx.fillText(
@@ -176,7 +173,6 @@ class GameHUD {
           20,
           canvas.height - 25
         );
-
   }
 
 }

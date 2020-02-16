@@ -14,7 +14,7 @@ class Collision {
     this.collidePlatBottom = this.collidePlatBottom.bind(this);
     this.collidePlatLeft = this.collidePlatLeft.bind(this);
     this.collidePlatRight = this.collidePlatRight.bind(this);
-    // this.collidePlatformSlopeRight = this.collidePlatformSlopeRight.bind(this);
+
     this.collideSlopeFortyFiveRight = this.collideSlopeFortyFiveRight.bind(this);
     this.collideSlopeFortyFiveRightBottom = this.collideSlopeFortyFiveRightBottom.bind(this);
     this.collideSlopeFortyFiveLeft = this.collideSlopeFortyFiveLeft.bind(this);
@@ -366,7 +366,6 @@ class Collision {
         this.collideSlopeTwentyRight(obj, x, y + tileSize, tileSize / 2);
       },
 
-
       40: (obj, x, y, colVal, tileSize) => {
         //////////////COLLIDE WITH BOTTOM OF SLOPE//////////
         //45 deg right bottom
@@ -394,7 +393,6 @@ class Collision {
         //22 deg right bottom / top half
         this.collideSlopeTwentyRightBottom(obj, x, y + tileSize, tileSize / 2);
       },
-
       
       46: (obj, x, y, colVal, tileSize) => {
         //45 deg left bottom / top
@@ -518,13 +516,9 @@ class Collision {
 
       58: (obj, x, y, colVal, tileSize) => {
         // climb / top
+        // ____
+        //  ||
 
-      // if (obj.x + obj.width > x + (tileSize / 3) && obj.x < x + (tileSize * .66)) {
-
-      //     this.climbable(obj, x, y, tileSize);
-      //   } else if (this.collidePlatTop(obj, y)) {
-      //     return;
-      //   }
         if (!obj.crouch) {
           this.collidePlatTop(obj, y);
         } else {
@@ -536,9 +530,6 @@ class Collision {
         // climb
             this.climbable(obj, x + (tileSize * .35), x + (tileSize * .7), y, tileSize);
 
-        // if (obj.x + obj.width > x + (tileSize / 4) && obj.x < x + (tileSize * (3/4))) {
-        //     this.climbable(obj, x, y, tileSize);
-        // }
       },
 
 
@@ -581,16 +572,7 @@ class Collision {
       player.velX = 0;
     }
 
-    // if (player.y < 0) {
-    //   player.velY = 0;
-    //   player.y = 0.01;
-    // } else
     if (player.y > canvas.height) {
-      // player.velY = 0;
-      // player.y = canvas.height - player.height - 0.1;
-      // player.jumpCount = 2;
-      // player.onGround = true;
-      // player.dead = true;
       player.y = 0;
       player.setHit(50);
     }
@@ -610,7 +592,6 @@ class Collision {
 
   collideProjectile(obj1, obj2) {
     let hitBox = obj2.hitBox();
- 
 
     if (
       obj1.x < hitBox.right &&
@@ -631,7 +612,6 @@ class Collision {
   }
 
   collideEnemy(obj1, obj2) {
-    // if (!obj1 || !obj2) return false;
     if (obj2.dying || obj2.dead) return false;
 
     if (
@@ -640,7 +620,7 @@ class Collision {
       obj1.topSide() < obj2.y + obj2.height &&
       obj1.bottomSide() > obj2.y
     ) {
-      // if (this.hitBox(obj1, obj2)) {
+
       if (obj1 instanceof Player && !obj1.isHit) {
         obj1.velY = -(obj1.velY / 3);
         obj1.velX = -(obj1.velX / 3);
@@ -672,7 +652,6 @@ class Collision {
   ////////PLATFORM COLLISION
 
   collideSlopeFortyFiveRight(gameObj, tileLeft, tileBottom) {
-    ///60 x60 120 y 60 120 (60, 120] [ 60, 120])
     let tileY = tileBottom - (gameObj.rightSide() - tileLeft);
     if (gameObj instanceof Player) {
       if (gameObj.onGround) {
@@ -697,7 +676,6 @@ class Collision {
 
           gameObj.onGround = true;
           gameObj.jumpCount = 2;
-          // gameObj.getDirY() + 60 > tileY) {
           gameObj.y = tileY - gameObj.height - 0.2;
         }
       }
@@ -711,7 +689,6 @@ class Collision {
   }
 
   collideSlopeFortyFiveRightBottom(gameObj, tileLeft, tileBottom) {
-    ///60 x60 120 y 60 120 (60, 120] [ 60, 120])
     let tileY = tileBottom - (gameObj.rightSide() - tileLeft);
     if (
       gameObj.rightSide() > tileLeft &&
@@ -724,10 +701,8 @@ class Collision {
         }, 100);
         return true;
       }
-      // gameObj.getDirY() + 60 > tileY) {
       gameObj.y = tileY + 0.05;
     }
-
   }
 
   collideSlopeFortyFiveLeft(gameObj, tileRight, tileBottom) {
@@ -781,7 +756,6 @@ class Collision {
         }, 100);
         return true;
       }
-      // gameObj.getDirY() + 60 > tileY) {
       gameObj.y = tileY + 0.05;
     }
 
@@ -825,7 +799,7 @@ class Collision {
       setTimeout(() => {
         gameObj.setHit();
       }, 100);
-      //set null
+
       return true;
     }
   }
@@ -841,9 +815,8 @@ class Collision {
       if (gameObj instanceof Projectile) {
         setTimeout(() => {
           gameObj.setHit();
-
         }, 100)
-        //set null
+
         return true;
       }
       gameObj.y = tileY + 0.05;
@@ -962,10 +935,6 @@ class Collision {
         return true;
       }
       gameObj.x = tileRight + 0.1;
-      // if (gameObj instanceof Enemy) {
-      //   gameObj.x = -gameObj.x;
-      // }
-      // gameObj.velX = 0;
 
       return true;
     }
@@ -979,10 +948,6 @@ class Collision {
         return true;
       }
       gameObj.x = tileLeft - gameObj.width - 0.1;
-      // if (!gameObj instanceof Enemy) {
-      //   gameObj.x = -gameObj.x;
-      // }
-      // gameObj.velX = 0;
       return true;
     }
     return false;

@@ -48,9 +48,7 @@ class Flower extends Enemy {
 
       ctx.drawImage(
         this.enemy,
-        // (Math.floor(frameCount / 2) % this.frameNum) * this.frameWidth + this.frameStartX,
         (count % this.frameNum) * this.frameWidth + x,
-        // (0) * this.frameWidth + this.frameStartX,
         this.frameStartY,
         this.frameWidth,
         this.frameHeight,
