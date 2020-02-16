@@ -1,9 +1,5 @@
-# Fire Girl
-Platformer
-
-------
 <h1 align="center">
-  <img src="https://github.com/sswoodruff89/sswoodruff89.github.io/blob/master/images/firegirl/firegirlhome.png" width="600" height="auto" align="center"/>
+  <img alt="logo" src="https://github.com/sswoodruff89/JSProject/blob/master/assets/firegirl_logo_dark.png" width="420" height="100">
 </h1>
 
 ## Overview
