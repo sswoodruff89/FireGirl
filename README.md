@@ -2,6 +2,9 @@
 Platformer
 
 ------
+<h1 align="center">
+  <img src="https://github.com/sswoodruff89/sswoodruff89.github.io/blob/master/images/firegirl/firegirlhome.png" width="600" height="auto" align="center"/>
+</h1>
 
 ## Overview
 Fire Girl is a 2D action platformer game that harkens back to the days of the NES.
@@ -9,16 +12,15 @@ Fire Girl is a 2D action platformer game that harkens back to the days of the NE
 
 ## Built With
 * HTML5 Canvas
+* Google Firebase
 
 ## Features
 
-<h1 align="center">
-  <img src="https://github.com/sswoodruff89/JSProject/blob/master/assets/splash.png" width="600" height="auto" align="center"/>
-</h1>
+
 
 ### Collision Detection
 <h1 align="center">
-  <img src="https://github.com/sswoodruff89/JSProject/blob/master/assets/enemies.png" width="600" height="auto" align="center"/>
+  <img src="https://media.giphy.com/media/QynCAaUmS8CflnSJc9/giphy.gif" width="600" height="auto" align="center"/>
 </h1>
 * Gave Player, Enemies, and Projectiles accurate collision detection to platforms and each other without lagging when a dozen or so objects are on screen
 * Platform collision is based on a tile map map where each element has a value that corresponds to a key in a object of collision check functions
