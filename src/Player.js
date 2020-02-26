@@ -147,6 +147,20 @@ class Player {
     this.setDying();
 
     if (this.isHit && frameCount % 3 === 0 ) return;
+
+    if (this.climbing){
+      this.ctx.drawImage(
+        this.spriteMap,
+        ((Math.floor(frameCount / 5) % 2) * 85) + 355,
+        932,
+        85,
+        198,
+        this.x, this.y - (this.height / 9),
+        this.width, this.height
+      );
+      return;
+    }
+
     if (this.velX === 0) {
       if (this.direction === "right") {
         this.ctx.drawImage(
@@ -311,27 +325,52 @@ class Player {
 
       case "running":
         if (this.direction === "right") {
-          this.ctx.drawImage(
-            this.spriteMap,
-            (Math.floor(frameCount / 2) % 4) * 160,
-            176,
-            160,
-            175,
-            this.x, this.y,
-            this.width + (this.width / 3), this.height
-          );
+          if (this.upPressed) {
+            this.ctx.drawImage(
+              this.spriteMap,
+              (Math.floor(frameCount / 2) % 12) * 125,
+              1915,
+              125,
+              195,
+              this.x, this.y - (this.height / 10),
+              this.width, this.height * 1.1
+            );
+          } else {
+            this.ctx.drawImage(
+              this.spriteMap,
+              (Math.floor(frameCount / 2) % 12) * 160,
+              176,
+              160,
+              175,
+              this.x, this.y,
+              this.width + (this.width / 3), this.height
+            );
+
+          }
 
         } else if (this.direction === "left") {
           this.ctx.scale(-1, 1);
-          this.ctx.drawImage(
-            this.spriteMap,
-            (Math.floor(frameCount / 2) % 4) * 160,
-            176,
-            160,
-            175,
-            -this.x - this.width, this.y,
-            this.width + (this.width / 3), this.height
-          );
+          if (this.upPressed) {
+            this.ctx.drawImage(
+              this.spriteMap,
+              (Math.floor(frameCount / 2) % 12) * 125,
+              1915,
+              125,
+              195,
+              -this.x - this.width, this.y - (this.height / 10),
+              this.width, this.height * 1.1
+            );
+          } else {
+            this.ctx.drawImage(
+              this.spriteMap,
+              (Math.floor(frameCount / 2) % 12) * 160,
+              176,
+              160,
+              175,
+              -this.x - this.width, this.y,
+              this.width + (this.width / 3), this.height
+            );
+          }
           this.ctx.scale(-1, 1);
         };
         break;
@@ -522,6 +561,19 @@ class Player {
 
     if (this.isHit && frameCount % 3 === 0) return;
 
+    if (this.climbing) {
+      let count = (this.velY !== 0) ? (Math.floor(frameCount / 5) % 2) * 85 : 0
+      this.ctx.drawImage(
+        this.spriteMap,
+        (count) + 355,
+        932,
+        85,
+        198,
+        this.x, this.y - (this.height / 9),
+        this.width * .95, this.height
+      );
+      return;
+    }
 
     if (this.velY >= 0 && this.velY <= 1) {
       if (this.isRunning) {

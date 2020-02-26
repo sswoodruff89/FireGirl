@@ -93,29 +93,35 @@ class Level {
   }
 
   renderBackground(ctx, canvas) {
-    if (parseInt(this.screen) === parseInt(this.lastScreen) && !this.enemies[1] && !this.lastScreenCleared) {
-      this.lastScreenCleared = true;
-      clearInterval(this.spawnInterval);
-
-      Object.values(this.enemies).forEach((ene) => {
-        ene.health = 0;
-      });
-      let muted = this.theme.music.muted;
-
-      this.theme.pause();
-      this.theme = null;
-      setTimeout(() => {
-        this.theme = new Music({
-          src: "./assets/Sound/ff9_victory.mp3",
-            name: "Victory Fanfare",
-              artist: "Nobuo Uematsu",
-                volume: .2,
-                loop: false
+    if (parseInt(this.screen) === parseInt(this.lastScreen)) {
+      if (this.enemies[1] && this.enemies[1].dying) {
+        Object.values(this.enemies).forEach((ene) => {
+          ene.health = 0;
         });
-        this.theme.play();
-        this.theme.music.muted = muted;
+      } else if (!this.enemies[1] && !this.lastScreenCleared) {
+        this.lastScreenCleared = true;
+        clearInterval(this.spawnInterval);
 
-      }, 700)
+        Object.values(this.enemies).forEach((ene) => {
+          ene.health = 0;
+        });
+        let muted = this.theme.music.muted;
+
+        this.theme.pause();
+        this.theme = null;
+        setTimeout(() => {
+          this.theme = new Music({
+            src: "./assets/Sound/ff9_victory.mp3",
+              name: "Victory Fanfare",
+                artist: "Nobuo Uematsu",
+                  volume: .2,
+                  loop: false
+          });
+          this.theme.play();
+          this.theme.music.muted = muted;
+
+        }, 700)
+      }
 
     }
 

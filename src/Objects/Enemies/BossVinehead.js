@@ -130,7 +130,7 @@ class BossVinehead extends Enemy {
       return;
     }
     this.vines.forEach((vine, i) => {
-      vine.attack((1500) + i * 300);
+      vine.attack((1500) + i * 500);
     })
     setTimeout(() => {
       this.vines = this.shuffleVines(this.vines);
