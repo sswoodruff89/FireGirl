@@ -572,10 +572,8 @@ class Player {
         this.x, this.y - (this.height / 9),
         this.width * .95, this.height
       );
-      return;
-    }
 
-    if (this.velY >= 0 && this.velY <= 1) {
+    } else if (this.velY >= 0 && this.velY <= 1) {
       if (this.isRunning) {
         (!this.attacking) ? this.drawRunning(frameCount) : this.drawAttack(frameCount, "running");
       } else {
@@ -605,7 +603,7 @@ class Player {
         0,
         145.75,
         143,
-        this.x - 12,
+        this.x - 20,
         this.y - 10,
         85,
         100
