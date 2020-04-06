@@ -2,8 +2,11 @@
   <img alt="logo" src="https://github.com/sswoodruff89/JSProject/blob/master/assets/firegirl_logo_dark.png" width="420" height="100">
 </h1>
 
+
 ## Overview
 Fire Girl is a 2D action platformer game that harkens back to the days of the NES.
+<br>
+<a href="https://sswoodruff89.github.io/FireGirl/">Live Site</a>
 
 
 ## Built With
